@@ -227,4 +227,12 @@ body::before {
       font-size: 22px;
       height: var(--logo-size);
   }
+
+  .webring {
+    width: 300px;
+  }
+
+  .webring-title {
+    font-size: 22px;
+  }
 }
