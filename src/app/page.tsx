@@ -1,5 +1,6 @@
 import * as React from "react";
 import LinkMap from "./components/link-map";
+import { Metadata } from "next";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
       </div>
 
       <div className="description">
-        A community dedicated to making public transit in Ottawa better
+        {`Let's make public transit in Ottawa better`}
       </div>
 
       <a className="join" href="https://discord.gg/9gQzNpp3QT">
@@ -43,9 +44,18 @@ export default function Home() {
           {
             name: "Strong Towns Ottawa",
             url: "https://strongtownsottawa.ca/bank/",
-          }
+          },
         ]}
       />
     </div>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Better Transit Ottawa",
+    openGraph: {
+      description: "Let's make public transit in Ottawa better"
+    },
+  };
 }
