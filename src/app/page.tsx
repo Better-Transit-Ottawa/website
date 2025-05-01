@@ -27,6 +27,7 @@ export default function Home() {
         links={[
           {
             name: "Better Transit Ottawa",
+            url: "https://discord.gg/9gQzNpp3QT",
             logo: "images/logo.svg",
           },
           {
