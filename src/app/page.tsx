@@ -42,6 +42,10 @@ export default function Home() {
             url: "https://www.youtube.com/playlist?list=PL8vl2ZW-HDQwPZL3edNEiA424IPwUWm3y",
           },
           {
+            name: "There was a station here",
+            url: "https://therewasastationhere.wordpress.com/"
+          },
+          {
             name: "Strong Towns Ottawa",
             url: "https://strongtownsottawa.ca/bank/",
           },
