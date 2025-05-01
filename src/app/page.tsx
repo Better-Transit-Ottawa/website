@@ -57,5 +57,6 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       description: "Let's make public transit in Ottawa better"
     },
+    metadataBase: new URL("https://bettertransitottawa.ca"),
   };
 }
