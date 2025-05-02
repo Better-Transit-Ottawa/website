@@ -52,6 +52,8 @@ export default function Home() {
           },
         ]}
       />
+
+      Contact: contact[at]bettertransitottawa.ca
     </div>
   );
 }
