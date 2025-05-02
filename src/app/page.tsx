@@ -50,6 +50,14 @@ export default function Home() {
             name: "Strong Towns Ottawa",
             url: "https://strongtownsottawa.ca/bank/",
           },
+          {
+            name: "Ottawa Transit Riders",
+            url: "https://www.ottawatransitriders.ca/",
+          },
+          {
+            name: "Free Transit Ottawa",
+            url: "https://freetransitottawa.ca/",
+          },
         ]}
       />
 
