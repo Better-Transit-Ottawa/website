@@ -10,8 +10,6 @@ export default function RootLayout({
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {/* <title>{title ?? "Better Transit Ottawa"}</title> */}
       </head>
 
       <body>{children}</body>
