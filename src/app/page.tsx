@@ -69,6 +69,7 @@ export default function Home() {
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Better Transit Ottawa",
+    description: "Let's make public transit in Ottawa better",
     openGraph: {
       description: "Let's make public transit in Ottawa better"
     },
