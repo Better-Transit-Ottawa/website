@@ -19,7 +19,7 @@ export default function Home() {
         {`Let's make public transit in Ottawa better`}
       </div>
 
-      <a className="join" href="https://discord.gg/9gQzNpp3QT">
+      <a className="join" href="https://discord.gg/T7HzadcpSX">
         Join us on Discord
       </a>
 
