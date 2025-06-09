@@ -23,6 +23,16 @@ export default function Home() {
         Join us on Discord
       </a>
 
+      <div className="socials">
+        <a href="https://bsky.app/profile/bettertransitottawa.ca">
+          <img src="images/bluesky.svg" alt="Bluesky logo"/>
+        </a>
+
+        <a href="https://www.instagram.com/bettertransitottawa/">
+          <img src="images/instagram.svg" alt="Instagram logo"/>
+        </a>
+      </div>
+
       <LinkMap
         links={[
           {
@@ -45,6 +55,10 @@ export default function Home() {
           {
             name: "There Was a Station Here Blog",
             url: "https://therewasastationhere.wordpress.com/"
+          },
+          {
+            name: "lennon.transit",
+            url: "https://www.instagram.com/lennon.transit/"
           },
           {
             name: "Strong Towns Ottawa",
