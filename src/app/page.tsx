@@ -31,6 +31,10 @@ export default function Home() {
         <a href="https://www.instagram.com/bettertransitottawa/">
           <img src="images/instagram.svg" alt="Instagram logo"/>
         </a>
+
+        <a href="https://www.youtube.com/@BetterTransitOttawa">
+          <img src="images/youtube.svg" alt="YouTube logo"/>
+        </a>
       </div>
 
       <LinkMap
