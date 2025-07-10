@@ -228,6 +228,50 @@ body::before {
   padding-right: 10px;
 }
 
+.text-block {
+  background-color: black;
+  font-size: 18px;
+
+  padding: 30px;
+
+  border: 2px solid #fff;
+}
+
+.text-block-indented {
+  padding-left: 50px;
+  padding-right: 50px;
+
+  margin: 1em 0;
+}
+
+.text-block p:not(.info-bar) {
+  padding-left: 55px;
+  padding-right: 55px;
+}
+
+.text-block :first-child {
+  margin-top: 0;
+}
+
+.text-block :last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  width: 35px;
+
+  padding-right: 20px;
+}
+
+.info-bar {
+  display: flex;
+  align-items: center;
+}
+
+.info-bar-title {
+  font-size: 28px;
+}
+
 @media only screen and (max-width: 700px) {
   body {
       --logo-size: 60px;
@@ -241,6 +285,14 @@ body::before {
 
   .webring {
     width: 350px;
+  }
+  
+  .text-block-indented {
+    padding-right: 0;
+  }
+
+  .text-block p:not(.info-bar) {
+    padding-right: 0;
   }
 
   .webring-contents-inner {

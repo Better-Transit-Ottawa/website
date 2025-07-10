@@ -37,6 +37,38 @@ export default function Home() {
         </a>
       </div>
 
+      <div className="text-block">
+        <p className="info-bar">
+          <img className="info-icon" src="images/info.svg" alt="Info icon" />
+
+          <span className="info-bar-title">
+            Who We Are
+          </span>
+        </p>
+
+        <p>
+          We are a group of volunteers fighting for a useful, reliable, and sustainable public transportation network in the City of Ottawa
+        </p>
+
+        <p>
+          We have distilled our mission down to three core principles:
+        </p>
+
+        <div className="text-block-indented">
+          <p>
+            <b>Consistency</b>: Infrastructure projects to ensure transit is on-time, reliable, and offers a competitive alternative to driving
+          </p>
+
+          <p>
+            <b>Sustainability</b>: Operational changes to maintain a reliable network and support future growth
+          </p>
+
+          <p>
+            <b>Solidarity</b>: Giving power back to front-line transit workers
+          </p>
+        </div>
+      </div>
+
       <LinkMap
         links={[
           {
