@@ -240,7 +240,11 @@ body::before {
   }
 
   .webring {
-    width: 300px;
+    width: 350px;
+  }
+
+  .webring-contents-inner {
+    width: 72%;
   }
 
   .webring-title {
