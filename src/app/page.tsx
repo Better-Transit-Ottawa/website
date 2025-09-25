@@ -93,7 +93,7 @@ export default function Home() {
             <p>
               OC Transpo is facing a significant bus shortage which has been one of the main causes of the lack of bus reliability, and cancelled buses.
               OC Transpo currently has a bus fleet mostly consisting of the longer articulated buses (bendy buses), but these buses are have exceeded their expected life-time of 15 years and will be retired soon.
-              The city is only planning on replacing these buses with a few more, with the rest replaced by shorter 40-foot buses.
+              The city is planning on replacing these buses with mostly shorter 40-foot buses.
               Each articulated bus can carry about 50% more passengers than a standard bus, so replacing each bus 1:1 means decreasing the system{"'"}s capacity by half.
             </p>
 
