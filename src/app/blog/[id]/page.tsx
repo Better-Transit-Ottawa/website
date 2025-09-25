@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
+import { Metadata } from "next";
 
 const postsDirectory = "blog";
 
@@ -81,4 +82,17 @@ export default async function Post(p: BlogProps) {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata(p: BlogProps): Promise<Metadata> {
+  const postData = await getPostData((await p.params).id);
+
+  return {
+    title: postData.title,
+    authors: [{ name: "Better Transit Ottawa" }],
+    openGraph: {
+      type: "article",
+      publishedTime: postData.date
+    }
+  };
 }
