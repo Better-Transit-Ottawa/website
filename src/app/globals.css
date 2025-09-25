@@ -62,6 +62,8 @@ body::before {
 .title {
   font-size: 38px;
   background-color: black;
+  color: white;
+  text-decoration: none;
 
   width: 600px;
   height: var(--logo-size);

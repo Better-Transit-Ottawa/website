@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import Link from "next/link";
 
 const postsDirectory = "blog";
 
@@ -53,15 +54,17 @@ export default async function Post(p: BlogProps) {
 
   return (
     <div className="content">
-      <div className="title">
-          <div className="logo">
-          <img src="/images/logo-square.svg" alt="Logo" />
-          </div>
+      <Link href="/">
+        <div className="title">
+            <div className="logo">
+            <img src="/images/logo-square.svg" alt="Logo" />
+            </div>
 
-          <div className="title-text">Better Transit Ottawa</div>
+            <div className="title-text">Better Transit Ottawa</div>
 
-          <div className="end-spacer"></div>
-      </div>
+            <div className="end-spacer"></div>
+        </div>
+      </Link>
 
       <div className="text-block">
         <p className="info-bar">
