@@ -16,7 +16,9 @@ interface BlogProps {
 
 interface PostDetails {
   contentHtml: string;
-  [key: string]: string;
+  title: string;
+  date: string;
+  description: string;
 }
 
 export function generateStaticParams() {
@@ -47,7 +49,7 @@ async function getPostData(id: string): Promise<PostDetails> {
   return {
     contentHtml,
     ...matterResult.data,
-  };
+  } as PostDetails;
 }
 
 export default async function Post(p: BlogProps) {
@@ -91,10 +93,12 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
     title: postData.title,
     authors: [{ name: "Better Transit Ottawa" }],
     metadataBase: new URL("https://bettertransitottawa.ca"),
+    description: postData.description,
     openGraph: {
       type: "article",
       publishedTime: new Date(postData.date).toISOString(),
-      images: ["opengraph-image.png"]
+      images: ["opengraph-image.png"],
+      description: postData.description
     },
     twitter: {
       card: "summary"
