@@ -18,7 +18,11 @@ interface PostDetails {
 }
 
 export function generateStaticParams() {
-    const fileNames = fs.readdirSync(postsDirectory);
+  if (!fs.existsSync(postsDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(postsDirectory);
 
   return fileNames.map((file) => {
     return {
