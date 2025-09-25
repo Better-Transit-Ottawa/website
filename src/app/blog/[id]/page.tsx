@@ -27,7 +27,7 @@ export function generateStaticParams() {
   });
 }
 
-export async function getPostData(id: string): Promise<PostDetails> {
+async function getPostData(id: string): Promise<PostDetails> {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
