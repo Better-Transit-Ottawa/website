@@ -59,7 +59,7 @@ export default function Home() {
             />
 
             <p>
-              The city is currently studying potential replacing parking with dedicated bus lanes on a portion of bank street. We need to your help to help them make the right decision!
+              The city is currently studying replacing parking with dedicated bus lanes on a portion of bank street. We need to your help to help them make the right decision!
             </p>
 
             <p className="project-actions-title">
