@@ -30,7 +30,6 @@ export function generateStaticParams() {
 export async function getPostData(id: string): Promise<PostDetails> {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
-  console.log(fullPath, fileContents)
 
   const matterResult = matter(fileContents);
 
