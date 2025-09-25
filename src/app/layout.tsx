@@ -10,6 +10,9 @@ export default function RootLayout({
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="preload" as="font" href="/Frutiger.ttf" type="font/ttf"></link>
+        <link rel="preload" as="font" href="/Frutiger_bold.ttf" type="font/ttf"></link>
       </head>
 
       <body>{children}</body>
