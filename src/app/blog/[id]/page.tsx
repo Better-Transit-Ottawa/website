@@ -90,9 +90,11 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
   return {
     title: postData.title,
     authors: [{ name: "Better Transit Ottawa" }],
+    metadataBase: new URL("https://bettertransitottawa.ca"),
     openGraph: {
       type: "article",
-      publishedTime: postData.date
+      publishedTime: new Date(postData.date).toISOString(),
+      images: ["opengraph-image.png"]
     }
   };
 }
