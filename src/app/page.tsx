@@ -7,7 +7,7 @@ export default function Home() {
     <div className="content">
       <div className="title">
         <div className="logo">
-          <img src="images/logo-square.svg" alt="Logo" />
+          <img src="/images/logo-square.svg" alt="Logo" />
         </div>
 
         <div className="title-text">Better Transit Ottawa</div>
@@ -25,21 +25,21 @@ export default function Home() {
 
       <div className="socials">
         <a href="https://bsky.app/profile/bettertransitottawa.ca">
-          <img src="images/bluesky.svg" alt="Bluesky logo"/>
+          <img src="/images/bluesky.svg" alt="Bluesky logo"/>
         </a>
 
         <a href="https://www.instagram.com/bettertransitottawa/">
-          <img src="images/instagram.svg" alt="Instagram logo"/>
+          <img src="/images/instagram.svg" alt="Instagram logo"/>
         </a>
 
         <a href="https://www.youtube.com/@BetterTransitOttawa">
-          <img src="images/youtube.svg" alt="YouTube logo"/>
+          <img src="/images/youtube.svg" alt="YouTube logo"/>
         </a>
       </div>
 
       <div className="text-block">
         <p className="info-bar">
-          <img className="info-icon" src="images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
           <span className="info-bar-title">
             Projects that need your help
@@ -54,7 +54,7 @@ export default function Home() {
 
             <img
               className="project-image"
-              src="images/bank.jpg"
+              src="/images/bank.jpg"
               alt="An OC Transpo bus on Bank street"
             />
 
@@ -86,7 +86,7 @@ export default function Home() {
 
             <img
               className="project-image"
-              src="images/artic.jpg"
+              src="/images/artic.jpg"
               alt="An OC Transpo articulated bus"
             />
 
@@ -115,7 +115,7 @@ export default function Home() {
 
       <div className="text-block">
         <p className="info-bar">
-          <img className="info-icon" src="images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
           <span className="info-bar-title">
             Who We Are

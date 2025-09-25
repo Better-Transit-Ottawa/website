@@ -54,16 +54,14 @@ export default async function Post(p: BlogProps) {
 
   return (
     <div className="content">
-      <Link href="/">
-        <div className="title">
-            <div className="logo">
-            <img src="/images/logo-square.svg" alt="Logo" />
-            </div>
+      <Link href="/" className="title">
+          <div className="logo">
+          <img src="/images/logo-square.svg" alt="Logo" />
+          </div>
 
-            <div className="title-text">Better Transit Ottawa</div>
+          <div className="title-text">Better Transit Ottawa</div>
 
-            <div className="end-spacer"></div>
-        </div>
+          <div className="end-spacer"></div>
       </Link>
 
       <div className="text-block">
