@@ -244,9 +244,22 @@ body::before {
   margin: 1em 0;
 }
 
-.text-block p:not(.info-bar) {
+.text-block p:not(.info-bar, .project-list p, .blog *) {
   padding-left: 55px;
   padding-right: 55px;
+}
+
+.blog {
+  padding-top: 20px;
+
+  font-size: 1rem;
+  line-height: 1.4rem;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.date {
+  text-align: center;
 }
 
 .text-block :first-child {
@@ -270,6 +283,49 @@ body::before {
 
 .info-bar-title {
   font-size: 28px;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+}
+
+.footer div {
+  margin: 5px;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-list div {
+  flex: 40%;
+}
+
+.project-title {
+  font-weight: bold;
+  font-size: 23px;
+
+  text-align: center;
+}
+
+.project-list a {
+  color: white;
+}
+
+.project-actions-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.project-image {
+  width: 100%;
 }
 
 @media only screen and (max-width: 700px) {
@@ -301,5 +357,9 @@ body::before {
 
   .webring-title {
     font-size: 22px;
+  }
+
+  .project-list div {
+    flex: 100%;
   }
 }

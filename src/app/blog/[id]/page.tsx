@@ -1,0 +1,80 @@
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { remark } from "remark";
+import html from "remark-html";
+
+const postsDirectory = "blog";
+
+interface BlogProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+interface PostDetails {
+  contentHtml: string;
+  [key: string]: string;
+}
+
+export function generateStaticParams() {
+    const fileNames = fs.readdirSync(postsDirectory);
+
+  return fileNames.map((file) => {
+    return {
+        id: file.replace(/\.md$/, ""),
+    };
+  });
+}
+
+export async function getPostData(id: string): Promise<PostDetails> {
+  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  console.log(fullPath, fileContents)
+
+  const matterResult = matter(fileContents);
+
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content);
+  const contentHtml = processedContent.toString();
+
+  return {
+    contentHtml,
+    ...matterResult.data,
+  };
+}
+
+export default async function Post(p: BlogProps) {
+  const postData = await getPostData((await p.params).id);
+
+  return (
+    <div className="content">
+      <div className="title">
+          <div className="logo">
+          <img src="/images/logo-square.svg" alt="Logo" />
+          </div>
+
+          <div className="title-text">Better Transit Ottawa</div>
+
+          <div className="end-spacer"></div>
+      </div>
+
+      <div className="text-block">
+        <p className="info-bar">
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+
+          <span className="info-bar-title">
+            {postData.title}
+          </span>
+        </p>
+
+        <div className="date">
+          {postData.date}
+        </div>
+
+        <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      </div>
+    </div>
+  );
+}
