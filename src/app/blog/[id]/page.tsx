@@ -95,6 +95,9 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
       type: "article",
       publishedTime: new Date(postData.date).toISOString(),
       images: ["opengraph-image.png"]
+    },
+    twitter: {
+      card: "summary"
     }
   };
 }
