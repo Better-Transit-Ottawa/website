@@ -109,8 +109,9 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
     openGraph: {
       type: "article",
       publishedTime: new Date(postData.date).toISOString(),
+      authors: ["Better Transit Ottawa"],
       images: [postData.thumbnail ?? "opengraph-image.png"],
-      description: postData.description
+      description: postData.description,
     }
   };
 }
