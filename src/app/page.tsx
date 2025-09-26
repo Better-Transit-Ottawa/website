@@ -152,7 +152,7 @@ export default function Home() {
           {
             name: "Better Transit Ottawa",
             url: "https://discord.gg/9gQzNpp3QT",
-            logo: "images/logo.svg",
+            logo: "/images/logo.svg",
           },
           {
             name: "Transit Ottawa Blog",
