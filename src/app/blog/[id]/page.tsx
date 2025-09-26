@@ -112,6 +112,7 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
       authors: ["Better Transit Ottawa"],
       images: [postData.thumbnail ?? "opengraph-image.png"],
       description: postData.description,
+      siteName: "Better Transit Ottawa"
     }
   };
 }
