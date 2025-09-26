@@ -60,41 +60,47 @@ export default async function Post(p: BlogProps) {
   const postData = await getPostData((await p.params).id);
 
   return (
-    <div className="content">
-      <Link href="/" className="title">
-          <div className="logo">
-          <img src="/images/logo-square.svg" alt="Logo" />
+    <>
+      <div className="background-container">
+        <div className="background"/>
+      </div>
+
+      <div className="content">
+        <Link href="/" className="title">
+            <div className="logo">
+            <img src="/images/logo-square.svg" alt="Logo" />
+            </div>
+
+            <div className="title-text">Better Transit Ottawa</div>
+
+            <div className="end-spacer"></div>
+        </Link>
+
+        <div className="text-block">
+          <p className="info-bar">
+            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+
+            <span className="info-bar-title">
+              {postData.title}
+            </span>
+          </p>
+
+          <div className="date">
+            {postData.date}
           </div>
 
-          <div className="title-text">Better Transit Ottawa</div>
+          {postData.thumbnail && (
+            <img
+              className="blog-thumbnail"
+              src={postData.thumbnail}
+              alt={postData.caption}
+            />
+          )}
 
-          <div className="end-spacer"></div>
-      </Link>
-
-      <div className="text-block">
-        <p className="info-bar">
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
-
-          <span className="info-bar-title">
-            {postData.title}
-          </span>
-        </p>
-
-        <div className="date">
-          {postData.date}
+          <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         </div>
-
-        {postData.thumbnail && (
-          <img
-            className="blog-thumbnail"
-            src={postData.thumbnail}
-            alt={postData.caption}
-          />
-        )}
-
-        <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       </div>
-    </div>
+    </>
   );
 }
 

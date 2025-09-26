@@ -11,6 +11,8 @@ body {
   --logo-size: 100px;
 
   --black: #1f1a17;
+
+  margin: 0;
 }
 
 .background-container {
