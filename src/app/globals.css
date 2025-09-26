@@ -260,6 +260,10 @@ body::before {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.blog a {
+  color: white;
+}
+
 .date {
   text-align: center;
 }
