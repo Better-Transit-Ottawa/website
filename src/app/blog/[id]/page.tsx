@@ -5,6 +5,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import Link from "next/link";
 import { Metadata } from "next";
+import Layout from "@/components/layout";
 
 const postsDirectory = "blog";
 
@@ -60,47 +61,31 @@ export default async function Post(p: BlogProps) {
   const postData = await getPostData((await p.params).id);
 
   return (
-    <>
-      <div className="background-container">
-        <div className="background"/>
-      </div>
+    <Layout>
+      <div className="text-block">
+        <p className="info-bar">
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
-      <div className="content">
-        <Link href="/" className="title">
-            <div className="logo">
-            <img src="/images/logo-square.svg" alt="Logo" />
-            </div>
+          <span className="info-bar-title">
+            {postData.title}
+          </span>
+        </p>
 
-            <div className="title-text">Better Transit Ottawa</div>
-
-            <div className="end-spacer"></div>
-        </Link>
-
-        <div className="text-block">
-          <p className="info-bar">
-            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
-
-            <span className="info-bar-title">
-              {postData.title}
-            </span>
-          </p>
-
-          <div className="date">
-            {postData.date}
-          </div>
-
-          {postData.thumbnail && (
-            <img
-              className="blog-thumbnail"
-              src={postData.thumbnail}
-              alt={postData.caption}
-            />
-          )}
-
-          <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <div className="date">
+          {postData.date}
         </div>
+
+        {postData.thumbnail && (
+          <img
+            className="blog-thumbnail"
+            src={postData.thumbnail}
+            alt={postData.caption}
+          />
+        )}
+
+        <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       </div>
-    </>
+    </Layout>
   );
 }
 

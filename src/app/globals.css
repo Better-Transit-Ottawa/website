@@ -22,6 +22,8 @@ body {
   height: 100%;
   overflow: hidden;
   top: -57px;
+
+  z-index: -1000;
 }
 
 .background {
@@ -88,6 +90,10 @@ body {
 
 .title .logo img {
   height: var(--logo-size);
+}
+
+.title.disabled {
+  cursor: default;
 }
 
 .logo img {

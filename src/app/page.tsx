@@ -1,25 +1,25 @@
 import * as React from "react";
 import LinkMap from "./components/link-map";
 import { Metadata } from "next";
+import Layout from "@/components/layout";
 
 export default function Home() {
   return (
-    <>
-      <div className="background-container">
-        <div className="background"/>
-      </div>
-
-      <div className="content">
-        <div className="title">
-          <div className="logo">
-            <img src="/images/logo-square.svg" alt="Logo" />
+    <Layout
+      dontLink={true}
+      footer={
+        <>
+          <div>
+            Photo 1 credit:{" "}
+            Mike Wright
           </div>
 
-          <div className="title-text">Better Transit Ottawa</div>
-
-          <div className="end-spacer"></div>
-        </div>
-
+          <div>
+            Photo 2 credit:{" "}
+            <a target="_blank" href="https://www.instagram.com/lennon.transit/">lennon.transit</a>
+          </div>
+        </>
+      }>
         <div className="description">
           {`Let's make public transit in Ottawa better`}
         </div>
@@ -197,26 +197,7 @@ export default function Home() {
             },
           ]}
         />
-
-        <div className="footer">
-          <div>
-            Photo 1 credit:{" "}
-            Mike Wright
-          </div>
-
-          <div>
-            Photo 2 credit:{" "}
-            <a target="_blank" href="https://www.instagram.com/lennon.transit/">lennon.transit</a>
-          </div>
-
-          <div>
-            Contact: contact[at]bettertransitottawa.ca
-          </div>
-        </div>
-
-
-      </div>
-    </>
+    </Layout>
   );
 }
 
