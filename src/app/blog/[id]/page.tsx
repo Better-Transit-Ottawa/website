@@ -3,7 +3,6 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
-import Link from "next/link";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
 
