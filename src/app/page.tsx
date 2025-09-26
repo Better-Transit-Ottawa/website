@@ -107,7 +107,9 @@ export default function Home() {
             </p>
 
             <p>
-              Email your councillor that you support the purchase of articulated buses
+              <a target="_blank" href="https://ottawa.ca/en/city-hall/mayor-and-city-councillors">
+                Email your councillor that you support the purchase of articulated buses
+              </a>
             </p>
           </div>
         </div>
