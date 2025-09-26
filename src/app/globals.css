@@ -252,7 +252,7 @@ body::before {
 }
 
 .blog {
-  padding-top: 20px;
+  padding-top: 10px;
 
   font-size: 1rem;
   line-height: 1.4rem;
@@ -262,6 +262,12 @@ body::before {
 
 .blog a {
   color: white;
+}
+
+.blog-thumbnail {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 .date {

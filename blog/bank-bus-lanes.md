@@ -1,6 +1,8 @@
 ---
 title: "Bank Street Bus Lane Open House: Our response"
 description: "Last night, city staff held an open house to put forward their recommendations for bus lanes and street parking changes on Bank Street.\n\nUnfortunately, despite overwhelming public opinion and evidence to support all-day/24hr continuous bus lanes, the proposed changes are lacklustre at best."
+thumbnail: "/images/blog/bank-bus-lanes.jpg"
+caption: "Buses in a bus lane turning onto Bank Street"
 date: "2025-09-25"
 ---
 

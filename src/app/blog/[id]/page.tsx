@@ -19,6 +19,8 @@ interface PostDetails {
   title: string;
   date: string;
   description: string;
+  thumbnail?: string;
+  caption?: string;
 }
 
 export function generateStaticParams() {
@@ -82,6 +84,14 @@ export default async function Post(p: BlogProps) {
           {postData.date}
         </div>
 
+        {postData.thumbnail && (
+          <img
+            className="blog-thumbnail"
+            src={postData.thumbnail}
+            alt={postData.caption}
+          />
+        )}
+
         <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       </div>
     </div>
@@ -99,11 +109,8 @@ export async function generateMetadata(p: BlogProps): Promise<Metadata> {
     openGraph: {
       type: "article",
       publishedTime: new Date(postData.date).toISOString(),
-      images: ["opengraph-image.png"],
+      images: [postData.thumbnail ?? "opengraph-image.png"],
       description: postData.description
-    },
-    twitter: {
-      card: "summary"
     }
   };
 }
