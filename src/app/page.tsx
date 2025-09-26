@@ -2,6 +2,7 @@ import * as React from "react";
 import LinkMap from "./components/link-map";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -81,6 +82,12 @@ export default function Home() {
                 <a target="_blank" href="https://strongtownsottawa.ca/bank/">
                   Learn why this is important
                 </a>
+              </p>
+
+              <p>
+                <Link href="/blog/bank-bus-lanes">
+                  Our problems with the current proposal
+                </Link>
               </p>
             </div>
 
