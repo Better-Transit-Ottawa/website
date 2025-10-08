@@ -1,4 +1,4 @@
-Better Transit Ottawa website
+The Better Transit Ottawa website
 
 ### Building
 
