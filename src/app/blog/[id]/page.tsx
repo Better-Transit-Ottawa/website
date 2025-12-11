@@ -21,6 +21,7 @@ interface PostDetails {
   description: string;
   thumbnail?: string;
   caption?: string;
+  photoCredit?: string[];
 }
 
 export function generateStaticParams() {
@@ -56,11 +57,31 @@ async function getPostData(id: string): Promise<PostDetails> {
   } as PostDetails;
 }
 
+async function processCredit(credit: string): Promise<string> {
+  const processedContent = await remark()
+    .use(html, {
+      sanitize: false
+    })
+    .process(credit);
+  const contentHtml = processedContent.toString();
+
+  return contentHtml;
+}
+
 export default async function Post(p: BlogProps) {
   const postData = await getPostData((await p.params).id);
 
+  const credits = postData.photoCredit ? await Promise.all(postData.photoCredit.map(async (credit, index) => (
+    <div key={index} dangerouslySetInnerHTML={{ __html: await processCredit(credit) }}>
+    </div>
+  ))) : [];
+
   return (
-    <Layout>
+    <Layout footer={
+      <>
+          {credits}
+      </>
+    }>
       <div className="text-block">
         <p className="info-bar">
           <img className="info-icon" src="/images/info.svg" alt="Info icon" />
