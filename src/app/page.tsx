@@ -48,6 +48,32 @@ export default function Home() {
             <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
             <span className="info-bar-title">
+              Latest posts
+            </span>
+          </p>
+
+          <div className="project-list">
+            <div>
+              <p className="project-title">
+                <Link href="/blog/budget-2026">
+                  2026 Budget: Our Response
+
+                  <img
+                    className="project-image"
+                    src="/images/blog/budget-2026/bus.jpg"
+                    alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
+                  />
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-block">
+          <p className="info-bar">
+            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+
+            <span className="info-bar-title">
               Projects that need your help
             </span>
           </p>
