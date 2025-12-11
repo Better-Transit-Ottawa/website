@@ -20,9 +20,9 @@ With our current bus procurement schedule, reliability is not improving, and it 
 Councillor Brockington summarized the stagnant nature of Ottawa’s approach to fixing its transit system well, “The metrics over the last year that we received at [Transit Committee] is that we continue having a challenge just making progress. They are more or less flat.”
 
 In this meeting, councillors are repeatedly making the claim that more money will not help with our bus reliability, but there are several key ways funding would help fix our bus reliability problem:
-Order more high-capacity buses to properly expand and replace our aging fleet
-Increase funding for transit priority measures on corridors such as  Bank St, Carling Ave, and Baseline Rd to use our limited buses as efficiently as possible
-Hire and retain additional mechanics with improved pay and working conditions in order to keep our existing buses in service
+- Order more high-capacity buses to properly expand and replace our aging fleet
+- Increase funding for transit priority measures on corridors such as  Bank St, Carling Ave, and Baseline Rd to use our limited buses as efficiently as possible
+- Hire and retain additional mechanics with improved pay and working conditions in order to keep our existing buses in service
 
 We are very much in support of the motion to increase the frequency of O-Train Line 1; it’s the spine of our system. Higher frequency means fewer chances of missing your infrequent and unreliable bus transfer. However, weekend service and evening frequencies are still inadequate. This is a great step in the right direction, but we are not where Ottawa deserves to be.
 
