@@ -11,13 +11,8 @@ export default function Home() {
       footer={
         <>
           <div>
-            Photo 1 credit:{" "}
+            Bank street photo credit:{" "}
             Mike Wright
-          </div>
-
-          <div>
-            Photo 2 credit:{" "}
-            <a target="_blank" href="https://www.instagram.com/lennon.transit/">lennon.transit</a>
           </div>
         </>
       }>
@@ -91,7 +86,7 @@ export default function Home() {
               />
 
               <p>
-                The city is currently studying replacing parking with dedicated bus lanes on a portion of bank street. We need to your help to help them make the right decision!
+                The city is currently studying replacing parking with dedicated bus lanes on a portion of bank street. We need your help to help them make the right decision!
               </p>
 
               <p className="project-actions-title">
