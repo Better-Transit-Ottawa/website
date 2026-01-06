@@ -9,8 +9,8 @@ import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 
 const colors = [
-  "#78B9B5",
   "#0f8c77ff",
+  "#78B9B5",
   "#3d78a2ff",
   "#a38ec0ff",
   "#872341",
@@ -23,6 +23,7 @@ interface BlockComponentProps {
     blockId: string;
     block: BlockData[];
     colors: Record<string, string>;
+    border: string | null;
   }
 }
 
@@ -34,7 +35,11 @@ interface NodePosition {
 function BlockComponent(props: BlockComponentProps) {
   return (
     <>
-      <div className="block-node">
+      <div className="block-node"
+          style={{
+            borderColor: props.data.border ?? undefined,
+            borderWidth: props.data.border ? "5px" : undefined
+          }}>
         <div className="block-node-title">
           Block: <strong>{props.data.blockId}</strong>
         </div>
@@ -207,7 +212,7 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
     }
 }
 
-function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string): Node[] {
+function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
   const nodes: Node[] = [];
 
   const positions = generateNodePositions(blocks, edgeData.edges, defaultBlockId);
@@ -225,7 +230,8 @@ function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: st
       data: {
         blockId,
         block,
-        colors: edgeData.colors
+        colors: edgeData.colors,
+        border: busIdSearched  && blockId === defaultBlockId ? edgeData.colors[busIdSearched] : null
       },
     });
   }
@@ -472,7 +478,7 @@ function Graph({ block, bus, date }: GraphProps) {
     const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? ""));
+      setNodes(generateNodes(blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
   }, [blockData, block, bus, setNodes, setEdges, searchParams]);
