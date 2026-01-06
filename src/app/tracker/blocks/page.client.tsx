@@ -469,7 +469,7 @@ function Graph({ block, bus, date }: GraphProps) {
       nodeTypes={{
         block: BlockComponent
       }}
-      minZoom={0.1}
+      minZoom={0.01}
       colorMode="dark"
     />
   );
