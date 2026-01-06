@@ -324,13 +324,15 @@ export default function PageClient() {
 
   const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : new Date().toLocaleDateString())));
   useEffect(() => {
-    const date = searchParams.get("date");
-    if (date) {
-      setDate(dateStringToServiceDay(date));
+    const newDate = searchParams.get("date");
+    if (newDate) {
+      if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
+        setDate(dateStringToServiceDay(newDate));
+      }
     } else {
       setDate(dateStringToServiceDay(new Date().toLocaleDateString()));
     }
-  }, [searchParams]);
+  }, [searchParams, date]);
 
   const [blocks, setBlocks] = useState<ComboboxOptions>(searchParams.get("block") ? [{
     value: searchParams.get("block")!,
