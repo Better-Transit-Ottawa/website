@@ -1,0 +1,66 @@
+.block-node {
+    padding: 10px;
+    background-color: #2d2d2d;
+    border-radius: 10px;
+}
+
+.block-node table {
+    border-collapse: collapse;
+}
+
+.block-node table td, .block-node table th {
+    padding: 8px;
+}
+
+.block-node tr:nth-child(even), .block-node thead tr {
+    background-color: #3a3a3a;
+}
+
+.block-node-title {
+    font-size: 30px;
+    text-align: center;
+}
+
+.text-block.fullsize {
+  width: calc(100% - 60px);
+  padding: 0;
+}
+
+.flow-graph-container {
+  height: 1000px;
+}
+
+.handle-container {
+    display: flex;
+    align-items: center;
+}
+
+.handle-container div {
+    top: unset;
+    transform: unset;
+}
+
+.red-text {
+    color: red;
+}
+
+.yellow-text:not(.red-text) {
+    color: yellow;
+}
+
+.control-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+
+    padding-bottom: 0;
+}

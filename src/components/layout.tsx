@@ -4,17 +4,20 @@ export interface LayoutProps {
     children: React.ReactNode;
     footer?: React.ReactNode;
     dontLink?: boolean;
+    className?: string;
 }
 
 
-export default function Layout({ children, footer, dontLink }: LayoutProps) {
+export default function Layout({ children, footer, dontLink, className }: LayoutProps) {
+    className ??= "";
+
     return (
         <>
             <div className="background-container">
                 <div className="background"/>
             </div>
 
-            <div className="content">
+            <div className={"content " + className}>
                 <Link href="/" className={"title" + (dontLink ? " disabled" : "")}>
                     <div className="logo">
                         <img src="/images/logo-square.svg" alt="Logo" />
@@ -32,6 +35,9 @@ export default function Layout({ children, footer, dontLink }: LayoutProps) {
 
                     <div>
                         Contact: contact[at]bettertransitottawa.ca
+                    </div>
+                    <div>
+                        <a href="https://github.com/Better-Transit-Ottawa/website">Website source code</a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,28 @@
+import PageClient from "./page.client";
+
+import Layout from "@/components/layout";
+
+export default function Page() {
+  return (
+    <Layout className="fullsize" footer={<>
+      <div>
+          <a href="https://github.com/Better-Transit-Ottawa/bus-tracker">Bus tracker source code</a>
+      </div>
+    </>}>
+      <div className="text-block fullsize">
+        <PageClient />
+      </div>
+    </Layout>
+  );
+}
+
+export const metadata = {
+  title: "OC Block Explorer",
+  description: "Track where missing buses have gone",
+  openGraph: {
+    description: "Track where missing buses have gone"
+  },
+  twitter: {
+    card: "summary"
+  }
+};
