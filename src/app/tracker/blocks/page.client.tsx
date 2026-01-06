@@ -10,9 +10,9 @@ import { DatePicker } from "@/components/DatePicker";
 
 const colors = [
   "#78B9B5",
-  "#0F828C",
-  "#065084",
-  "#320A6B",
+  "#0f8c77ff",
+  "#3d78a2ff",
+  "#a38ec0ff",
   "#872341",
   "#BE3144",
   "#E17564"
@@ -20,8 +20,9 @@ const colors = [
 
 interface BlockComponentProps {
   data: {
-    blockId: string,
-    block: BlockData[]
+    blockId: string;
+    block: BlockData[];
+    colors: Record<string, string>;
   }
 }
 
@@ -97,7 +98,8 @@ function BlockComponent(props: BlockComponentProps) {
                   <td>
                     {b.actualEndTime}
                   </td>
-                  <td className="handle-container">
+                  <td className="handle-container"
+                      style={{ color: b.busId ? props.data.colors[b.busId] : undefined }}>
                     {b.busId}
 
                     <Handle
@@ -205,10 +207,10 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
     }
 }
 
-function generateNodes(blocks: AllBlocks, edges: Edge[], defaultBlockId: string): Node[] {
+function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string): Node[] {
   const nodes: Node[] = [];
 
-  const positions = generateNodePositions(blocks, edges, defaultBlockId);
+  const positions = generateNodePositions(blocks, edgeData.edges, defaultBlockId);
 
   for (const blockId in blocks) {
     const block = blocks[blockId];
@@ -223,6 +225,7 @@ function generateNodes(blocks: AllBlocks, edges: Edge[], defaultBlockId: string)
       data: {
         blockId,
         block,
+        colors: edgeData.colors
       },
     });
   }
@@ -230,8 +233,14 @@ function generateNodes(blocks: AllBlocks, edges: Edge[], defaultBlockId: string)
   return nodes;
 }
 
-function generateEdges(blocks: AllBlocks): Edge[] {
+interface EdgeData {
+  edges: Edge[];
+  colors: Record<string, string>;
+}
+
+function generateEdges(blocks: AllBlocks): EdgeData {
   const edges: Edge[] = [];
+  const colorPerBus: Record<string, string> = {};
 
   const buses = new Set<string>();
   for (const blockId in blocks) {
@@ -248,6 +257,7 @@ function generateEdges(blocks: AllBlocks): Edge[] {
     if (!firstTrip) continue;
     let nextTrip = getNextTrip(blocks, bus, firstTrip.scheduledStartTime);
     const color = colors[colorIndex % colors.length];
+    colorPerBus[bus] = color;
 
     while (firstTrip && nextTrip) {
       if (firstTrip.tripId !== nextTrip.lastTripId) {
@@ -283,7 +293,10 @@ function generateEdges(blocks: AllBlocks): Edge[] {
     colorIndex++;
   }
 
-  return edges;
+  return {
+    edges,
+    colors: colorPerBus
+  };
 }
 
 async function getBlockOptions(date: Date): Promise<ComboboxOptions> {
@@ -456,11 +469,11 @@ function Graph({ block, bus, date }: GraphProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   useEffect(() => {
-    const edges = generateEdges(blockData);
+    const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(blockData, edges, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? ""));
-      setEdges(edges);
+      setNodes(generateNodes(blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? ""));
+      setEdges(edgeData.edges);
     }
   }, [blockData, block, bus, setNodes, setEdges, searchParams]);
 
