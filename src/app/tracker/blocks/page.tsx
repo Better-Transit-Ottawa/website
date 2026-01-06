@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import PageClient from "./page.client";
 
 import Layout from "@/components/layout";
@@ -10,7 +11,9 @@ export default function Page() {
       </div>
     </>}>
       <div className="text-block fullsize">
-        <PageClient />
+        <Suspense>
+          <PageClient />
+        </Suspense>
       </div>
     </Layout>
   );
