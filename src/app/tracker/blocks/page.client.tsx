@@ -330,13 +330,11 @@ export default function PageClient() {
 
   const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : new Date().toLocaleDateString())));
   useEffect(() => {
-    const newDate = searchParams.get("date");
+    const newDate = searchParams.get("date") || new Date().toLocaleDateString();
     if (newDate) {
       if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
         setDate(dateStringToServiceDay(newDate));
       }
-    } else {
-      setDate(dateStringToServiceDay(new Date().toLocaleDateString()));
     }
   }, [searchParams, date]);
 
