@@ -57,6 +57,9 @@ function BlockComponent(props: BlockComponentProps) {
                 Actual start
               </th>
               <th>
+                End
+              </th>
+              <th>
                 Bus ID
               </th>
             </tr>
@@ -90,6 +93,9 @@ function BlockComponent(props: BlockComponentProps) {
                   </td>
                   <td className={((delay > 15 * 60) ? "red-text " : "") + ((delay > 5 * 60) ? "yellow-text" : "")}>
                     {b.actualStartTime}{b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}
+                  </td>
+                  <td>
+                    {b.actualEndTime}
                   </td>
                   <td className="handle-container">
                     {b.busId}
