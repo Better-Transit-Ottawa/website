@@ -15,7 +15,7 @@ export interface BlockDataExtra extends BlockData {
 
 export type AllBlocks = Record<string, BlockData[]>;
 
-export const busTrackerServerUrl = process.env.BUS_TRACKER_URL ?? "https://bus.ajay.app";
+export const busTrackerServerUrl = process.env.NEXT_PUBLIC_BUS_TRACKER_URL ?? "https://bus.ajay.app";
 
 export function getNextTrip(blocks: AllBlocks, busId: string, lastTripTime: string | null): BlockDataExtra | null {
     let bestOption: BlockDataExtra | null = null;

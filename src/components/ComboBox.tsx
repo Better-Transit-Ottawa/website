@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
 export type ComboboxOptions = {
@@ -31,6 +31,21 @@ export interface ComboboxProps {
 
 export default function Combobox(props: ComboboxProps) {
   const [open, setOpen] = useState(false);
+
+  // Search only works on values, so need to use label as value
+  const [labelToValue, setLabelToValue] = useState<Record<string, string>>({});
+  const [valueToLabel, setValueToLabel] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const newRecord1 = {} as Record<string, string>;
+    const newRecord2 = {} as Record<string, string>;
+    for (const option of props.options) {
+      newRecord1[option.label] = option.value;
+      newRecord2[option.value] = option.label;
+    }
+
+    setLabelToValue(newRecord1);
+    setValueToLabel(newRecord2);
+  }, [props.options]);
  
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -56,9 +71,10 @@ export default function Combobox(props: ComboboxProps) {
               {props.options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    props.onChange(currentValue === props.value ? "" : currentValue)
+                  value={option.label}
+                  onSelect={(currentLabel) => {
+                    const propsLabel = props.value ? valueToLabel[props.value!] : props.value
+                    props.onChange(currentLabel === propsLabel ? "" : labelToValue[currentLabel])
                     setOpen(false);
                   }}
                 >

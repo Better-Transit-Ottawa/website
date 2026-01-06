@@ -288,10 +288,10 @@ async function getBlockOptions(date: Date): Promise<ComboboxOptions> {
   if (result.ok) {
     const data = await result.json();
     if (Array.isArray(data)) {
-      return data.sort(((a, b) => parseInt(a.split("-")[0]) - parseInt(b.split("-")[0])))
+      return data.filter((a) => !!a.blockId).sort(((a, b) => parseInt(a.blockId.split("-")[0]) - parseInt(b.blockId.split("-")[0])))
       .map((b) => ({
-        value: b,
-        label: b
+        value: b.blockId,
+        label: `${b.blockId} (${b.busCount} ${b.busCount === 1 ? "bus" : "buses"})`
       }));
     }
   }
