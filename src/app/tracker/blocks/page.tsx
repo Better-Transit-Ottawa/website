@@ -1,7 +1,10 @@
 import { Suspense } from "react";
 import PageClient from "./page.client";
-
 import Layout from "@/components/layout";
+
+import "../../tailwind.css"
+import "./page.css"
+import "@xyflow/react/dist/style.css";
 
 export default function Page() {
   return (

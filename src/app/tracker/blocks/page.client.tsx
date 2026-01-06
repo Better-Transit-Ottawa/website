@@ -4,8 +4,6 @@ import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProv
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import "./page.css"
-import "@xyflow/react/dist/style.css";
 import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
