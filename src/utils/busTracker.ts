@@ -5,6 +5,7 @@ export interface BlockData {
     routeDirection: number,
     scheduledStartTime: string,
     actualStartTime: string | null,
+    actualEndTime: string | null,
     busId: string | null
 }
 
