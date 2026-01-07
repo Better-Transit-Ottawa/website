@@ -76,7 +76,7 @@ function BlockComponent(props: BlockComponentProps) {
               const canceled = b.canceled && !b.actualStartTime;
 
               return (
-                <tr key={b.tripId} className={canceled ? "cancelled" : ""}>
+                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""}`}>
                   <td className="handle-container">
                     <Handle
                       type="target"
@@ -98,7 +98,7 @@ function BlockComponent(props: BlockComponentProps) {
                   <td>
                     {b.scheduledStartTime}
                   </td>
-                  <td className={((delay > 15 * 60 || canceled) ? "red-text " : "") + ((delay > 5 * 60) ? "yellow-text" : "")}>
+                  <td className={`${((delay > 15 * 60 || canceled) ? "red-text " : "")}${((delay > 5 * 60) ? "yellow-text" : "")}`}>
                     {canceled
                       ? "CANCELLED"
                       : `${b.actualStartTime}${b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}

@@ -44,6 +44,11 @@
     transform: unset;
 }
 
+.block-table {
+    user-select: text;
+    cursor: initial;
+}
+
 .cancelled td {
   position: relative;
 }

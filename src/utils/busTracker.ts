@@ -6,6 +6,7 @@ export interface BlockData {
     scheduledStartTime: string,
     actualStartTime: string | null,
     actualEndTime: string | null,
+    canceled: number | null;
     busId: string | null
 }
 
