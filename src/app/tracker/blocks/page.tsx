@@ -27,7 +27,7 @@ export const metadata = {
   description: "Track where missing buses have gone",
   openGraph: {
     description: "Track where missing buses have gone",
-    images: ["/opengraph-image.png"]
+    images: ["https://bettertransitottawa.ca/opengraph-image.png"]
   },
   twitter: {
     card: "summary"

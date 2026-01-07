@@ -26,7 +26,7 @@ export const metadata = {
   description: "Track which trips have been cancelled",
   openGraph: {
     description: "Track which trips have been cancelled",
-    images: ["/opengraph-image.png"]
+    images: ["https://bettertransitottawa.ca/opengraph-image.png"]
   },
   twitter: {
     card: "summary"
