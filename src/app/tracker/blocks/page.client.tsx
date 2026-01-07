@@ -73,9 +73,10 @@ function BlockComponent(props: BlockComponentProps) {
           <tbody>
             {props.data.block.map((b) => {
               const delay = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
+              const canceled = b.canceled && !b.actualStartTime;
 
               return (
-                <tr key={b.tripId}>
+                <tr key={b.tripId} className={canceled ? "cancelled" : ""}>
                   <td className="handle-container">
                     <Handle
                       type="target"
@@ -97,8 +98,10 @@ function BlockComponent(props: BlockComponentProps) {
                   <td>
                     {b.scheduledStartTime}
                   </td>
-                  <td className={((delay > 15 * 60) ? "red-text " : "") + ((delay > 5 * 60) ? "yellow-text" : "")}>
-                    {b.actualStartTime}{b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}
+                  <td className={((delay > 15 * 60 || canceled) ? "red-text " : "") + ((delay > 5 * 60) ? "yellow-text" : "")}>
+                    {canceled
+                      ? "CANCELLED"
+                      : `${b.actualStartTime}${b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}
                   </td>
                   <td>
                     {b.actualEndTime}
