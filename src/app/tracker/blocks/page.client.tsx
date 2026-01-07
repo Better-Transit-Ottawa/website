@@ -169,16 +169,40 @@ function generateNodePositions(blocks: AllBlocks, edges: Edge[], defaultBlockId:
 
   let firstTierCursor = 0;
   for (const block of firstBlocks) {
-    blockOrder[block] = {
-      x: 0,
-      y: firstTierCursor
-    };
+    if (!(block in blockOrder)) {
+      blockOrder[block] = {
+        x: 0,
+        y: firstTierCursor
+      };
 
-    const existingBlockAtNextX = Object.values(blockOrder).filter((b) => b.x === 1).sort((a, b) => b.y - a.y)[0];
-    const startY = existingBlockAtNextX ? existingBlockAtNextX.y + 1 : 0;
-    generateNextNodePositionsInternal(blockOrder, blocks, edges, startTimes, block, 1, startY);
+      const existingBlockAtNextX = Object.values(blockOrder).filter((b) => b.x === 1).sort((a, b) => b.y - a.y)[0];
+      const startY = existingBlockAtNextX ? existingBlockAtNextX.y + 1 : 0;
+      generateNextNodePositionsInternal(blockOrder, blocks, edges, startTimes, block, 1, startY);
 
-    firstTierCursor++;
+      firstTierCursor++;
+    }
+  }
+
+  // Make sure all blocks have made it in the blockOrder
+  while (Object.keys(blocks).some((b) => !(b in blockOrder))) {
+    const nextBlocks = Object.keys(blocks)
+      .filter((b) => !(b in blockOrder))
+      .sort((a, b) => getStartTimeInSecondsForTarget(edges, startTimes, a) - getStartTimeInSecondsForTarget(edges, startTimes, b));
+    
+    for (const block of nextBlocks) {
+      if (!(block in blockOrder)) {
+        blockOrder[block] = {
+          x: 0,
+          y: firstTierCursor
+        };
+  
+        const existingBlockAtNextX = Object.values(blockOrder).filter((b) => b.x === 1).sort((a, b) => b.y - a.y)[0];
+        const startY = existingBlockAtNextX ? existingBlockAtNextX.y + 1 : 0;
+        generateNextNodePositionsInternal(blockOrder, blocks, edges, startTimes, block, 1, startY);
+  
+        firstTierCursor++;
+      }
+    }
   }
 
   return blockOrder;
