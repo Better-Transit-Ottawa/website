@@ -7,9 +7,11 @@ import { useEffect, useState } from "react";
 import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
+import Link from "next/link";
 
 interface BlockComponentProps {
   data: {
+    date: Date;
     blockId: string;
     block: BlockData[];
     colors: Record<string, string>;
@@ -80,7 +82,12 @@ function BlockComponent(props: BlockComponentProps) {
                     {b.tripId}
                   </td>
                   <td>
-                    {b.routeId}
+                    <Link href={"/tracker/route?" + new URLSearchParams({
+                      date: props.data.date.toLocaleDateString(),
+                      route: b.routeId!
+                    }).toString()}>
+                      {b.routeId}
+                    </Link>
                   </td>
                   <td>
                     {b.headSign}
@@ -205,7 +212,7 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
     }
 }
 
-function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
+function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
   const nodes: Node[] = [];
 
   const positions = generateNodePositions(blocks, edgeData.edges, defaultBlockId);
@@ -221,6 +228,7 @@ function generateNodes(blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: st
         y: positions[blockId].y * 900
       },
       data: {
+        date,
         blockId,
         block,
         colors: edgeData.colors,
@@ -471,10 +479,10 @@ function Graph({ block, bus, date }: GraphProps) {
     const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
+      setNodes(generateNodes(date, blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
-  }, [blockData, block, bus, setNodes, setEdges, searchParams]);
+  }, [date, blockData, block, bus, setNodes, setEdges, searchParams]);
 
   return (
     <ReactFlow

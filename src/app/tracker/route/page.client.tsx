@@ -84,7 +84,12 @@ function RouteComponent(props: RouteComponentProps) {
                     {t.actualEndTime}
                   </td>
                   <td style={{ color: t.busId ? props.colors[t.busId] : undefined }}>
-                    {t.busId}
+                    <Link href={"/tracker/blocks?" + new URLSearchParams({
+                      date: props.date.toLocaleDateString(),
+                      bus: t.busId!
+                    }).toString()}>
+                      {t.busId}
+                    </Link>
                   </td>
                 </tr>
               );

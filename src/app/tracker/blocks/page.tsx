@@ -8,7 +8,7 @@ import "@xyflow/react/dist/style.css";
 
 export default function Page() {
   return (
-    <Layout className="fullsize" footer={<>
+    <Layout className="fullsize bus-tracker" footer={<>
       <div>
           <a href="https://github.com/Better-Transit-Ottawa/bus-tracker">Bus tracker source code</a>
       </div>
