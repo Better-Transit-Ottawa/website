@@ -49,19 +49,6 @@
     cursor: initial;
 }
 
-.cancelled td {
-  position: relative;
-}
-
-.cancelled td:before {
-  content: " ";
-  position: absolute;
-  top: calc(50% - 3px);
-  left: 0;
-  border-bottom: 3px solid #ff0000a4;
-  width: 100%;
-}
-
 .cancelled .red-text {
     font-weight: bold;
     text-decoration: none;
