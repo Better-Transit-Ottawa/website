@@ -4,7 +4,6 @@ import Layout from "@/components/layout";
 
 import "../../tailwind.css"
 import "../tracker.css"
-import "@xyflow/react/dist/style.css";
 
 export default function Page() {
   return (
@@ -23,10 +22,10 @@ export default function Page() {
 }
 
 export const metadata = {
-  title: "OC Block Explorer",
-  description: "Track where missing buses have gone",
+  title: "OC Route Explorer",
+  description: "Track which trips have been cancelled",
   openGraph: {
-    description: "Track where missing buses have gone",
+    description: "Track which trips have been cancelled",
     images: ["opengraph-image.png"]
   },
   twitter: {

@@ -17,7 +17,29 @@ export interface BlockDataExtra extends BlockData {
 
 export type AllBlocks = Record<string, BlockData[]>;
 
+export interface TripDetails {
+    tripId: string;
+    headSign: string;
+    routeDirection: number;
+    scheduledStartTime: string;
+    actualStartTime: string | null;
+    actualEndTime: string | null;
+    canceled: number | null;
+    busId: string | null;
+    blockId: string | null;
+}
+
 export const busTrackerServerUrl = process.env.NEXT_PUBLIC_BUS_TRACKER_URL ?? "https://bus.ajay.app";
+
+export const busColors = [
+  "#0f8c77ff",
+  "#78B9B5",
+  "#3d78a2ff",
+  "#a38ec0ff",
+  "#872341",
+  "#BE3144",
+  "#E17564"
+];
 
 export function getNextTrip(blocks: AllBlocks, busId: string, lastTripTime: string | null): BlockDataExtra | null {
     let bestOption: BlockDataExtra | null = null;

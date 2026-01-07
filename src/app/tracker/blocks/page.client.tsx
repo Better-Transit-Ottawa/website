@@ -1,5 +1,5 @@
 "use client";
-import { AllBlocks, BlockData, busTrackerServerUrl, dateStringToServiceDay, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
+import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
 import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProvider, useEdgesState, useNodesState, ConnectionMode } from '@xyflow/react';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,16 +7,6 @@ import { useEffect, useState } from "react";
 import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
-
-const colors = [
-  "#0f8c77ff",
-  "#78B9B5",
-  "#3d78a2ff",
-  "#a38ec0ff",
-  "#872341",
-  "#BE3144",
-  "#E17564"
-]
 
 interface BlockComponentProps {
   data: {
@@ -101,7 +91,7 @@ function BlockComponent(props: BlockComponentProps) {
                   <td className={`${((delay > 15 * 60 || canceled) ? "red-text " : "")}${((delay > 5 * 60) ? "yellow-text" : "")}`}>
                     {canceled
                       ? "CANCELLED"
-                      : `${b.actualStartTime}${b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}
+                      : `${b.actualStartTime ?? ""}${b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}
                   </td>
                   <td>
                     {b.actualEndTime}
@@ -265,7 +255,7 @@ function generateEdges(blocks: AllBlocks): EdgeData {
     let firstTrip = getNextTrip(blocks, bus, null);
     if (!firstTrip) continue;
     let nextTrip = getNextTrip(blocks, bus, firstTrip.scheduledStartTime);
-    const color = colors[colorIndex % colors.length];
+    const color = busColors[colorIndex % busColors.length];
     colorPerBus[bus] = color;
 
     while (firstTrip && nextTrip) {

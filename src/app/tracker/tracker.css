@@ -91,3 +91,18 @@
 
     padding-bottom: 0;
 }
+
+.controls.with-padding {
+    padding-bottom: 20px;
+}
+
+.route-tables {
+    display: flex;
+    justify-content: space-evenly;
+
+    font-size: 14px;
+}
+
+.route-tables a {
+    text-decoration: underline;
+}
