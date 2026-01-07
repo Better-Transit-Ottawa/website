@@ -170,10 +170,10 @@ export default function PageClient() {
     label: searchParams.get("route")!
   }] : []);
   useEffect(() => {
-    getRouteOptions(date).then(setRoutes)
+    getRouteOptions(date).then(setRoutes);
   }, [date]);
 
-  const [currentRoute, setCurrentRoute] = useState<string | null>(searchParams.get("block"));
+  const [currentRoute, setCurrentRoute] = useState<string | null>(searchParams.get("route"));
   useEffect(() => {
     const newRoute = searchParams.get("route");
     if (currentRoute !== newRoute) {
