@@ -232,7 +232,9 @@ function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaul
         blockId,
         block,
         colors: edgeData.colors,
-        border: busIdSearched  && blockId === defaultBlockId ? edgeData.colors[busIdSearched] : null
+        border: blockId === defaultBlockId
+          ? (busIdSearched ? edgeData.colors[busIdSearched] : busColors[0])
+          : null
       },
     });
   }
