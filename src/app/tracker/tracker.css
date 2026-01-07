@@ -49,6 +49,10 @@
     cursor: initial;
 }
 
+.cancelled {
+    color: red;
+}
+
 .cancelled .red-text {
     font-weight: bold;
     text-decoration: none;
