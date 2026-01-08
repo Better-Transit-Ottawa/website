@@ -91,7 +91,7 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
 
     font-size: 13px;
     padding-bottom: 20px;
@@ -104,5 +104,6 @@
 
     .route-tables {
         font-size: 8px;
+        gap: 20px;
     }
 }
