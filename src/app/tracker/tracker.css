@@ -90,7 +90,19 @@
 .route-tables {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
 
     font-size: 13px;
     padding-bottom: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .text-block.fullsize {
+        width: 100%;
+    }
+
+    .route-tables {
+        font-size: 8px;
+    }
 }
