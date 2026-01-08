@@ -82,16 +82,17 @@ export default async function Post(p: BlogProps) {
           {credits}
       </>
     }>
-      <div className="text-block">
-        <p className="info-bar">
+      <section className="text-block">
+
+        <h2 className="info-bar">
           <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
           <span className="info-bar-title">
             {postData.title}
           </span>
-        </p>
-
-        <div className="date">
+        </h2>
+        <article className="blog-article">
+          <div className="date">
           {postData.date}
         </div>
 
@@ -104,7 +105,8 @@ export default async function Post(p: BlogProps) {
         )}
 
         <div className="blog" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-      </div>
+        </article>
+      </section>
     </Layout>
   );
 }

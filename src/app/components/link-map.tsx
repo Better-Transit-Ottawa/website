@@ -12,8 +12,8 @@ export interface LinkMapProps {
 
 export default function LinkMap({ links }: LinkMapProps) {
   return (
-    <div className="webring">
-      <div className="webring-title">Other Resources</div>
+    <section className="webring">
+      <h2 className="webring-title">Other Resources</h2>
 
       <div className="webring-contents">
         <div className="webring-contents-inner">
@@ -24,7 +24,7 @@ export default function LinkMap({ links }: LinkMapProps) {
           {getLinkElements(links)}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

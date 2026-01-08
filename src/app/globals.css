@@ -1,61 +1,22 @@
-body {
-  background-color: rgb(53, 53, 53);
-  position: relative;
-  line-height: 1.5;
+/*  general CSS advice from elysia ( best-kindergartener ): 
+    try and avoid setting multiple declarations for the same thing 
+    as much as possible, and avoid setting fixed sizing as much as possible, 
+    including with things like media queries, 
+    unless the added complexity of a more robust single declaration 
+    isnt worth it in the project scope.
+    why?
+    a lot of the "css-isms" people expect of the language happen because of 
+    messy style rulesets layered on top of each other, which means it's very 
+    easy to break things in really obtuse and difficult to understand ways !
+    if you need help with this, send me a message.*/
 
-  color: #ffffff;
 
-  overflow-x: hidden;
+/* ----- animations ----- */
+/* empty */
 
-  min-height: 100vh;
- 
-  --logo-size: 100px;
 
-  --black: #1f1a17;
 
-  /* alignment padding calc is so that alignment is consistent
-     to aid in readability */
-
-  --icon-width: 35px;
-  --info-padding: 20px;
-  --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
-
-  margin: 0;
-}
-
-.background-container {
-  position: absolute;
-
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  top: -57px;
-
-  z-index: -1000;
-}
-
-.background {
-  width: 150%;
-  height: 2500px;
-  left: 50%;
-  top: 60px;
-
-  position: absolute;
-  content: "";
-
-  background-image: url("/images/map.webp");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  transform: translate(-50%, -425px);
-
-  z-index: -1;
-
-  opacity: 0.4;
-
-  overflow: hidden;
-}
-
+/*  ----- fonts ----- */
 @font-face {
   font-family: "Frutiger";
   src: url("/Frutiger.ttf");
@@ -66,264 +27,121 @@ body {
   src: url("/Frutiger_bold.ttf");
 }
 
+
+/* ----- globals ----- */
+body {
+  /* palette */
+  background-color: rgb(53, 53, 53);
+  --fgcol: #ffffff;
+  --mainbgcol: black;
+  --black: #1f1a17;
+  color: var(--fgcol);
+
+  /* base body styling */
+  position: relative;
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+  margin: 0;
+
+  /* variables */
+  --glow-shadow: 1px 1px 5px 5px white, -1px -1px 5px 5px white;
+  --logo-size: 100px;
+  /* alignment padding calc is so that alignment is consistent
+     to aid in readability */
+  --icon-width: 35px;
+  --info-padding: 20px;
+  --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
+}
+.background-container {
+  /* layout */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -57px;
+  
+  /* make it work as backgtround ( maybe make it unselectable? might 
+     redo this later if i keep the bg - elysia ) */
+  z-index: -1000;
+  overflow: hidden;
+}
+.background {
+  /* bg sizing */
+  width: 150%;
+  height: 2500px;
+  left: 50%;
+  top: 60px;
+  position: absolute;
+
+  /* content? why is that here ! -elysia */
+  content: "";
+
+  /* bg settings */
+  background-image: url("/images/map.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translate(-50%, -425px);
+
+  /* make it work as a bg */
+  z-index: -1;
+  opacity: 0.4;
+  overflow: hidden;
+}
+
+
+/* ----- main ----- */
 .content {
+  /* basic styling */
+  font-family: Frutiger, sans-serif;
+
+  /* layout */
   display: flex;
   justify-items: center;
   align-items: center;
   flex-direction: column;
+  margin: 50px auto auto;
+
+  /* sizing */
   gap: 30px;
-
   max-width: 800px;
-  margin: auto;
-  margin-top: 50px;
 
-  font-family: Frutiger, sans-serif;
-}
-
-.content.fullsize {
-  max-width: 100%;
-}
-header {
-  /* aspect ratio to avoid setting excessive 
-     sizing, avoiding potential cascade problems */
-  aspect-ratio: 6;
-  max-height: var(--logo-size);
+  /* should set up default link styling cus everything is all 
+  over the place rn */
   
 }
-.title {
-  
-  
-  background-color: black;
-  color: white;
-  text-decoration: none;
-  
-  display: grid;
-
-  grid-template-columns: .2fr .8fr;
-  
-  
-  max-height: var(--logo-size);
-  text-align: center;
-  font-family: Frutiger Bold, sans-serif;
+section {
+  /* gives each first child a black background and border to avoid 
+       over declaring on each*/
+    background-color: var(--mainbgcol);
+    border: 2px solid var(--fgcol);
+    h2 {
+      /* make the outside padding consistent */
+      margin-top: 0px;
+    }
 }
-.title-text {
-  /* literally just tailwind style reset override. we should probably 
-     move away from tailwind, because layering lots of bespoke 
-     styles onto each other is bound to cause a lot of confusing issues */
-  margin: auto;
-  font-size: 2em!important;
-}
-/* @layer base {
-  h1.title {}
-} */
-
-.title .logo img {
-  height: var(--logo-size);
-}
-
-.title.disabled {
-  cursor: default;
-}
-
-.logo img {
-  display: block;
-}
-
-.description {
-  font-size: 18px;
-  text-align: center;
-}
-
-.join {
-  font-size: 20px;
-  text-decoration: none;
-  border-radius: 15px;
-  padding: 15px 25px;
-
-  background-color: #06005d;
-  color: white;
-
-  width: fit-content;
-
-  cursor: pointer;
-}
-
-.join:hover {
-  background-color: #060061;
-}
-
-.webring {
-  width: 400px;
-
-  background-color: black;
-
-  border: 2px solid #fff;
-}
-
-.webring-title {
-  font-family: Frutiger Bold, sans-serif;
-  font-size: 30px;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 20px;
-
-  border-bottom: 2px solid #fff;
-}
-
-.webring-contents {
-  padding-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.webring-contents-inner {
-  position: relative;
-  width: 70%;
-}
-
-.station-dot {
-  vertical-align: middle;
-  width: 10px;
-}
-
-.station-logo {
-  vertical-align: middle;
-  width: 16px;
-}
-
-.linkmap-top {
-  margin-bottom: 50px;
-
-  z-index: 1;
-  position: relative;
-}
-
-.line-outer {
-  position: relative;
-}
-
-.line {
-  --line-width: 6px;
-
-  position: absolute;
-  left: calc(5px - var(--line-width) / 2);
-  top: 10px;
-  bottom: 60px;
-  width: var(--line-width);
-  background-color: #c00;
-  
-  z-index: 0;
-}
-
-.webring-contents .arrow-down {
-  position: absolute;
-
-  --arrow-size: 15px;
-  left: calc(0px - var(--arrow-size));
-  height: var(--arrow-size);
-  top: 3px;
-}
-
-.linkmap-text {
-  display: inline-block;
-  margin-left: 5px;
-
-  padding: 2px;
-
-  font-size: 16px;
-  line-height: 16px;
-
-  padding-top: 3px;
-  padding-bottom: 1px;
-}
-
-.linkmap-text a {
-  color: white;
-  text-decoration: none;
-}
-
-.linkmap-text.start-station a {
-  color: black;
-}
-
-.linkmap-text.start-station {
-  font-weight: bold;
-  color: black;
-  background-color: white;
-}
-
-.linkmap-text.start-station::before {
-  position: absolute;
-  content: "";
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  
-  border-right: 6px solid white;
-
-  left: 13.4px;
-  top: 0px;
-}
-
-.socials img {
-  height: 30px;
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .text-block {
-  background-color: black;
-  font-size: 18px;
-
+  font-size: 1.2em;
   padding: 30px;
-
-  border: 2px solid #fff;
 }
 
 .text-block-indented {
+  /* list style */
   list-style-position: outside;
-  
-  padding: 0px var(--section-alignment-padding);
   display: flex;
   flex-direction: column;
   gap: 1em;
+  
+  /* alignment */
+  padding: 0px var(--section-alignment-padding);
   li {
     margin-left: 2em;
   }
 }
-
-.text-block p:not(.info-bar, .project-list p, .blog *) {
+.text-block p:not(.info-bar, .project-list p, .blog *), article {
+  /* alignment */
   padding: 0px var(--section-alignment-padding);
 }
-
-.blog {
-  padding-top: 10px;
-
-  font-size: 1rem;
-  line-height: 1.4rem;
-
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.blog a {
-  color: white;
-}
-
-.blog-thumbnail, .blog img {
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 0px;
-}
-
-.date {
-  text-align: center;
-}
-
 .text-block :first-child {
   margin-top: 0;
 }
@@ -364,6 +182,7 @@ footer div {
 .project-list {
   padding: 0px;
   
+  /* blog isnt in a project list, so need to set up another thing for that */
   margin: 0px var(--section-alignment-padding);
   list-style-type: none;
   display: flex;
@@ -396,22 +215,226 @@ footer div {
   width: 100%;
 }
 
+/* ----- header ----- */
+header {
+  /* aspect ratio to avoid setting excessive 
+     sizing, avoiding potential cascade problems.
+     initialising it with the logo height */
+  aspect-ratio: 6;
+  max-height: var(--logo-size);
+}
+.title {
+  /* colourr */
+  background-color: black;
+  color: var(--fgcol);
+
+  /* font */
+  text-decoration: none;
+  font-family: Frutiger Bold, sans-serif;
+  
+  /* layout */
+  display: grid;
+  grid-template-columns: .2fr .8fr;
+  max-height: var(--logo-size);
+  text-align: center;
+}
+.title-text {
+  /* literally just tailwind style reset override. we should probably 
+     move away from tailwind, because layering lots of bespoke 
+     styles onto each other is bound to cause a lot of confusing issues */
+  margin: auto;
+  font-size: 2em!important;
+}
+.logo img {
+  height: var(--logo-size);
+  display: block;
+}
+.description {
+  /* text align not strictly necessary unless wrapping */
+  text-align: center;
+}
+
+
+/* ---- links out ------ */
+.join {
+  /* font */
+  font-size: 1.3em;
+  color: var(--fgcol);
+  text-decoration: none;
+  
+  /* button */
+  --join-btn-colour: #06005d;
+  padding: 15px 25px;
+  background-color: var(--join-btn-colour);
+  border-radius: 15px;
+
+  /* anim */
+  transition: background-color .3s ease, box-shadow .3s ease;
+}
+.join:hover {
+  /* using colour mix to keep only one button colour variable */
+  background-color: color-mix(in oklab, var(--join-btn-colour) 100%, cyan 30%);
+  box-shadow: var(--glow-shadow);
+}
+.socials img {
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+/* ---- webring ----- */
+.webring {
+  /* dont love the fixed width but think that making it 
+     unfixed would take some work -- elysia */
+  width: 400px;
+}
+.webring-title {
+  /* defaults */
+  margin: 0;
+  padding: 0;
+
+  /* font */
+  font-weight: 600;
+  font-size: 1.7em;
+  
+  /* centres title */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  /* puts it in different box */
+  border-bottom: 2px solid var(--fgcol);
+}
+
+.webring-contents {
+  /* centres content */
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.webring-contents-inner {
+  /* relative for the line */
+  position: relative;
+  width: 70%;
+}
+
+.station-dot {
+  vertical-align: middle;
+  width: 10px;
+}
+.station-logo {
+  vertical-align: middle;
+  width: 16px;
+}
+.linkmap-top {
+  margin-bottom: 50px;
+  z-index: 1;
+  position: relative;
+}
+.line-outer {
+  position: relative;
+}
+.line {
+  --line-width: 6px;
+  position: absolute;
+  left: calc(5px - var(--line-width) / 2);
+  top: 10px;
+  bottom: 60px;
+  width: var(--line-width);
+  background-color: #c00;
+  z-index: 0;
+}
+
+.webring-contents .arrow-down {
+  position: absolute;
+
+  --arrow-size: 15px;
+  left: calc(0px - var(--arrow-size));
+  height: var(--arrow-size);
+  top: 3px;
+}
+
+.linkmap-text {
+  display: inline-block;
+  margin-left: 5px;
+
+  padding: 2px;
+
+  font-size: 16px;
+  line-height: 16px;
+
+  padding-top: 3px;
+  padding-bottom: 1px;
+}
+
+.linkmap-text a {
+  color: var(--fgcol);
+  text-decoration: none;
+}
+
+.linkmap-text.start-station a {
+  color: black;
+}
+
+.linkmap-text.start-station {
+  /* station flag colours probably should be fixed and not variables */
+  font-weight: bold;
+  color: black;
+  background-color: white;
+}
+
+.linkmap-text.start-station::before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  
+  border-right: 6px solid white;
+
+  left: 13.4px;
+  top: 0px;
+}
+
+
+
+/* ----- blog ----  */
+.blog {
+  padding-top: 10px;
+
+  font-size: 1rem;
+  line-height: 1.4rem;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.blog a {
+  color: var(--fgcol);
+}
+
+.blog-thumbnail, .blog img {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+
+
 @media only screen and (max-width: 700px) {
   body {
       --logo-size: 60px;
       --section-alignment-padding:0px;
   }
-
   .title {
     font-size: .7em;
   }
 
   .webring {
     width: 350px;
-  }
-  
-  .text-block-indented {
-    
   }
 
   .text-block p:not(.info-bar) {
