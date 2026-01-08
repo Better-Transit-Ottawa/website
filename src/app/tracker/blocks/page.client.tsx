@@ -68,7 +68,7 @@ function BlockComponent(props: BlockComponentProps) {
           <tbody>
             {props.data.block.map((b) => {
               const delayStart = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
-              const delayEnd = b.actualEndTime ? timeStringDiff(b.actualEndTime, b.scheduledEndTime) : (b.delay ?? 0);
+              const delayEnd = b.actualEndTime ? timeStringDiff(b.actualEndTime, b.scheduledEndTime) : (b.delay ?? 0) * 60;
               const canceled = b.canceled && !b.actualStartTime;
 
               return (
@@ -108,7 +108,7 @@ function BlockComponent(props: BlockComponentProps) {
                     {b.scheduledEndTime}
                   </td>
                   <td className={`${((delayEnd > 15 * 60) ? "red-text " : "")}${((delayEnd > 5 * 60) ? "yellow-text" : "")}`}>
-                    {`${b.actualEndTime ?? (b.delay ? "Active" : "")}${(b.delay ? ` (${secondsToMinuteAndSeconds(Math.floor(b.delay * 60))})` : "")}`}
+                    {`${b.actualEndTime ?? (b.delay ? "Active" : "")}${(delayEnd ? ` (${secondsToMinuteAndSeconds(Math.floor(delayEnd))})` : "")}`}
                   </td>
                   <td className="handle-container"
                       style={{ color: b.busId ? props.data.colors[b.busId] : undefined }}>

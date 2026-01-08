@@ -57,7 +57,7 @@ function RouteComponent(props: RouteComponentProps) {
           <tbody>
             {props.trips.map((t) => {
               const delayStart = t.actualStartTime ? timeStringDiff(t.actualStartTime, t.scheduledStartTime) : 0;
-              const delayEnd = t.actualEndTime ? timeStringDiff(t.actualEndTime, t.scheduledEndTime) : (t.delay ?? 0);
+              const delayEnd = t.actualEndTime ? timeStringDiff(t.actualEndTime, t.scheduledEndTime) : (t.delay ?? 0) * 60;
               const canceled = t.canceled && !t.actualStartTime;
 
               return (
@@ -88,7 +88,7 @@ function RouteComponent(props: RouteComponentProps) {
                     {t.scheduledEndTime}
                   </td>
                   <td className={`${((delayEnd > 15 * 60) ? "red-text " : "")}${((delayEnd > 5 * 60) ? "yellow-text" : "")}`}>
-                    {`${t.actualEndTime ?? (t.delay ? "Active" : "")}${(t.delay ? ` (${secondsToMinuteAndSeconds(Math.floor(t.delay * 60))})` : "")}`}
+                    {`${t.actualEndTime ?? (t.delay ? "Active" : "")}${(delayEnd ? ` (${secondsToMinuteAndSeconds(Math.floor(delayEnd))})` : "")}`}
                   </td>
                   <td style={{ color: t.busId ? props.colors[t.busId] : undefined }}>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
