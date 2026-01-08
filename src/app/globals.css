@@ -91,7 +91,8 @@ header {
   
 }
 .title {
-  font-size: 1.2em;
+  
+  
   background-color: black;
   color: white;
   text-decoration: none;
@@ -105,6 +106,16 @@ header {
   text-align: center;
   font-family: Frutiger Bold, sans-serif;
 }
+.title-text {
+  /* literally just tailwind style reset override. we should probably 
+     move away from tailwind, because layering lots of bespoke 
+     styles onto each other is bound to cause a lot of confusing issues */
+  margin: auto;
+  font-size: 2em!important;
+}
+/* @layer base {
+  h1.title {}
+} */
 
 .title .logo img {
   height: var(--logo-size);
