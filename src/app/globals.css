@@ -1,16 +1,24 @@
 body {
   background-color: rgb(53, 53, 53);
   position: relative;
+  line-height: 1.5;
 
   color: #ffffff;
 
   overflow-x: hidden;
 
   min-height: 100vh;
-
+ 
   --logo-size: 100px;
 
   --black: #1f1a17;
+
+  /* alignment padding calc is so that alignment is consistent
+     to aid in readability */
+
+  --icon-width: 35px;
+  --info-padding: 20px;
+  --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
 
   margin: 0;
 }
@@ -75,20 +83,26 @@ body {
 .content.fullsize {
   max-width: 100%;
 }
-
+header {
+  /* aspect ratio to avoid setting excessive 
+     sizing, avoiding potential cascade problems */
+  aspect-ratio: 6;
+  max-height: var(--logo-size);
+  
+}
 .title {
-  font-size: 38px;
+  font-size: 1.2em;
   background-color: black;
   color: white;
   text-decoration: none;
+  
+  display: grid;
 
-  width: 600px;
-  height: var(--logo-size);
-
-  display: flex;
-  justify-content: space-between;
+  grid-template-columns: .2fr .8fr;
+  
   align-items: center;
 
+  text-align: center;
   font-family: Frutiger Bold, sans-serif;
 }
 
@@ -261,15 +275,19 @@ body {
 }
 
 .text-block-indented {
-  padding-left: 50px;
-  padding-right: 50px;
-
-  margin: 1em 0;
+  list-style-position: outside;
+  
+  padding: 0px var(--section-alignment-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  li {
+    margin-left: 2em;
+  }
 }
 
 .text-block p:not(.info-bar, .project-list p, .blog *) {
-  padding-left: 55px;
-  padding-right: 55px;
+  padding: 0px var(--section-alignment-padding);
 }
 
 .blog {
@@ -304,9 +322,9 @@ body {
 }
 
 .info-icon {
-  width: 35px;
+  width: var(--icon-width);
 
-  padding-right: 20px;
+  padding-right: var(--info-padding);
 }
 
 .info-bar {
@@ -316,21 +334,27 @@ body {
 
 .info-bar-title {
   font-size: 28px;
+  display: inline-block;
+  vertical-align: 7px;
 }
 
-.footer {
+footer {
   text-align: center;
 }
 
-.footer a {
+footer a {
   color: white;
 }
 
-.footer div {
+footer div {
   margin: 5px;
 }
 
 .project-list {
+  padding: 0px;
+  
+  margin: 0px var(--section-alignment-padding);
+  list-style-type: none;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -345,7 +369,7 @@ body {
   font-weight: bold;
   font-size: 23px;
 
-  text-align: center;
+  
 }
 
 .project-list a {
@@ -364,12 +388,11 @@ body {
 @media only screen and (max-width: 700px) {
   body {
       --logo-size: 60px;
+      --section-alignment-padding:0px;
   }
 
   .title {
-      width: 300px;
-      font-size: 22px;
-      height: var(--logo-size);
+    font-size: .7em;
   }
 
   .webring {
@@ -377,7 +400,7 @@ body {
   }
   
   .text-block-indented {
-    padding-right: 0;
+    
   }
 
   .text-block p:not(.info-bar) {
