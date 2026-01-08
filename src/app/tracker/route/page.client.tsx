@@ -38,7 +38,7 @@ function RouteComponent(props: RouteComponentProps) {
                 Headsign
               </th>
               <th>
-                Scheduled start
+                Start
               </th>
               <th>
                 Actual start
@@ -47,13 +47,17 @@ function RouteComponent(props: RouteComponentProps) {
                 End
               </th>
               <th>
+                Actual end
+              </th>
+              <th>
                 Bus ID
               </th>
             </tr>
           </thead>
           <tbody>
             {props.trips.map((t) => {
-              const delay = t.actualStartTime ? timeStringDiff(t.actualStartTime, t.scheduledStartTime) : 0;
+              const delayStart = t.actualStartTime ? timeStringDiff(t.actualStartTime, t.scheduledStartTime) : 0;
+              const delayEnd = t.actualEndTime ? timeStringDiff(t.actualEndTime, t.scheduledEndTime) : (t.delay ?? 0);
               const canceled = t.canceled && !t.actualStartTime;
 
               return (
@@ -75,13 +79,16 @@ function RouteComponent(props: RouteComponentProps) {
                   <td>
                     {t.scheduledStartTime}
                   </td>
-                  <td className={`${((delay > 15 * 60 || canceled) ? "red-text " : "")}${((delay > 5 * 60) ? "yellow-text" : "")}`}>
+                  <td className={`${((delayStart > 15 * 60 || canceled) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
                     {canceled
                       ? "CANCELLED"
-                      : `${t.actualStartTime ?? ""}${t.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}
+                      : `${t.actualStartTime ?? ""}${t.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`}
                   </td>
                   <td>
-                    {t.actualEndTime}
+                    {t.scheduledEndTime}
+                  </td>
+                  <td className={`${((delayEnd > 15 * 60) ? "red-text " : "")}${((delayEnd > 5 * 60) ? "yellow-text" : "")}`}>
+                    {`${t.actualEndTime ?? (t.delay ? "Active" : "")}${(t.delay ? ` (${secondsToMinuteAndSeconds(Math.floor(t.delay * 60))})` : "")}`}
                   </td>
                   <td style={{ color: t.busId ? props.colors[t.busId] : undefined }}>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({

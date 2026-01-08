@@ -49,7 +49,7 @@ function BlockComponent(props: BlockComponentProps) {
                 Headsign
               </th>
               <th>
-                Scheduled start
+                Start
               </th>
               <th>
                 Actual start
@@ -58,13 +58,17 @@ function BlockComponent(props: BlockComponentProps) {
                 End
               </th>
               <th>
+                Actual end
+              </th>
+              <th>
                 Bus ID
               </th>
             </tr>
           </thead>
           <tbody>
             {props.data.block.map((b) => {
-              const delay = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
+              const delayStart = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
+              const delayEnd = b.actualEndTime ? timeStringDiff(b.actualEndTime, b.scheduledEndTime) : (b.delay ?? 0);
               const canceled = b.canceled && !b.actualStartTime;
 
               return (
@@ -95,13 +99,16 @@ function BlockComponent(props: BlockComponentProps) {
                   <td>
                     {b.scheduledStartTime}
                   </td>
-                  <td className={`${((delay > 15 * 60 || canceled) ? "red-text " : "")}${((delay > 5 * 60) ? "yellow-text" : "")}`}>
+                  <td className={`${((delayStart > 15 * 60 || canceled) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
                     {canceled
                       ? "CANCELLED"
-                      : `${b.actualStartTime ?? ""}${b.actualStartTime && delay > 0 ? ` (${secondsToMinuteAndSeconds(delay)})` : ""}`}
+                      : `${b.actualStartTime ?? ""}${b.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`}
                   </td>
                   <td>
-                    {b.actualEndTime}
+                    {b.scheduledEndTime}
+                  </td>
+                  <td className={`${((delayEnd > 15 * 60) ? "red-text " : "")}${((delayEnd > 5 * 60) ? "yellow-text" : "")}`}>
+                    {`${b.actualEndTime ?? (b.delay ? "Active" : "")}${(b.delay ? ` (${secondsToMinuteAndSeconds(Math.floor(b.delay * 60))})` : "")}`}
                   </td>
                   <td className="handle-container"
                       style={{ color: b.busId ? props.data.colors[b.busId] : undefined }}>

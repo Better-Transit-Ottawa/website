@@ -4,8 +4,10 @@ export interface BlockData {
     headSign: string,
     routeDirection: number,
     scheduledStartTime: string,
+    scheduledEndTime: string;
     actualStartTime: string | null,
     actualEndTime: string | null,
+    delay: number | null;
     canceled: number | null;
     busId: string | null
 }
@@ -22,8 +24,10 @@ export interface TripDetails {
     headSign: string;
     routeDirection: number;
     scheduledStartTime: string;
+    scheduledEndTime: string;
     actualStartTime: string | null;
     actualEndTime: string | null;
+    delay: number | null;
     canceled: number | null;
     busId: string | null;
     blockId: string | null;
@@ -110,7 +114,7 @@ export function dateToTimeString(date: Date, moreThan24HourTime = true): string 
 }
 
 export function secondsToMinuteAndSeconds(seconds: number): string {
-    return `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
+    return `${Math.floor(seconds / 60)}:${Math.abs((seconds % 60)).toString().padStart(2, '0')}`;
 }
 
 export function dateStringToServiceDay(dateString: string): Date {
