@@ -255,7 +255,7 @@ function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaul
       id: blockId,
       type: "block",
       position: {
-        x: positions[blockId].x * 900,
+        x: positions[blockId].x * 1100,
         y: positions[blockId].y * 900
       },
       data: {
