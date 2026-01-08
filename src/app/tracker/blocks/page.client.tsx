@@ -66,13 +66,18 @@ function BlockComponent(props: BlockComponentProps) {
             </tr>
           </thead>
           <tbody>
-            {props.data.block.map((b) => {
+            {props.data.block.map((b, index) => {
               const delayStart = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
               const delayEnd = b.actualEndTime ? timeStringDiff(b.actualEndTime, b.scheduledEndTime) : (b.delay ?? 0) * 60;
               const canceled = b.canceled && !b.actualStartTime;
+              const untracked = !b.canceled
+                && !b.actualStartTime
+                && ((props.data.block.some((b, i) => i > index && b.actualStartTime)) 
+                  || props.data.date.toLocaleDateString() != new Date().toLocaleDateString()
+                  || timeStringDiff(new Date().toLocaleTimeString(), b.scheduledEndTime) > 60 * 60);
 
               return (
-                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""}`}>
+                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""} ${untracked ? "untracked" : ""}`}>
                   <td className="handle-container">
                     <Handle
                       type="target"
@@ -99,10 +104,12 @@ function BlockComponent(props: BlockComponentProps) {
                   <td>
                     {b.scheduledStartTime}
                   </td>
-                  <td className={`${((delayStart > 15 * 60 || canceled) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
-                    {canceled
-                      ? "CANCELLED"
-                      : `${b.actualStartTime ?? ""}${b.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`}
+                  <td className={`${((delayStart > 15 * 60) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
+                    {untracked 
+                      ? "UNTRACKED"
+                      : (canceled
+                        ? "CANCELLED"
+                        : `${b.actualStartTime ?? ""}${b.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`)}
                   </td>
                   <td>
                     {b.scheduledEndTime}

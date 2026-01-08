@@ -55,47 +55,54 @@ function RouteComponent(props: RouteComponentProps) {
             </tr>
           </thead>
           <tbody>
-            {props.trips.map((t) => {
-              const delayStart = t.actualStartTime ? timeStringDiff(t.actualStartTime, t.scheduledStartTime) : 0;
-              const delayEnd = t.actualEndTime ? timeStringDiff(t.actualEndTime, t.scheduledEndTime) : (t.delay ?? 0) * 60;
-              const canceled = t.canceled && !t.actualStartTime;
+            {props.trips.map((b, index) => {
+              const delayStart = b.actualStartTime ? timeStringDiff(b.actualStartTime, b.scheduledStartTime) : 0;
+              const delayEnd = b.actualEndTime ? timeStringDiff(b.actualEndTime, b.scheduledEndTime) : (b.delay ?? 0) * 60;
+              const canceled = b.canceled && !b.actualStartTime;
+              const untracked = !b.canceled
+                && !b.actualStartTime
+                && ((props.trips.some((b, i) => i > index && b.actualStartTime)) 
+                  || props.date.toLocaleDateString() != new Date().toLocaleDateString()
+                  || timeStringDiff(new Date().toLocaleTimeString(), b.scheduledEndTime) > 60 * 60);
 
               return (
-                <tr key={t.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""}`}>
+                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""} ${untracked ? "untracked" : ""}`}>
                   <td>
-                    {t.tripId}
+                    {b.tripId}
                   </td>
                   <td>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
                       date: props.date.toLocaleDateString(),
-                      block: t.blockId!
+                      block: b.blockId!
                     }).toString()}>
-                      {t.blockId}
+                      {b.blockId}
                     </Link>
                   </td>
                   <td>
-                    {t.headSign}
+                    {b.headSign}
                   </td>
                   <td>
-                    {t.scheduledStartTime}
+                    {b.scheduledStartTime}
                   </td>
-                  <td className={`${((delayStart > 15 * 60 || canceled) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
-                    {canceled
-                      ? "CANCELLED"
-                      : `${t.actualStartTime ?? ""}${t.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`}
+                  <td className={`actual-time ${((delayStart > 15 * 60) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
+                    {untracked 
+                      ? "UNTRACKED"
+                      : (canceled
+                        ? "CANCELLED"
+                        : `${b.actualStartTime ?? ""}${b.actualStartTime && delayStart > 0 ? ` (${secondsToMinuteAndSeconds(delayStart)})` : ""}`)}
                   </td>
                   <td>
-                    {t.scheduledEndTime}
+                    {b.scheduledEndTime}
                   </td>
                   <td className={`${((delayEnd > 15 * 60) ? "red-text " : "")}${((delayEnd > 5 * 60) ? "yellow-text" : "")}`}>
-                    {`${t.actualEndTime ?? (t.delay ? "Active" : "")}${(delayEnd ? ` (${secondsToMinuteAndSeconds(Math.floor(delayEnd))})` : "")}`}
+                    {`${b.actualEndTime ?? (b.delay ? "Active" : "")}${(delayEnd ? ` (${secondsToMinuteAndSeconds(Math.floor(delayEnd))})` : "")}`}
                   </td>
-                  <td style={{ color: t.busId ? props.colors[t.busId] : undefined }}>
+                  <td style={{ color: b.busId ? props.colors[b.busId] : undefined }}>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
                       date: props.date.toLocaleDateString(),
-                      bus: t.busId!
+                      bus: b.busId!
                     }).toString()}>
-                      {t.busId}
+                      {b.busId}
                     </Link>
                   </td>
                 </tr>
