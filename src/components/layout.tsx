@@ -17,20 +17,24 @@ export default function Layout({ children, footer, dontLink, className }: Layout
                 <div className="background"/>
             </div>
 
-            <div className={"content " + className}>
-                <Link href="/" className={"title" + (dontLink ? " disabled" : "")}>
-                    <div className="logo">
-                        <img src="/images/logo-square.svg" alt="Logo" />
-                    </div>
+            <main className={"content " + className}>
+                <header>
+                    
+                        <Link href="/" className={"title" + (dontLink ? " disabled" : "")}>
+                            <div className="logo">
+                                <img src="/images/logo-square.svg" alt="Logo" />
+                            </div>
 
-                    <div className="title-text">Better Transit Ottawa</div>
+                            <h1 className="title-text">Better Transit Ottawa</h1>
+                        </Link>
 
-                    <div className="end-spacer"></div>
-                </Link>
+                    
+
+                </header>
                 
                 {children}
 
-                <div className="footer">
+                <footer>
                     {footer}
 
                     <div>
@@ -39,8 +43,8 @@ export default function Layout({ children, footer, dontLink, className }: Layout
                     <div>
                         <a href="https://github.com/Better-Transit-Ottawa/website">Website source code</a>
                     </div>
-                </div>
-            </div>
+                </footer>
+            </main>
         </>
     )
 }

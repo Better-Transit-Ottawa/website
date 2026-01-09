@@ -21,6 +21,15 @@
     text-align: center;
 }
 
+.content.fullsize {
+    max-width: 100%;
+}
+/* redeclaring cus changing tracker div to section seems 
+to get overridden */
+.text-block {
+    background-color: var(--mainbgcol);
+    border: 2px solid var(--fgcol)
+}
 .text-block.fullsize {
   width: calc(100% - 60px);
   padding: 0;

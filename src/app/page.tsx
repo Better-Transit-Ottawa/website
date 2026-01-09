@@ -38,20 +38,21 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="text-block">
-          <p className="info-bar">
-            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+        <section className="text-block" aria-labelledby="latest-posts">
+          
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <h2 className="info-bar-title" id="latest-posts">
+            Latest posts
+          </h2>
+         
 
-            <span className="info-bar-title">
-              Latest posts
-            </span>
-          </p>
-
-          <div className="project-list">
-            <div>
-              <p className="project-title">
+          <ul className="project-list">
+            <li>
                 <Link href="/blog/budget-2026">
-                  2026 Budget: Our Response
+                  
+                  <h3 className="project-title">
+                    2026 Budget: Our Response
+                  </h3>
 
                   <img
                     className="project-image"
@@ -59,25 +60,24 @@ export default function Home() {
                     alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
                   />
                 </Link>
-              </p>
-            </div>
-          </div>
-        </div>
+              
+            </li>
+          </ul>
+        </section>
 
-        <div className="text-block">
-          <p className="info-bar">
-            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+        <section className="text-block" aria-labelledby="projects">
+          
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <h2 className="info-bar-title" id="projects">
+            Projects that need your help
+          </h2>
+          
 
-            <span className="info-bar-title">
-              Projects that need your help
-            </span>
-          </p>
-
-          <div className="project-list">
-            <div>
-              <p className="project-title">
+          <ul className="project-list">
+            <li>
+              <h3 className="project-title">
                 Bus lanes on Bank Street
-              </p>
+              </h3>
 
               <img
                 className="project-image"
@@ -110,18 +110,17 @@ export default function Home() {
                   Our problems with the current proposal
                 </Link>
               </p>
-            </div>
-          </div>
-        </div>
+            </li>
+          </ul>
+        </section>
 
-        <div className="text-block">
-          <p className="info-bar">
-            <img className="info-icon" src="/images/info.svg" alt="Info icon" />
-
-            <span className="info-bar-title">
-              Who We Are
-            </span>
-          </p>
+        <section className="text-block" aria-labelledby="about-us">
+          
+          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <h2 className="info-bar-title" id="about-us">
+            Who We Are
+          </h2>
+         
 
           <p>
             We are a group of volunteers fighting for a useful, reliable, and sustainable public transportation network in the City of Ottawa
@@ -131,20 +130,20 @@ export default function Home() {
             We have distilled our mission down to three core principles:
           </p>
 
-          <div className="text-block-indented">
-            <p>
+          <ol className="text-block-indented">
+            <li>
               <b>Consistency</b>: Infrastructure projects to ensure transit is on-time, reliable, and offers a competitive alternative to driving
-            </p>
+            </li>
 
-            <p>
+            <li>
               <b>Sustainability</b>: Operational changes to maintain a reliable network and support future growth
-            </p>
+            </li>
 
-            <p>
+            <li>
               <b>Solidarity</b>: Giving power back to front-line transit workers
-            </p>
-          </div>
-        </div>
+            </li>
+          </ol>
+        </section>
 
         <LinkMap
           links={[
