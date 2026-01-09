@@ -5,10 +5,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Combobox, { ComboboxOptions } from "@/components/ComboBox";
-import { getPageUrl } from "@/utils/pageNavigation";
+import { debounce, getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
 import DownloadButton from "./download-button";
+import { Slider } from "@/components/ui/slider";
 
 interface BlockComponentProps {
   data: {
@@ -324,7 +325,6 @@ function generateEdges(blocks: AllBlocks): EdgeData {
             color
           },
           style: {
-            strokeWidth: 4,
             stroke: color
           },
           labelStyle: {
@@ -433,6 +433,8 @@ export default function PageClient() {
     }
   }, [currentVehicle, searchParams]);
 
+  const [arrowSize, setArrowSize] = useState<number>(4);
+
   return (
     <ReactFlowProvider>
       <div className="controls">
@@ -460,6 +462,20 @@ export default function PageClient() {
         <details className="advanced-options">
           <summary>Advanced</summary>
 
+          <div>
+            Arrow size
+            <Slider
+              defaultValue={[arrowSize]}
+              onValueChange={debounce((v) => {
+                setArrowSize(v[0]);
+              }, 100)}
+              max={100}
+              min={1}
+              step={1}
+              className="slider"
+            />
+          </div>
+
           <DownloadButton />
         </details>
 
@@ -481,7 +497,9 @@ export default function PageClient() {
           }}
         />
       </div>
-      <div className="flow-graph-container">
+      <div className="flow-graph-container" style={{
+        "--flow-stroke-width": arrowSize
+      } as React.CSSProperties}>
         <Graph
           block={currentBlock}
           bus={currentVehicle}

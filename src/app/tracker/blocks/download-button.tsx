@@ -46,9 +46,11 @@ function DownloadButton() {
     };
 
     return (
-        <Button variant={"outline"} onClick={onClick}>
-            {!generating ? "Download Image" : "Generating..."}
-        </Button>
+        <div>
+            <Button variant={"outline"} onClick={onClick}>
+                {!generating ? "Download Image" : "Generating..."}
+            </Button>
+        </div>
     );
 }
  

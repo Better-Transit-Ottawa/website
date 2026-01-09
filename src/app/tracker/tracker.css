@@ -115,8 +115,20 @@ to get overridden */
     cursor: pointer;
 }
 
-.advanced-options summary {
+.advanced-options summary, .advanced-options div {
     text-align: center;
+}
+
+.advanced-options div {
+    margin: 10px;
+}
+
+.advanced-options .slider {
+    width: 300px;
+}
+
+.react-flow__edge-path {
+    stroke-width: var(--flow-stroke-width) !important;
 }
 
 @media only screen and (max-width: 700px) {

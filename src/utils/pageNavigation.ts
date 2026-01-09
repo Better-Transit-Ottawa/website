@@ -11,3 +11,13 @@ export function getPageUrl(pathname: string, searchParams: URLSearchParams, newV
 
     return `${pathname}?${params.toString()}`
 }
+
+export function debounce<A>(c: (...args: A[]) => void, delay = 50): (...args: A[]) => void {
+    let timeout: NodeJS.Timeout | null = null;
+    return (...args) => {
+        clearTimeout(timeout!);
+        timeout = setTimeout(() => {
+            c(...args);
+        }, delay);
+    }
+}
