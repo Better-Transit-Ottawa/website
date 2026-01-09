@@ -110,6 +110,15 @@ to get overridden */
     padding-bottom: 20px;
 }
 
+.advanced-options {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.advanced-options summary {
+    text-align: center;
+}
+
 @media only screen and (max-width: 700px) {
     .text-block.fullsize {
         width: 100%;

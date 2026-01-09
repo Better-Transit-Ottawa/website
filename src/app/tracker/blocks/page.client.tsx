@@ -8,6 +8,7 @@ import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
+import DownloadButton from "./download-button";
 
 interface BlockComponentProps {
   data: {
@@ -433,7 +434,7 @@ export default function PageClient() {
   }, [currentVehicle, searchParams]);
 
   return (
-    <>
+    <ReactFlowProvider>
       <div className="controls">
         <div className="control-boxes">
           <Combobox options={blocks} 
@@ -456,6 +457,12 @@ export default function PageClient() {
             }}/>
         </div>
 
+        <details className="advanced-options">
+          <summary>Advanced</summary>
+
+          <DownloadButton />
+        </details>
+
         <DatePicker
           date={date}
           dateUpdated={(d) => {
@@ -475,15 +482,13 @@ export default function PageClient() {
         />
       </div>
       <div className="flow-graph-container">
-        <ReactFlowProvider>
-          <Graph
-            block={currentBlock}
-            bus={currentVehicle}
-            date={date}
-          />
-        </ReactFlowProvider>
+        <Graph
+          block={currentBlock}
+          bus={currentVehicle}
+          date={date}
+        />
       </div>
-    </>
+    </ReactFlowProvider>
   );
 }
 
