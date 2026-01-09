@@ -36,6 +36,11 @@ body {
   --mainbgcol: black;
   --black: #1f1a17;
   color: var(--fgcol);
+  --bto-red: #ed1b2dff;
+  --line-one: #D30F1D;
+  --line-two: #508128;
+  --line-three: #8F7200;
+  --line-four:  #0980A5;
 
   /* base body styling */
   position: relative;
@@ -44,14 +49,18 @@ body {
   min-height: 100vh;
   margin: 0;
 
-  /* variables */
-  --glow-shadow: 1px 1px 5px 5px white, -1px -1px 5px 5px white;
-  --logo-size: 100px;
+  /* design variables */
   /* alignment padding calc is so that alignment is consistent
      to aid in readability */
   --icon-width: 35px;
   --info-padding: 20px;
   --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
+
+  --slant-angle: 45deg;
+
+  /* variables */
+  --glow-shadow: 1px 1px 5px 5px white, -1px -1px 5px 5px white;
+  --logo-size: 100px;
 }
 .background-container {
   /* layout */
@@ -180,6 +189,7 @@ footer div {
 }
 
 .project-list {
+  
   padding: 0px;
   
   /* blog isnt in a project list, so need to set up another thing for that */
@@ -196,8 +206,7 @@ footer div {
 }
 
 .project-title {
-  font-weight: bold;
-  font-size: 23px;
+  
 
   
 }
@@ -205,7 +214,78 @@ footer div {
 .project-list a {
   color: white;
 }
+.project-list > li > a, .project-container {
+  /* how to display the contents of the post */
+  position: relative;
+  display: grid;
+  grid-area: 
+  "one one one"
+  "one one one"
+  "two two two";
+  .project-image {
+    grid-row: span one / two;
+  }
 
+  /* padding for description so it doesnt overflow onto arrow */
+  margin-bottom: 1.8em;
+  & ~ p {
+
+    padding-right: 20%;
+    
+    /* get it above the arrow */
+    position: relative;
+    z-index: 5;
+  }
+  
+}
+.project-title {
+    /* position */
+    grid-row: two;
+    text-align: centre;
+    translate: .8em -1.8em;
+    justify-self: end;
+    position: absolute;
+
+    /* logo button */
+    background: url(../../public/images/button.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+
+    /* sizing */
+    /* sizing based off of measuerments of the background */
+    aspect-ratio: 3.36;
+    width: 100%;
+
+    /* font-style */
+    font-weight: 600;
+    font-size: 1.7em;
+    text-decoration: none;
+
+    /* keep the text from overflowing */
+    
+    line-height: 1;
+
+    /* text centre */
+    display: flex;
+    justify-content: center;
+    padding: .5em 0px;
+}
+
+.project-list:has(:not(.project-container)) > li > a {
+  /* change facing direction if no body text ( cus it links to full blog ( maybe 
+    we should have short previews??? ) */
+    .project-title {
+      /* background: url(../../public/images/button-inverted.svg);
+      background-size: contain;
+      background-repeat: no-repeat; */
+
+      /* change alignment */
+      /* align-items: center;
+      
+      width: 100%; */
+    }
+}
 .project-actions-title {
   font-size: 20px;
   font-weight: bold;
