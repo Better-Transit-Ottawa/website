@@ -131,7 +131,15 @@ section {
 }
 .text-block {
   font-size: 1.2em;
-  padding: 30px;
+  padding: 0px 0px 30px;
+
+  /* set up grid */
+  display: grid;
+  grid-template-columns: .2fr .8fr;
+  & > *:not(.info-icon, .info-bar-title) {
+    /* keep the text out of the grid */
+    grid-column: span 2;
+  }
 }
 
 .text-block-indented {
@@ -161,19 +169,25 @@ section {
 
 .info-icon {
   width: var(--icon-width);
-
   padding-right: var(--info-padding);
+
+  background-color: black;
 }
 
 .info-bar {
   display: flex;
   align-items: center;
+  
 }
 
 .info-bar-title {
   font-size: 28px;
   display: inline-block;
   vertical-align: 7px;
+
+  /* styled to look like the line 2 screens (thats why not variables) */
+  background-color: white;
+  color: black;
 }
 
 footer {
@@ -270,6 +284,9 @@ footer div {
     display: flex;
     justify-content: center;
     padding: .5em 0px;
+
+    /* stop from z-figfhtiung with image */
+    z-index: 2;
 }
 
 .project-list:has(:not(.project-container)) > li > a {
@@ -292,7 +309,23 @@ footer div {
 }
 
 .project-image {
+  /* put it where we want */
   width: 100%;
+  z-index: 1;
+  position: relative;
+
+  /* yassify it  */
+  clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+  transition: filter .3s ease, scale .3s ease, border-radius .3s ease, border .3s ease;
+  
+}
+
+a:has(.project-title:hover), a:has(.project-image:hover) {
+  .project-image {
+    scale: 1.1;
+    border-radius: 10px;
+    border: 5px solid white;
+  }
 }
 
 /* ----- header ----- */
