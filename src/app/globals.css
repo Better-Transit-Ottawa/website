@@ -134,6 +134,11 @@ section {
   padding: 0px 0px 30px;
 
   /* set up grid */
+
+  
+}
+/* avoid styling tracker */
+.text-block:is(:not(.fullsize)) {
   display: grid;
   grid-template-columns: .1fr .9fr;
   & > *:not(.info-icon, .info-bar-title) {
@@ -149,6 +154,9 @@ section {
   flex-direction: column;
   gap: 1em;
   
+  li::marker {
+    /* add list counter shenangians here when ur not exhausted */
+  }
   /* alignment */
   
   padding: 0px var(--section-alignment-padding);
@@ -187,6 +195,10 @@ section {
   /* put it to the right like o-train line 2 */
   text-align: right;
   padding-right: 1em;
+
+  /* give some space */
+  padding-top: .5em;
+  padding-bottom: .5em;
 
   /* styled to look like the line 2 screens (thats why not variables) */
   background-color: white;
@@ -227,11 +239,13 @@ footer div {
 
 .project-list a {
   color: white;
+  
 }
 .project-list > li > a, .project-container {
   /* how to display the contents of the post */
   position: relative;
   display: grid;
+ 
   
   .project-image {
     grid-row: span one / two;
@@ -562,6 +576,11 @@ header {
 
   .project-list div {
     flex: 100%;
+  }
+  .project-list > li > a, .project-container {
+  
+  /* stop button from overflowign */
+  overflow-x:clip;
   }
   .project-title {
     /* keep in sensible location and scale tezt */
