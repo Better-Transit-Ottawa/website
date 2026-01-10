@@ -36,6 +36,11 @@ body {
   --mainbgcol: black;
   --black: #1f1a17;
   color: var(--fgcol);
+  --bto-red: #ed1b2dff;
+  --line-one: #D30F1D;
+  --line-two: #508128;
+  --line-three: #8F7200;
+  --line-four:  #0980A5;
 
   /* base body styling */
   position: relative;
@@ -44,14 +49,18 @@ body {
   min-height: 100vh;
   margin: 0;
 
-  /* variables */
-  --glow-shadow: 1px 1px 5px 5px white, -1px -1px 5px 5px white;
-  --logo-size: 100px;
+  /* design variables */
   /* alignment padding calc is so that alignment is consistent
      to aid in readability */
   --icon-width: 35px;
   --info-padding: 20px;
   --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
+
+  --slant-angle: 45deg;
+
+  /* variables */
+  --glow-shadow: 1px 1px 5px 5px white, -1px -1px 5px 5px white;
+  --logo-size: 100px;
 }
 .background-container {
   /* layout */
@@ -117,12 +126,25 @@ section {
     border: 2px solid var(--fgcol);
     h2 {
       /* make the outside padding consistent */
-      margin-top: 0px;
+      margin: 0px;
     }
 }
 .text-block {
   font-size: 1.2em;
-  padding: 30px;
+  padding: 0px 0px 30px;
+
+  /* set up grid */
+
+  
+}
+/* avoid styling tracker */
+.text-block:is(:not(.fullsize)) {
+  display: grid;
+  grid-template-columns: .1fr .9fr;
+  & > *:not(.info-icon, .info-bar-title) {
+    /* keep the text out of the grid */
+    grid-column: span 2;
+  }
 }
 
 .text-block-indented {
@@ -132,7 +154,11 @@ section {
   flex-direction: column;
   gap: 1em;
   
+  li::marker {
+    /* add list counter shenangians here when ur not exhausted */
+  }
   /* alignment */
+  
   padding: 0px var(--section-alignment-padding);
   li {
     margin-left: 2em;
@@ -140,6 +166,7 @@ section {
 }
 .text-block p:not(.info-bar, .project-list p, .blog *), article {
   /* alignment */
+  margin: 30px;
   padding: 0px var(--section-alignment-padding);
 }
 .text-block :first-child {
@@ -152,19 +179,30 @@ section {
 
 .info-icon {
   width: var(--icon-width);
+  
 
-  padding-right: var(--info-padding);
-}
-
-.info-bar {
-  display: flex;
-  align-items: center;
+  background-color: black;
+  /* alignment */
+  place-self: center;
+  
 }
 
 .info-bar-title {
   font-size: 28px;
   display: inline-block;
   vertical-align: 7px;
+
+  /* put it to the right like o-train line 2 */
+  text-align: right;
+  padding-right: 1em;
+
+  /* give some space */
+  padding-top: .5em;
+  padding-bottom: .5em;
+
+  /* styled to look like the line 2 screens (thats why not variables) */
+  background-color: white;
+  color: black;
 }
 
 footer {
@@ -180,10 +218,12 @@ footer div {
 }
 
 .project-list {
+  
   padding: 0px;
   
+  /* keep it away from the header */
   /* blog isnt in a project list, so need to set up another thing for that */
-  margin: 0px var(--section-alignment-padding);
+  margin: 2em var(--section-alignment-padding);
   list-style-type: none;
   display: flex;
   flex-direction: row;
@@ -195,24 +235,109 @@ footer div {
   flex: 40%;
 }
 
-.project-title {
-  font-weight: bold;
-  font-size: 23px;
 
-  
-}
 
 .project-list a {
   color: white;
+  
+}
+.project-list > li > a, .project-container {
+  /* how to display the contents of the post */
+  position: relative;
+  display: grid;
+ 
+  
+  .project-image {
+    grid-row: span one / two;
+  }
+
+  /* padding for description so it doesnt overflow onto arrow */
+  margin-bottom: 1.8em;
+  & ~ p {
+
+    padding-right: 20%;
+    
+    /* get it above the arrow */
+    position: relative;
+    z-index: 5;
+  }
+  
+}
+.project-title {
+    /* position */
+    grid-row: two;
+    text-align: centre;
+    translate: .8em -1.8em;
+    justify-self: end;
+    position: absolute;
+    
+
+    /* logo button */
+    background: url(../../public/images/button.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+
+    /* sizing */
+    /* sizing based off of measuerments of the background */
+    aspect-ratio: 3.36;
+    width: 100%;
+
+    /* font-style */
+    font-weight: 600;
+    font-size: 1.7em;
+    text-decoration: none;
+
+    /* keep the text from overflowing */
+    
+    line-height: 1;
+
+    /* text centre */
+    display: flex;
+    justify-content: center;
+    padding: .5em 0px;
+
+    /* stop from z-figfhtiung with image */
+    z-index: 2;
 }
 
+.project-list:has(:not(.project-container)) > li > a {
+  /* change facing direction if no body text ( cus it links to full blog ( maybe 
+    we should have short previews??? ) */
+    .project-title {
+      /* background: url(../../public/images/button-inverted.svg);
+      background-size: contain;
+      background-repeat: no-repeat; */
+
+      /* change alignment */
+      /* align-items: center;
+      
+      width: 100%; */
+    }
+}
 .project-actions-title {
   font-size: 20px;
   font-weight: bold;
 }
 
 .project-image {
+  /* put it where we want */
   width: 100%;
+  z-index: 1;
+  position: relative;
+
+  /* yassify it  */
+  clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+  transition: filter .3s ease, scale .3s ease, border-radius .3s ease, border-bottom .3s ease;
+  
+}
+
+a:has(.project-title:hover), a:has(.project-image:hover) {
+  .project-image {
+    scale: 1.1;
+    border-radius: 10px;
+    border-bottom: 5px solid white;
+  }
 }
 
 /* ----- header ----- */
@@ -438,7 +563,7 @@ header {
   }
 
   .text-block p:not(.info-bar) {
-    padding-right: 0;
+    padding: 1em;
   }
 
   .webring-contents-inner {
@@ -451,5 +576,15 @@ header {
 
   .project-list div {
     flex: 100%;
+  }
+  .project-list > li > a, .project-container {
+  
+  /* stop button from overflowign */
+  overflow-x:clip;
+  }
+  .project-title {
+    /* keep in sensible location and scale tezt */
+    top: 1em;
+    font-size: 1.2em;
   }
 }

@@ -84,13 +84,13 @@ export default async function Post(p: BlogProps) {
     }>
       <section className="text-block">
 
-        <h2 className="info-bar">
+        
           <img className="info-icon" src="/images/info.svg" alt="Info icon" />
 
-          <span className="info-bar-title">
+          <h2 className="info-bar-title">
             {postData.title}
-          </span>
-        </h2>
+          </h2>
+        
         <article className="blog-article">
           <div className="date">
           {postData.date}

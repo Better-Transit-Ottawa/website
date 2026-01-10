@@ -40,7 +40,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="latest-posts">
           
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/station-dot.svg" alt="Info icon" />
           <h2 className="info-bar-title" id="latest-posts">
             Latest posts
           </h2>
@@ -60,6 +60,9 @@ export default function Home() {
                     alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
                   />
                 </Link>
+                <p>
+                  Yesterday, Ottawa City Council approved the 2026 budget. Councillors recognize many of the issues, but still voted for a budget that does will not solve the bus shortage.
+                </p>
               
             </li>
           </ul>
@@ -67,7 +70,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="projects">
           
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/station-dot.svg" alt="Info icon" />
           <h2 className="info-bar-title" id="projects">
             Projects that need your help
           </h2>
@@ -75,15 +78,18 @@ export default function Home() {
 
           <ul className="project-list">
             <li>
-              <h3 className="project-title">
-                Bus lanes on Bank Street
-              </h3>
+              <div className="project-container">
+                <h3 className="project-title">
+                  Bus lanes on Bank Street
+                </h3>
 
-              <img
-                className="project-image"
-                src="/images/bank.jpg"
-                alt="An OC Transpo bus on Bank street"
-              />
+                <img
+                  className="project-image"
+                  src="/images/bank.jpg"
+                  alt="An OC Transpo bus on Bank street"
+                />
+
+              </div>
 
               <p>
                 The city is currently studying replacing parking with dedicated bus lanes on a portion of bank street. We need your help to help them make the right decision!
