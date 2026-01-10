@@ -126,7 +126,7 @@ section {
     border: 2px solid var(--fgcol);
     h2 {
       /* make the outside padding consistent */
-      margin-top: 0px;
+      margin: 0px;
     }
 }
 .text-block {
@@ -135,7 +135,7 @@ section {
 
   /* set up grid */
   display: grid;
-  grid-template-columns: .2fr .8fr;
+  grid-template-columns: .1fr .9fr;
   & > *:not(.info-icon, .info-bar-title) {
     /* keep the text out of the grid */
     grid-column: span 2;
@@ -150,6 +150,7 @@ section {
   gap: 1em;
   
   /* alignment */
+  
   padding: 0px var(--section-alignment-padding);
   li {
     margin-left: 2em;
@@ -157,6 +158,7 @@ section {
 }
 .text-block p:not(.info-bar, .project-list p, .blog *), article {
   /* alignment */
+  margin: 30px;
   padding: 0px var(--section-alignment-padding);
 }
 .text-block :first-child {
@@ -169,14 +171,11 @@ section {
 
 .info-icon {
   width: var(--icon-width);
-  padding-right: var(--info-padding);
+  
 
   background-color: black;
-}
-
-.info-bar {
-  display: flex;
-  align-items: center;
+  /* alignment */
+  place-self: center;
   
 }
 
@@ -184,6 +183,10 @@ section {
   font-size: 28px;
   display: inline-block;
   vertical-align: 7px;
+
+  /* put it to the right like o-train line 2 */
+  text-align: right;
+  padding-right: 1em;
 
   /* styled to look like the line 2 screens (thats why not variables) */
   background-color: white;
@@ -206,8 +209,9 @@ footer div {
   
   padding: 0px;
   
+  /* keep it away from the header */
   /* blog isnt in a project list, so need to set up another thing for that */
-  margin: 0px var(--section-alignment-padding);
+  margin: 2em var(--section-alignment-padding);
   list-style-type: none;
   display: flex;
   flex-direction: row;
@@ -219,11 +223,7 @@ footer div {
   flex: 40%;
 }
 
-.project-title {
-  
 
-  
-}
 
 .project-list a {
   color: white;
@@ -232,10 +232,7 @@ footer div {
   /* how to display the contents of the post */
   position: relative;
   display: grid;
-  grid-area: 
-  "one one one"
-  "one one one"
-  "two two two";
+  
   .project-image {
     grid-row: span one / two;
   }
@@ -259,6 +256,7 @@ footer div {
     translate: .8em -1.8em;
     justify-self: end;
     position: absolute;
+    
 
     /* logo button */
     background: url(../../public/images/button.svg);
@@ -316,7 +314,7 @@ footer div {
 
   /* yassify it  */
   clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
-  transition: filter .3s ease, scale .3s ease, border-radius .3s ease, border .3s ease;
+  transition: filter .3s ease, scale .3s ease, border-radius .3s ease, border-bottom .3s ease;
   
 }
 
@@ -324,7 +322,7 @@ a:has(.project-title:hover), a:has(.project-image:hover) {
   .project-image {
     scale: 1.1;
     border-radius: 10px;
-    border: 5px solid white;
+    border-bottom: 5px solid white;
   }
 }
 
@@ -551,7 +549,7 @@ header {
   }
 
   .text-block p:not(.info-bar) {
-    padding-right: 0;
+    padding: 1em;
   }
 
   .webring-contents-inner {
@@ -564,5 +562,10 @@ header {
 
   .project-list div {
     flex: 100%;
+  }
+  .project-title {
+    /* keep in sensible location and scale tezt */
+    top: 1em;
+    font-size: 1.2em;
   }
 }

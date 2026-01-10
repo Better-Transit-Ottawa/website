@@ -40,7 +40,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="latest-posts">
           
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/O-Train_icon.svg" alt="Info icon" />
           <h2 className="info-bar-title" id="latest-posts">
             Latest posts
           </h2>
@@ -70,7 +70,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="projects">
           
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src="/images/O-Train_icon.svg" alt="Info icon" />
           <h2 className="info-bar-title" id="projects">
             Projects that need your help
           </h2>
