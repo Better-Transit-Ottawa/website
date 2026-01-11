@@ -140,7 +140,7 @@ section {
 /* avoid styling tracker */
 .text-block:is(:not(.fullsize)) {
   display: grid;
-  grid-template-columns: .1fr .9fr;
+  grid-template-columns: .1fr 1fr;
   & > *:not(.info-icon, .info-bar-title) {
     /* keep the text out of the grid */
     grid-column: span 2;
@@ -179,7 +179,7 @@ section {
 
 .info-icon {
   width: var(--icon-width);
-  
+  margin: 0em 1em;
 
   background-color: black;
   /* alignment */
@@ -267,35 +267,39 @@ footer div {
     /* position */
     grid-row: two;
     text-align: centre;
-    translate: .8em -1.8em;
+    translate: 1.9em 0px;
     justify-self: end;
+    align-self: center;
     position: absolute;
     
-
+    
     /* logo button */
-    background: url(../../public/images/button.svg);
+    background: url(../../public/images/button-inverted.svg);
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     
-
+    
     /* sizing */
+    padding: 1.1em;
     /* sizing based off of measuerments of the background */
     aspect-ratio: 3.36;
     width: 100%;
-
+    
     /* font-style */
     font-weight: 600;
     font-size: 1.7em;
     text-decoration: none;
-
+    
     /* keep the text from overflowing */
+    align-items: center;
     
     line-height: 1;
-
+    
     /* text centre */
     display: flex;
     justify-content: center;
-    padding: .5em 0px;
+   
 
     /* stop from z-figfhtiung with image */
     z-index: 2;
@@ -584,7 +588,7 @@ header {
   }
   .project-title {
     /* keep in sensible location and scale tezt */
-    top: 1em;
+    
     font-size: 1.2em;
   }
 }
