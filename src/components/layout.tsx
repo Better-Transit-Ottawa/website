@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from 'next/image';
+import { basePath } from "../lib/config";
 
 export interface LayoutProps {
     children: React.ReactNode;
@@ -23,7 +23,7 @@ export default function Layout({ children, footer, dontLink, className }: Layout
                     
                         <Link href="/" className={"title" + (dontLink ? " disabled" : "")}>
                             <div className="logo">
-                                <Image src="/images/logo-square.svg" alt="Logo" />
+                                <img src={basePath + "/images/logo-square.svg"} alt="Logo" />
                             </div>
 
                             <h1 className="title-text">Better Transit Ottawa</h1>

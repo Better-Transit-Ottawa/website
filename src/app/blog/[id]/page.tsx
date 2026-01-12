@@ -5,7 +5,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
-import Image from 'next/image';
+import { basePath } from "../../../lib/config";
 
 const postsDirectory = "blog";
 
@@ -86,7 +86,7 @@ export default async function Post(p: BlogProps) {
       <section className="text-block">
 
         <h2 className="info-bar">
-          <Image className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
 
           <span className="info-bar-title">
             {postData.title}
@@ -98,9 +98,9 @@ export default async function Post(p: BlogProps) {
         </div>
 
         {postData.thumbnail && (
-          <Image
+          <img
             className="blog-thumbnail"
-            src={postData.thumbnail}
+            src={basePath + postData.thumbnail}
             alt={postData.caption!}
           />
         )}

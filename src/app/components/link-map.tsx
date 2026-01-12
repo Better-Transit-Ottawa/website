@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import Image from 'next/image';
+import { basePath } from "../../lib/config";
 
 export interface Link {
   name: string;
@@ -18,7 +18,7 @@ export default function LinkMap({ links }: LinkMapProps) {
 
       <div className="webring-contents">
         <div className="webring-contents-inner">
-          <Image className="arrow-down" src="/images/arrow.svg" alt="Down arrow" />
+          <img className="arrow-down" src={basePath + "/images/arrow.svg"} alt="Down arrow" />
 
           <div className="line"></div>
 
@@ -47,9 +47,9 @@ interface LinkTextProps {
 function LinkText({ link, start }: LinkTextProps) {
   return (
     <div className="linkmap-top">
-      <Image
+      <img
         className="station-dot"
-        src="/images/station-dot.svg"
+        src={basePath + "/images/station-dot.svg"}
         alt="Station Dot"
       />{" "}
       <span className={"linkmap-text" + (start ? " start-station" : "")}>
@@ -61,7 +61,7 @@ function LinkText({ link, start }: LinkTextProps) {
           link.name
         )}
       </span>{" "}
-      {link.logo && <Image className="station-logo" src={link.logo} alt="Logo" />}
+      {link.logo && <img className="station-logo" src={basePath + link.logo} alt="Logo" />}
     </div>
   );
 }

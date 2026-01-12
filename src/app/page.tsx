@@ -3,7 +3,7 @@ import LinkMap from "./components/link-map";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
 import Link from "next/link";
-import Image from 'next/image';
+import { basePath } from "../lib/config";
 
 export default function Home() {
   return (
@@ -27,21 +27,21 @@ export default function Home() {
 
         <div className="socials">
           <a href="https://bsky.app/profile/bettertransitottawa.ca">
-            <Image src="/images/bluesky.svg" alt="Bluesky logo"/>
+            <img src={basePath + "/images/bluesky.svg"} alt="Bluesky logo"/>
           </a>
 
           <a href="https://www.instagram.com/bettertransitottawa/">
-            <Image src="/images/instagram.svg" alt="Instagram logo"/>
+            <img src={basePath + "/images/instagram.svg"} alt="Instagram logo"/>
           </a>
 
           <a href="https://www.youtube.com/@BetterTransitOttawa">
-            <Image src="/images/youtube.svg" alt="YouTube logo"/>
+            <img src={basePath + "/images/youtube.svg"} alt="YouTube logo"/>
           </a>
         </div>
 
         <section className="text-block" aria-labelledby="latest-posts">
           
-          <Image className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="latest-posts">
             Latest posts
           </h2>
@@ -55,9 +55,9 @@ export default function Home() {
                     2026 Budget: Our Response
                   </h3>
 
-                  <Image
+                  <img
                     className="project-image"
-                    src="/images/blog/budget-2026/bus.jpg"
+                    src={basePath + "/images/blog/budget-2026/bus.jpg"}
                     alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
                   />
                 </Link>
@@ -68,7 +68,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="projects">
           
-          <Image className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="projects">
             Projects that need your help
           </h2>
@@ -80,9 +80,9 @@ export default function Home() {
                 Bus lanes on Bank Street
               </h3>
 
-              <Image
+              <img
                 className="project-image"
-                src="/images/bank.jpg"
+                src={basePath + "/images/bank.jpg"}
                 alt="An OC Transpo bus on Bank street"
               />
 
@@ -117,7 +117,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="about-us">
           
-          <Image className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="about-us">
             Who We Are
           </h2>
