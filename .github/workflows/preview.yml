@@ -74,9 +74,9 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: >
             ${{
-              startsWith(github.event_name, 'pull_request')
+              join(['/', startsWith(github.event_name, 'pull_request')
               && format('pr-{0}/{1}', github.event.number, inputs.pr-per-commit     == 'true' && github.sha || '')
-              || format('{0}/{1}',    github.ref_name,     inputs.branch-per-commit == 'true' && github.sha || '')
+              || format('{0}/{1}',    github.ref_name,     inputs.branch-per-commit == 'true' && github.sha || '')])
             }}
 
       - name: Generate token
