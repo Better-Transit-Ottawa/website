@@ -72,7 +72,7 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          upload_dir: >
+          NEXT_PUBLIC_BASE_PATH: >
             /${{
               startsWith(github.event_name, 'pull_request')
               && format('pr-{0}/{1}', github.event.number, inputs.pr-per-commit     == 'true' && github.sha || '')
