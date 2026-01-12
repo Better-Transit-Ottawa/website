@@ -142,12 +142,12 @@ section {
   
   padding: 0px var(--section-alignment-padding);
   li {
-    margin-left: 2em;
+    margin-left: 4em;
   }
 }
 .text-block p:not(.info-bar, .project-list p, .blog *), article {
   /* alignment */
-  margin: 30px;
+  margin: 2em;
   padding: 0px var(--section-alignment-padding);
 }
 .text-block :first-child {
