@@ -78,3 +78,5 @@ jobs:
         uses: rajyan/preview-pages@v1
         with:
           source-dir: ./out
+          target-repository: "Better-Transit-Ottawa/test-website"
+          configured-domain: test.bettertransitottawa.ca
