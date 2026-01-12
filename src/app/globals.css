@@ -187,16 +187,15 @@ section {
   border-top: none;
   border-right: none;
   color: white;
- 
-
-  /* temporary brightness lowering to avoid bad look*/
-  filter: brightness(.9);
 }
 @media ( prefers-color-scheme: light ) {
   /* styled to look like the line 2 screens (thats why not variables) */
   .info-bar-title {
     background-color: white;
     color: black;
+
+    /* temporary brightness lowering to avoid bad look*/
+    filter: brightness(.9);
   }
 }
 
