@@ -188,6 +188,13 @@ section {
   /* temporary brightness lowering to avoid bad look*/
   filter: brightness(.9);
 }
+@media ( prefers-color-scheme: dark ) {
+  .info-bar-title {
+    background: var(--black);
+    border: 2px solid var(--fgcol);
+    color: white;
+  }
+}
 
 footer {
   text-align: center;
