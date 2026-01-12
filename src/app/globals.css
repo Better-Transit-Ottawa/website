@@ -11,23 +11,6 @@
     if you need help with this, send me a message.*/
 
 
-/* ----- animations ----- */
-/* empty */
-
-
-
-/*  ----- fonts ----- */
-@font-face {
-  font-family: "Frutiger";
-  src: url("/Frutiger.ttf");
-}
-
-@font-face {
-  font-family: "Frutiger Bold";
-  src: url("/Frutiger_bold.ttf");
-}
-
-
 /* ----- globals ----- */
 body {
   /* palette */
@@ -93,7 +76,7 @@ body {
 /* ----- main ----- */
 .content {
   /* basic styling */
-  font-family: Frutiger, sans-serif;
+  font-family: frutiger, sans-serif;
 
   /* layout */
   display: flex;
@@ -230,7 +213,7 @@ header {
 
   /* font */
   text-decoration: none;
-  font-family: Frutiger Bold, sans-serif;
+  font-family: frutigerBold, sans-serif;
   
   /* layout */
   display: grid;

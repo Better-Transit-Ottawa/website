@@ -1,5 +1,20 @@
 import { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+// eslint-disable-next-line 
+const frutiger = localFont({
+  src: [{
+    path: "../../public/Frutiger.ttf",
+  }],
+});
+
+// eslint-disable-next-line
+const frutigerBold = localFont({
+  src: [{
+    path: "../../public/Frutiger_bold.ttf",
+  }],
+});
 
 export default function RootLayout({
   children
@@ -7,12 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="dark">
+    <html className={"dark"}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <link rel="preload" as="font" href="/Frutiger.ttf" type="font/ttf"></link>
-        <link rel="preload" as="font" href="/Frutiger_bold.ttf" type="font/ttf"></link>
       </head>
 
       <body>{children}</body>
