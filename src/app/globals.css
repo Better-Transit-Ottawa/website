@@ -181,18 +181,20 @@ section {
   padding-top: .5em;
   padding-bottom: .5em;
 
-  /* styled to look like the line 2 screens (thats why not variables) */
-  background-color: white;
-  color: black;
+  
+  background: var(--black);
+  border: 2px solid var(--fgcol);
+  color: white;
+ 
 
   /* temporary brightness lowering to avoid bad look*/
   filter: brightness(.9);
 }
-@media ( prefers-color-scheme: dark ) {
+@media ( prefers-color-scheme: light ) {
+  /* styled to look like the line 2 screens (thats why not variables) */
   .info-bar-title {
-    background: var(--black);
-    border: 2px solid var(--fgcol);
-    color: white;
+    background-color: white;
+    color: black;
   }
 }
 
