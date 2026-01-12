@@ -72,11 +72,17 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
-      # run some build steps here and export the result to a directory
+      - name: Generate token
+        id: generate-token
+        uses: tibdex/github-app-token@b62528385c34dbc9f38e5f4225ac829252d1ea92 #1.8.0
+        with:
+          app_id: ${{ secrets.WEBSITE_TESTER_BOT_APP_ID }}
+          private_key: ${{ secrets.WEBSITE_TESTER_BOT_PRIVATE_KEY }}
 
       - name: Preview Pages
         uses: rajyan/preview-pages@v1
         with:
+          token: ${{ steps.generate-token.outputs.token }}
           source-dir: ./out
           target-repository: "Better-Transit-Ottawa/test-website"
           configured-domain: test.bettertransitottawa.ca
