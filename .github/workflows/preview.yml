@@ -72,11 +72,11 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          NEXT_PUBLIC_BASE_PATH: >
-            ${{
-              join(['/', startsWith(github.event_name, 'pull_request')
+          upload_dir: >
+            /${{
+              startsWith(github.event_name, 'pull_request')
               && format('pr-{0}/{1}', github.event.number, inputs.pr-per-commit     == 'true' && github.sha || '')
-              || format('{0}/{1}',    github.ref_name,     inputs.branch-per-commit == 'true' && github.sha || '')])
+              || format('{0}/{1}',    github.ref_name,     inputs.branch-per-commit == 'true' && github.sha || '')
             }}
 
       - name: Generate token
