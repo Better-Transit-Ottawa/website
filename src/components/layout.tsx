@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { basePath } from "../lib/config";
 
 export interface LayoutProps {
     children: React.ReactNode;
@@ -7,6 +8,7 @@ export interface LayoutProps {
     className?: string;
 }
 
+const backgroundImage = basePath + "/images/map.webp";
 
 export default function Layout({ children, footer, dontLink, className }: LayoutProps) {
     className ??= "";
@@ -14,7 +16,9 @@ export default function Layout({ children, footer, dontLink, className }: Layout
     return (
         <>
             <div className="background-container">
-                <div className="background"/>
+                <div className="background" style={{
+                    backgroundImage: `url(${backgroundImage})`
+                }}/>
             </div>
 
             <main className={"content " + className}>
@@ -22,7 +26,7 @@ export default function Layout({ children, footer, dontLink, className }: Layout
                     
                         <Link href="/" className={"title" + (dontLink ? " disabled" : "")}>
                             <div className="logo">
-                                <img src="/images/logo-square.svg" alt="Logo" />
+                                <img src={basePath + "/images/logo-square.svg"} alt="Logo" />
                             </div>
 
                             <h1 className="title-text">Better Transit Ottawa</h1>

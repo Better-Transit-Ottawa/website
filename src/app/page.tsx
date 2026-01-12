@@ -3,6 +3,7 @@ import LinkMap from "./components/link-map";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
 import Link from "next/link";
+import { basePath } from "../lib/config";
 
 export default function Home() {
   return (
@@ -26,21 +27,21 @@ export default function Home() {
 
         <div className="socials">
           <a href="https://bsky.app/profile/bettertransitottawa.ca">
-            <img src="/images/bluesky.svg" alt="Bluesky logo"/>
+            <img src={basePath + "/images/bluesky.svg"} alt="Bluesky logo"/>
           </a>
 
           <a href="https://www.instagram.com/bettertransitottawa/">
-            <img src="/images/instagram.svg" alt="Instagram logo"/>
+            <img src={basePath + "/images/instagram.svg"} alt="Instagram logo"/>
           </a>
 
           <a href="https://www.youtube.com/@BetterTransitOttawa">
-            <img src="/images/youtube.svg" alt="YouTube logo"/>
+            <img src={basePath + "/images/youtube.svg"} alt="YouTube logo"/>
           </a>
         </div>
 
         <section className="text-block" aria-labelledby="latest-posts">
           
-          <img className="info-icon" src="/images/station-dot.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="latest-posts">
             Latest posts
           </h2>
@@ -56,21 +57,20 @@ export default function Home() {
 
                   <img
                     className="project-image"
-                    src="/images/blog/budget-2026/bus.jpg"
+                    src={basePath + "/images/blog/budget-2026/bus.jpg"}
                     alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
                   />
                 </Link>
                 <p>
                   Yesterday, Ottawa City Council approved the 2026 budget. Councillors recognize many of the issues, but still voted for a budget that does will not solve the bus shortage.
                 </p>
-              
             </li>
           </ul>
         </section>
 
         <section className="text-block" aria-labelledby="projects">
           
-          <img className="info-icon" src="/images/station-dot.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="projects">
             Projects that need your help
           </h2>
@@ -85,7 +85,7 @@ export default function Home() {
 
                 <img
                   className="project-image"
-                  src="/images/bank.jpg"
+                src={basePath + "/images/bank.jpg"}
                   alt="An OC Transpo bus on Bank street"
                 />
 
@@ -122,7 +122,7 @@ export default function Home() {
 
         <section className="text-block" aria-labelledby="about-us">
           
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="about-us">
             Who We Are
           </h2>

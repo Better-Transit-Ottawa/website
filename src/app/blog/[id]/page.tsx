@@ -5,6 +5,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { Metadata } from "next";
 import Layout from "@/components/layout";
+import { basePath } from "../../../lib/config";
 
 const postsDirectory = "blog";
 
@@ -84,13 +85,12 @@ export default async function Post(p: BlogProps) {
     }>
       <section className="text-block">
 
-        
-          <img className="info-icon" src="/images/info.svg" alt="Info icon" />
+        <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
 
-          <h2 className="info-bar-title">
-            {postData.title}
-          </h2>
-        
+        <h2 className="info-bar-title">
+          {postData.title}
+        </h2>
+
         <article className="blog-article">
           <div className="date">
           {postData.date}
@@ -99,8 +99,8 @@ export default async function Post(p: BlogProps) {
         {postData.thumbnail && (
           <img
             className="blog-thumbnail"
-            src={postData.thumbnail}
-            alt={postData.caption}
+            src={basePath + postData.thumbnail}
+            alt={postData.caption!}
           />
         )}
 
