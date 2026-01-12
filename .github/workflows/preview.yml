@@ -72,12 +72,7 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          NEXT_PUBLIC_BASE_PATH: >
-            /${{
-              startsWith(github.event_name, 'pull_request')
-              && format('pr-{0}', github.event.number)
-              || format('{0}',    github.ref_name)
-            }}
+          NEXT_PUBLIC_BASE_PATH: /${{startsWith(github.event_name, 'pull_request') && format('pr-{0}', github.event.number) || format('{0}', github.ref_name)}}
 
       - name: Generate token
         id: generate-token
