@@ -184,6 +184,8 @@ section {
   
   background: var(--black);
   border: 2px solid var(--fgcol);
+  border-top: none;
+  border-right: none;
   color: white;
  
 
