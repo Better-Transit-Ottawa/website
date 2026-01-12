@@ -184,6 +184,9 @@ section {
   /* styled to look like the line 2 screens (thats why not variables) */
   background-color: white;
   color: black;
+
+  /* temporary brightness lowering to avoid bad look*/
+  filter: brightness(.9);
 }
 
 footer {
