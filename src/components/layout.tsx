@@ -8,6 +8,7 @@ export interface LayoutProps {
     className?: string;
 }
 
+const backgroundImage = basePath + "/images/map.webp";
 
 export default function Layout({ children, footer, dontLink, className }: LayoutProps) {
     className ??= "";
@@ -15,7 +16,9 @@ export default function Layout({ children, footer, dontLink, className }: Layout
     return (
         <>
             <div className="background-container">
-                <div className="background"/>
+                <div className="background" style={{
+                    backgroundImage: `url(${backgroundImage})`
+                }}/>
             </div>
 
             <main className={"content " + className}>
