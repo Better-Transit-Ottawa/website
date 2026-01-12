@@ -1,0 +1,48 @@
+1:"$Sreact.fragment"
+2:I[22016,["/_next/static/chunks/796e69ae18b2784c.js"],""]
+7:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+8:"$Sreact.suspense"
+:HL["/images/logo-square.svg","image"]
+:HL["/images/info.svg","image"]
+:HL["/images/blog/bank-bus-lanes.jpg","image"]
+3:T1781,<p>Last night, city staff held an open house to put forward their recommendations for bus lanes and street parking changes on Bank Street.</p>
+<p>Despite overwhelming public opinion and data-driven evidence to support all-day/24hr continuous bus lanes, the proposed changes are lacklustre at best.</p>
+<hr>
+<h2>Changes</h2>
+<p>The proposed changes to Bank Street along the study area (between Hwy 417 and the Rideau Canal) were:</p>
+<ul>
+<li>A 2-hour bus lane in the morning from 07h00 to 09h00 for northbound traffic <strong>only</strong>, ending at Pretoria and starting at Holmwood.</li>
+<li>A 2-hour bus lane in the afternoon from 15h30 to 17h30 for southbound traffic <strong>only</strong>, starting at Powell.</li>
+<li>Five small 24h bus lane segments added at the intersection at Fifth Road:
+<ul>
+<li>The longest section able to accommodate 2 articulated buses</li>
+<li>The other sections on the western side of Bank across from Lansdowne from Holmwood to Wilton, and on the north side of Bank before Aylmer.</li>
+</ul>
+</li>
+<li>A single transit queue signal at the Exhibition intersection.</li>
+<li>Addition of 3 bike crossings at Glebe, First, and Fifth intersection.</li>
+</ul>
+<p>Street parking would be allowed outside of these times, and major TD place events.</p>
+<p>These changes were <strong>not</strong> proposed as interim or temporary.</p>
+<h2>Response at the Open House</h2>
+<p>The participants at the open house yesterday were overwhelmingly in favour of bus lanes on Bank Street and frustrated with the inadequate nature of this plan, with 23 of the 25 community members who spoke during the event being supportive of more bus lanes than the current study proposes. However, city staff frequently declined to answer questions or provide additional data when asked during the event.</p>
+<h2>Parking</h2>
+<p>All street parking on Bank Street makes up 7% of the total parking supply in the study area, with midday periods averaging 30% capacity, rarely more than 50%. This means that during the day, there are often only 40–70 cars on a 2hr basis parked along Bank within the study area, and the total demand for Bank Street parking typically uses 2–4% of the available parking supply. Short-term parking occupancy in the Glebe garage is 13–38% given the time of day, and occupancy at the Lansdowne garage is typically 30%, only reaching capacity during events.</p>
+<p>If street parking were completely removed immediately, there would still be more than sufficient parking on side streets, parking lots at businesses, and the two major parking garages to meet demand.</p>
+<p>Out of 2800 respondents to a city survey, only 13% of respondents said they would not be willing to walk far from their parking space to their destination, with 87% of respondents saying they were willing to walk up to 5, 10, and longer than 10 minutes, or do not travel by car to Bank Street—most people who drive to Bank Street would be willing to park on a side street instead.</p>
+<p>Parked cars disproportionately affect all other users of a transportation corridor. Even a single illegally parked car causes problems as drivers and buses must now weave in and out of the middle lane, interrupting the flow of traffic and causing safety risks for all road users.</p>
+<p>City staff acknowledged that illegal parking during disallowed times (peak rush and events) was a common occurrence. When questions were raised regarding enforcement, city staff claimed that higher fees for infractions as a result of a change to bus lanes was their plan, but declined to comment when questioned why that did not work for the Rideau Street bus lanes.</p>
+<h2>Buses</h2>
+<p>City staff quoted 6000 daily bus riders on this section of Bank Street on weekdays, with the combined ridership total of routes 6 (#2 busiest) and 7 (#3 busiest) being busier than the current busiest bus route, the 88<sup><a href="https://drive.google.com/file/d/1JSQU7QUkv1oby3assZZZlwIeqZwXQHm6/view">[1]</a></sup>. Routes 6 and 7 are consistently among the top 3 most unreliable buses for trip delivery according to data regularly shared by OC Transpo, and can be found delayed, cancelled, and bunched throughout the day—not just peak hours. Additionally, many of these delays have further knock-on effects due to buses running different routes back to back. A bus being delayed on one route will then start its next route late, worsening transit reliability even outside of the Bank Street corridor. The delays faced on Bank Street are not just detrimental to the users of the corridor; they are devastating to the entire transit network.</p>
+<p>The city claimed these changes would decrease travel times for bus commuters by up to 60 seconds, a bus that can frequently be found delayed by 20 minutes or more, but would only do so during peak times, and only for one direction. City staff also claimed that it would increase consistency and reliability, but declined to provide any figure or scale as to the extent of the impact these changes would have. Times outside of peak hours were not included as part of the study, so they declined to comment on the impact that complete 24-hour bus lanes would bring to everyone.</p>
+<p>The 7 is a major bus route used by Carleton University students who primarily travel outside of peak hours, and in the opposite direction of peak traffic. Because of this, they, despite being a major source of ridership, would not benefit from the proposed directional, peak-only bus lanes.</p>
+<h2>Conclusion</h2>
+<p>Thousands of people should not have to be disproportionately affected both in terms of their own commutes as well as their safety in order to save seconds of walking for a handful of people. This solution is claimed to be a "balanced compromise" by city staff and councillors, but does this sound balanced to you?</p>
+<p>The proposed measures are completely and utterly inadequate for all users of Bank Street.</p>
+<p>The citizens of Ottawa all deserve better.</p>
+<p>- Better Transit Ottawa</p>
+0:{"buildId":"6jrdMF14uBc4liKB7pIcx","rsc":["$","$1","c",{"children":[[["$","div",null,{"className":"background-container","children":["$","div",null,{"className":"background"}]}],["$","main",null,{"className":"content ","children":[["$","header",null,{"children":["$","$L2",null,{"href":"/","className":"title","children":[["$","div",null,{"className":"logo","children":["$","img",null,{"src":"/images/logo-square.svg","alt":"Logo"}]}],["$","h1",null,{"className":"title-text","children":"Better Transit Ottawa"}]]}]}],["$","section",null,{"className":"text-block","children":[["$","h2",null,{"className":"info-bar","children":[["$","img",null,{"className":"info-icon","src":"/images/info.svg","alt":"Info icon"}],["$","span",null,{"className":"info-bar-title","children":"Bank Street Bus Lane Open House: Our response"}]]}],["$","article",null,{"className":"blog-article","children":[["$","div",null,{"className":"date","children":"2025-09-25"}],["$","img",null,{"className":"blog-thumbnail","src":"/images/blog/bank-bus-lanes.jpg","alt":"Buses in a bus lane turning onto Bank Street"}],["$","div",null,{"className":"blog","dangerouslySetInnerHTML":{"__html":"$3"}}]]}]]}],"$L4"]}]],["$L5"],"$L6"]}],"loading":null,"isPartial":false}
+4:["$","footer",null,{"children":[[],["$","div",null,{"children":"Contact: contact[at]bettertransitottawa.ca"}],["$","div",null,{"children":["$","a",null,{"href":"https://github.com/Better-Transit-Ottawa/website","children":"Website source code"}]}]]}]
+5:["$","script","script-0",{"src":"/_next/static/chunks/796e69ae18b2784c.js","async":true}]
+6:["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]
+9:null

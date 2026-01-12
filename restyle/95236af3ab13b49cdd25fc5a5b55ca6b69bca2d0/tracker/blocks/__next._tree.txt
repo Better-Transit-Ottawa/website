@@ -1,0 +1,7 @@
+:HL["/_next/static/chunks/7f41b1317f3c5a71.css","style"]
+:HL["/_next/static/chunks/d88a45ac3ffe6847.css","style"]
+:HL["/_next/static/chunks/8a5bd6fe3abc8091.css","style"]
+:HL["/Frutiger.ttf","font",{"type":"font/ttf"}]
+:HL["/Frutiger_bold.ttf","font",{"type":"font/ttf"}]
+:HL["/images/logo-square.svg","image"]
+0:{"buildId":"6jrdMF14uBc4liKB7pIcx","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"tracker","paramType":null,"paramKey":"tracker","hasRuntimePrefetch":false,"slots":{"children":{"name":"blocks","paramType":null,"paramKey":"blocks","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

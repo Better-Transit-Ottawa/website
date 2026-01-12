@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[22016,["/_next/static/chunks/04d6bb0dc09fd04e.js","/_next/static/chunks/bd30acf9f4f29cc8.js"],""]
+3:"$Sreact.suspense"
+4:I[54742,["/_next/static/chunks/04d6bb0dc09fd04e.js","/_next/static/chunks/bd30acf9f4f29cc8.js"],"default"]
+5:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+:HL["/images/logo-square.svg","image"]
+:HL["/_next/static/chunks/d88a45ac3ffe6847.css","style"]
+0:{"buildId":"6jrdMF14uBc4liKB7pIcx","rsc":["$","$1","c",{"children":[[["$","div",null,{"className":"background-container","children":["$","div",null,{"className":"background"}]}],["$","main",null,{"className":"content fullsize","children":[["$","header",null,{"children":["$","$L2",null,{"href":"/","className":"title","children":[["$","div",null,{"className":"logo","children":["$","img",null,{"src":"/images/logo-square.svg","alt":"Logo"}]}],["$","h1",null,{"className":"title-text","children":"Better Transit Ottawa"}]]}]}],["$","div",null,{"className":"text-block fullsize","children":["$","$3",null,{"children":["$","$L4",null,{}]}]}],["$","footer",null,{"children":[["$","div",null,{"children":["$","a",null,{"href":"https://github.com/Better-Transit-Ottawa/bus-tracker","children":"Bus tracker source code"}]}],["$","div",null,{"children":"Contact: contact[at]bettertransitottawa.ca"}],["$","div",null,{"children":["$","a",null,{"href":"https://github.com/Better-Transit-Ottawa/website","children":"Website source code"}]}]]}]]}]],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/d88a45ac3ffe6847.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/04d6bb0dc09fd04e.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/bd30acf9f4f29cc8.js","async":true}]],["$","$L5",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
+6:null
