@@ -1,3 +1,5 @@
+name: Preview site to Pages
+
 # pull_request and push event is supported.
 # This action also works for pull_request_target event, but should not be used in public repositories.
 # Please read https://securitylab.github.com/research/github-actions-preventing-pwn-requests/ before using this action with pull_request_target event.
