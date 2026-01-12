@@ -75,8 +75,8 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: >
             /${{
               startsWith(github.event_name, 'pull_request')
-              && format('pr-{0}/{1}', github.event.number, inputs.pr-per-commit     == 'true' && github.sha || '')
-              || format('{0}/{1}',    github.ref_name,     inputs.branch-per-commit == 'true' && github.sha || '')
+              && format('pr-{0}', github.event.number)
+              || format('{0}',    github.ref_name)
             }}
 
       - name: Generate token
@@ -93,3 +93,7 @@ jobs:
           source-dir: ./out
           target-repository: "Better-Transit-Ottawa/test-website"
           configured-domain: test.bettertransitottawa.ca
+          pr-per-commit: false
+          pr-comment: sticky
+          branch-per-commit: false
+          branch-comment: none
