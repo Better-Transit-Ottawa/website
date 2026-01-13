@@ -61,7 +61,9 @@ export default function Home() {
                     alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
                   />
                 </Link>
-              
+                <p>
+                  Yesterday, Ottawa City Council approved the 2026 budget. Councillors recognize many of the issues, but still voted for a budget that does will not solve the bus shortage.
+                </p>
             </li>
           </ul>
         </section>
@@ -76,15 +78,18 @@ export default function Home() {
 
           <ul className="project-list">
             <li>
-              <h3 className="project-title">
-                Bus lanes on Bank Street
-              </h3>
+              <div className="project-container">
+                <h3 className="project-title">
+                  Bus lanes on Bank Street
+                </h3>
 
-              <img
-                className="project-image"
+                <img
+                  className="project-image"
                 src={basePath + "/images/bank.jpg"}
-                alt="An OC Transpo bus on Bank street"
-              />
+                  alt="An OC Transpo bus on Bank street"
+                />
+
+              </div>
 
               <p>
                 The city is currently studying replacing parking with dedicated bus lanes on a portion of bank street. We need your help to help them make the right decision!
