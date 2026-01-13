@@ -147,7 +147,8 @@ section {
 }
 .text-block p:not(.info-bar, .project-list p, .blog *), article {
   /* alignment */
-  margin: 2em;
+  margin: 0px 2em;
+  margin-top: 20px;
   padding: 0px var(--section-alignment-padding);
 }
 .text-block :first-child {
