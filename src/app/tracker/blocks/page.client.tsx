@@ -476,7 +476,7 @@ export default function PageClient() {
             />
           </div>
 
-          <DownloadButton />
+          <DownloadButton name={currentBlock ? currentBlock : currentVehicle ?? ""} />
         </details>
 
         <DatePicker

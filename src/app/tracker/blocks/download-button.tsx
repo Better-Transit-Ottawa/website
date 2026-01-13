@@ -5,15 +5,19 @@ import { Button } from '@/components/ui/button';
 
 // https://reactflow.dev/examples/misc/download-image
  
-function downloadImage(dataUrl: string) {
-  const a = document.createElement('a');
+function downloadImage(dataUrl: string, name: string) {
+  const a = document.createElement("a");
  
-  a.setAttribute('download', 'reactflow.png');
-  a.setAttribute('href', dataUrl);
+  a.setAttribute("download", `graph-${name}.png`);
+  a.setAttribute("href", dataUrl);
   a.click();
 }
+
+interface DownloadButtonProps {
+    name: string;
+}
  
-function DownloadButton() {
+function DownloadButton(props: DownloadButtonProps) {
     const [generating, setGenerating] = useState(false);
     const { getNodes, getNodesBounds } = useReactFlow();
 
@@ -38,7 +42,7 @@ function DownloadButton() {
                 transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
                 },
             }).then((u) => {
-                downloadImage(u);
+                downloadImage(u, props.name);
 
                 setGenerating(false);
             });
