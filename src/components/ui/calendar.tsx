@@ -14,6 +14,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { dateToDateString } from "@/utils/busTracker"
 
 function Calendar({
   className,
@@ -197,7 +198,7 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString()}
+      data-day={dateToDateString(day.date)}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&
