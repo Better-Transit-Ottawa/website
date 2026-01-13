@@ -1,5 +1,5 @@
 "use client";
-import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
+import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
 import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProvider, useEdgesState, useNodesState, ConnectionMode } from '@xyflow/react';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -94,7 +94,7 @@ function BlockComponent(props: BlockComponentProps) {
                   </td>
                   <td>
                     <Link href={"/tracker/route?" + new URLSearchParams({
-                      date: props.data.date.toLocaleDateString(),
+                      date: dateToDateString(props.data.date),
                       route: b.routeId!
                     }).toString()}>
                       {b.routeId}
@@ -389,9 +389,9 @@ export default function PageClient() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : new Date().toLocaleDateString())));
+  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(new Date()))));
   useEffect(() => {
-    const newDate = searchParams.get("date") || new Date().toLocaleDateString();
+    const newDate = searchParams.get("date") || dateToDateString(new Date());
     if (newDate) {
       if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
         setDate(dateStringToServiceDay(newDate));
@@ -483,10 +483,10 @@ export default function PageClient() {
           date={date}
           dateUpdated={(d) => {
             if (d) {
-              const dateString = d.toLocaleDateString();
-              if (dateString !== new Date().toLocaleDateString()) {
+              const dateString = dateToDateString(d);
+              if (dateString !== dateToDateString(new Date())) {
                 router.push(getPageUrl(pathname, searchParams, {
-                  date: d.toLocaleDateString()
+                  date: dateToDateString(d)
                 }));
               } else {
                 router.push(getPageUrl(pathname, searchParams, {

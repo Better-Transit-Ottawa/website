@@ -113,6 +113,10 @@ export function dateToTimeString(date: Date, moreThan24HourTime = true): string 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+export function dateToDateString(date: Date): string {
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+}
+
 export function secondsToMinuteAndSeconds(seconds: number): string {
     return `${Math.floor(seconds / 60)}:${Math.abs((seconds % 60)).toString().padStart(2, '0')}`;
 }

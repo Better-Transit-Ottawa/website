@@ -1,5 +1,5 @@
 "use client";
-import { busColors, busTrackerServerUrl, dateStringToServiceDay, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
+import { busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -72,7 +72,7 @@ function RouteComponent(props: RouteComponentProps) {
                   </td>
                   <td>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
-                      date: props.date.toLocaleDateString(),
+                      date: dateToDateString(props.date),
                       block: b.blockId!
                     }).toString()}>
                       {b.blockId}
@@ -99,7 +99,7 @@ function RouteComponent(props: RouteComponentProps) {
                   </td>
                   <td style={{ color: b.busId ? props.colors[b.busId] : undefined }}>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
-                      date: props.date.toLocaleDateString(),
+                      date: dateToDateString(props.date),
                       bus: b.busId!
                     }).toString()}>
                       {b.busId}
@@ -169,9 +169,9 @@ export default function PageClient() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : new Date().toLocaleDateString())));
+  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(new Date()))));
   useEffect(() => {
-    const newDate = searchParams.get("date") || new Date().toLocaleDateString();
+    const newDate = searchParams.get("date") || dateToDateString(new Date());
     if (newDate) {
       if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
         setDate(dateStringToServiceDay(newDate));
@@ -213,10 +213,10 @@ export default function PageClient() {
           date={date}
           dateUpdated={(d) => {
             if (d) {
-              const dateString = d.toLocaleDateString();
-              if (dateString !== new Date().toLocaleDateString()) {
+              const dateString = dateToDateString(d);
+              if (dateString !== dateToDateString(new Date())) {
                 router.push(getPageUrl(pathname, searchParams, {
-                  date: d.toLocaleDateString()
+                  date: dateToDateString(d)
                 }));
               } else {
                 router.push(getPageUrl(pathname, searchParams, {

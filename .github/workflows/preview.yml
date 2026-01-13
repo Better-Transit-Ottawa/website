@@ -4,10 +4,7 @@ name: Preview site to Pages
 # This action also works for pull_request_target event, but should not be used in public repositories.
 # Please read https://securitylab.github.com/research/github-actions-preventing-pwn-requests/ before using this action with pull_request_target event.
 on:
-  pull_request:
   push:
-    branches:
-      - restyle
   workflow_dispatch:
 
 # contents: write is required for deploying the GitHub Pages if using the default GITHUB_TOKEN
