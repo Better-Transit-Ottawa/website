@@ -77,7 +77,7 @@ export default function Home() {
           <ul className="project-list">
             <li>
                 <p>
-                  {`Work in progress tools to monitor OC Transpo's Reliability`}
+                  {`Work in progress tools to monitor OC Transpo's reliability`}
                 </p>
 
                 <Link href="/tracker/route">
