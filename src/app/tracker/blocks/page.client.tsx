@@ -10,6 +10,7 @@ import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
 import DownloadButton from "./download-button";
 import { Slider } from "@/components/ui/slider";
+import { HelpCircleIcon } from "lucide-react";
 
 interface BlockComponentProps {
   data: {
@@ -496,6 +497,25 @@ export default function PageClient() {
             }
           }}
         />
+
+        <details className="what-is-this">
+          <summary>
+            <HelpCircleIcon/>What is this?
+          </summary>
+
+          <p>
+            OC Transpo is facing a significant bus shortage. Because of this, many trips never get a bus assigned, and buses have to be re-assigned throughout the day. This tracks the path of a bus in a map format.
+          </p>
+
+          <p>
+            A “block” generally is the path one bus will take throughout the day. When a bus switches a block, the diagram will show an arrow from one trip to the bus’s next trip.
+            Buses generally switch blocks when a priority trip on another block needs a bus to cover, or if the previous trip went so late that the next trip on the block must be cancelled.
+          </p>
+
+          <p>
+            The table shows the “scheduled start” and “actual start” of routes to show the delay of buses. In brackets in the “actual start” and “actual end” column, it shows the delay in minutes.
+          </p>
+        </details>
       </div>
       <div className="flow-graph-container" style={{
         "--flow-stroke-width": arrowSize

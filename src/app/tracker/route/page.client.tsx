@@ -7,6 +7,7 @@ import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
+import { HelpCircleIcon } from "lucide-react";
 
 interface RouteData {
   trip1: TripDetails[];
@@ -226,6 +227,28 @@ export default function PageClient() {
             }
           }}
         />
+
+        <details className="what-is-this">
+          <summary>
+            <HelpCircleIcon/>What is this?
+          </summary>
+
+          <p>
+            OC Transpo is facing a significant bus shortage. Because of this, many trips never get a bus assigned, and buses have to be re-assigned throughout the day. This causes many trip cancellations.
+          </p>
+
+          <p>
+            This page tracks a route throughout the day. When a trip has been cancelled, it will appear red. Cancellations usually occur due to a bus never being available to run the route, the bus that was supposed to run the route running late, or the bus was taken to run a higher priority route.
+          </p>
+
+          <p>
+            The table shows the “scheduled start” and “actual start” of routes to show the delay of buses. In brackets in the “actual start” and “actual end” column, it shows the delay in minutes.
+          </p>
+
+          <p>
+            A “block” generally is the path one bus will take throughout the day. Clicking on the “Block ID” will bring you to a diagram showing you how buses on that block have been running throughout the day. This can allow you to see why a cancellation might have occurred.
+          </p>
+        </details>
       </div>
       <RouteTables
         route={currentRoute}

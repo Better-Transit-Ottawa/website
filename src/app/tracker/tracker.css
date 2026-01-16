@@ -110,7 +110,7 @@ to get overridden */
     padding-bottom: 20px;
 }
 
-.advanced-options {
+.advanced-options, .what-is-this {
     font-size: 14px;
     cursor: pointer;
 }
@@ -125,6 +125,18 @@ to get overridden */
 
 .advanced-options .slider {
     width: 300px;
+}
+
+.what-is-this summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.what-is-this p {
+  padding: 5px !important;
+  max-width: 500px;
 }
 
 .react-flow__edge-path {
