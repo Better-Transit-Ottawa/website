@@ -66,6 +66,46 @@ export default function Home() {
           </ul>
         </section>
 
+        <section className="text-block" aria-labelledby="latest-posts">
+          
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
+          <h2 className="info-bar-title" id="latest-posts">
+            Bus Reliability
+          </h2>
+         
+
+          <ul className="project-list">
+            <li>
+                <p>
+                  {`Work in progress tools to monitor OC Transpo's Reliability`}
+                </p>
+
+                <Link href="/tracker/route">
+                  <h3 className="project-title">
+                    Route delay and cancellation tracker
+                  </h3>
+                </Link>
+
+                <br/>
+
+                <Link href="/tracker/blocks">
+                  
+                  <h3 className="project-title">
+                    Block and bus-movement tracker
+                  </h3>
+
+                  <img
+                    className="project-image"
+                    src={basePath + "/images/graph-5-03.png"}
+                    alt="Map of OC Transpo block 5-03"
+                  />
+
+                </Link>
+              
+            </li>
+          </ul>
+        </section>
+
         <section className="text-block" aria-labelledby="projects">
           
           <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />

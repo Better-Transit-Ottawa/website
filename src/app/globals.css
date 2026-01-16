@@ -105,6 +105,7 @@ section {
 .text-block {
   font-size: 1.2em;
   padding: 30px;
+  width: 100%;
 }
 
 .text-block-indented {
