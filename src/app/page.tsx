@@ -43,33 +43,6 @@ export default function Home() {
           
           <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
           <h2 className="info-bar-title" id="latest-posts">
-            Latest posts
-          </h2>
-         
-
-          <ul className="project-list">
-            <li>
-                <Link href="/blog/budget-2026">
-                  
-                  <h3 className="project-title">
-                    2026 Budget: Our Response
-                  </h3>
-
-                  <img
-                    className="project-image"
-                    src={basePath + "/images/blog/budget-2026/bus.jpg"}
-                    alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
-                  />
-                </Link>
-              
-            </li>
-          </ul>
-        </section>
-
-        <section className="text-block" aria-labelledby="latest-posts">
-          
-          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
-          <h2 className="info-bar-title" id="latest-posts">
             Bus Reliability
           </h2>
          
@@ -100,6 +73,33 @@ export default function Home() {
                     alt="Map of OC Transpo block 5-03"
                   />
 
+                </Link>
+              
+            </li>
+          </ul>
+        </section>
+
+        <section className="text-block" aria-labelledby="latest-posts">
+          
+          <img className="info-icon" src={basePath + "/images/info.svg"} alt="Info icon" />
+          <h2 className="info-bar-title" id="latest-posts">
+            Latest posts
+          </h2>
+         
+
+          <ul className="project-list">
+            <li>
+                <Link href="/blog/budget-2026">
+                  
+                  <h3 className="project-title">
+                    2026 Budget: Our Response
+                  </h3>
+
+                  <img
+                    className="project-image"
+                    src={basePath + "/images/blog/budget-2026/bus.jpg"}
+                    alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
+                  />
                 </Link>
               
             </li>
