@@ -424,6 +424,10 @@ header {
     padding-right: 0;
   }
 
+  .text-block {
+    width: unset;
+  }
+
   .webring-contents-inner {
     width: 72%;
   }
