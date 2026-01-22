@@ -74,7 +74,7 @@ function RouteComponent(props: RouteComponentProps) {
           </thead>
           <tbody>
             {props.cancellations.map((b) => {
-              const serviceGap = b.nextStartTime &&  b.lastStartTime ? Math.floor(timeStringDiff(b.nextStartTime, b.lastStartTime) / 60) : 0;
+              const serviceGap = b.nextStartTime &&  b.lastStartTime ? Math.abs(Math.floor(timeStringDiff(b.nextStartTime, b.lastStartTime) / 60)) : 0;
               return (
                 <tr key={b.tripId} className={`block-table nodrag nopan`}>
                   <td>
