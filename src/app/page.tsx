@@ -53,6 +53,12 @@ export default function Home() {
                   {`Work in progress tools to monitor OC Transpo's reliability`}
                 </p>
 
+                <Link href="/tracker/cancelled">
+                  <h3 className="project-title">
+                    Cancellation tracker
+                  </h3>
+                </Link>
+
                 <Link href="/tracker/route">
                   <h3 className="project-title">
                     Route delay and cancellation tracker

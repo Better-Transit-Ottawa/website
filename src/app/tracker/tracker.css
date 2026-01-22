@@ -21,6 +21,10 @@
     text-align: center;
 }
 
+.block-node-description {
+    text-align: center;
+}
+
 .content.fullsize {
     max-width: 100%;
 }
@@ -110,6 +114,11 @@ to get overridden */
     padding-bottom: 20px;
 }
 
+.route-tables.cancel-tables {
+    gap: 30px;
+    justify-content: center;
+}
+
 .advanced-options, .what-is-this {
     font-size: 14px;
     cursor: pointer;
@@ -148,7 +157,7 @@ to get overridden */
         width: 100%;
     }
 
-    .route-tables {
+    .route-tables:not(.cancel-tables) {
         font-size: 8px;
         gap: 20px;
     }
