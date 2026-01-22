@@ -89,6 +89,10 @@ to get overridden */
     gap: 10px;
 }
 
+.control-box-no-width button {
+    width: unset;
+}
+
 .controls {
     display: flex;
     justify-content: center;

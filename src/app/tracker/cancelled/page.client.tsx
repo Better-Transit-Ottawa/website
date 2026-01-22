@@ -7,6 +7,7 @@ import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
 import { HelpCircleIcon } from "lucide-react";
+import Combobox from "@/components/ComboBox";
 
 interface CancellationData {
   routeId: string;
@@ -31,6 +32,23 @@ interface RouteComponentProps {
   totalTrips: number;
   cancellations: Cancellation[];
 }
+
+enum SortOptions {
+  Route = "route",
+  CancelNum = "cancelNum",
+  CancelPercentage = "cancelPercentage"
+}
+
+const sortOptions = [{
+  value: SortOptions.Route,
+  label: "Sort by route"
+}, {
+  value: SortOptions.CancelNum,
+  label: "Sort by cancellations"
+}, {
+  value: SortOptions.CancelPercentage,
+  label: "Sort by cancellation percentage"
+}];
 
 function RouteComponent(props: RouteComponentProps) {
   return (
@@ -136,9 +154,27 @@ export default function PageClient() {
     }
   }, [searchParams, date]);
 
+  const [sort, setSort] = useState(searchParams.get("sort") as SortOptions ?? SortOptions.Route);
+  useEffect(() => {
+    const newSort = searchParams.get("sort") || SortOptions.Route;
+    if (newSort !== sort) {
+      setSort(newSort as SortOptions);
+    }
+  }, [searchParams, sort]);
+
   return (
     <>
       <div className="controls with-padding">
+        <div className="control-boxes control-box-no-width">
+          <Combobox options={sortOptions} 
+            hintText="Select sort..."
+            value={sort}
+            onChange={(v) => {
+              router.push(getPageUrl(pathname, searchParams, {
+                sort: v === SortOptions.Route ? null : v
+              }));
+            }}/>
+        </div>
         <DatePicker
           date={date}
           dateUpdated={(d) => {
@@ -177,6 +213,7 @@ export default function PageClient() {
       </div>
       <CancelTables
         date={date}
+        sort={sort}
       />
     </>
   );
@@ -184,33 +221,55 @@ export default function PageClient() {
 
 interface GraphProps {
   date: Date;
+  sort: SortOptions;
 }
 
-function CancelTables({ date }: GraphProps) {
+function sortData(data: CancellationData[], sort: SortOptions) {
+  switch (sort) {
+    case SortOptions.Route:
+      data.sort((a, b) => parseInt(a.routeId) - parseInt(b.routeId));
+      break;
+    case SortOptions.CancelNum:
+      data.sort((a, b) => b.cancellations.length - a.cancellations.length);
+      break;
+    case SortOptions.CancelPercentage:
+      data.sort((a, b) => (b.cancellations.length / b.totalTrips) - (a.cancellations.length / a.totalTrips));
+      break;
+  }
+
+  return data;
+}
+
+function CancelTables({ date, sort }: GraphProps) {
+  const [cancelDataUnSorted, setCancelDataUnSorted] = useState<CancellationData[] | null>(null);
   const [cancelData, setCancelData] = useState<CancellationData[] | null>(null);
   useEffect(() => {
-    setCancelData(null);
+    setCancelDataUnSorted(null);
 
     getCancellationData({
       date: date.toISOString()
-    }).then(setCancelData);
+    }).then(setCancelDataUnSorted);
   }, [date]);
+  useEffect(() => {
+    if (cancelDataUnSorted) {
+      setCancelData(sortData([...cancelDataUnSorted], sort));
+    } else {
+      setCancelData(null);
+    }
+  }, [cancelDataUnSorted, sort]);
 
   return (
     <div className="route-tables cancel-tables">
       {cancelData && 
-        <>
-          {cancelData.map((c, index) => (
-            <RouteComponent
-              key={index}
-              date={date}
-              routeId={c.routeId}
-              totalTrips={c.totalTrips}
-              cancellations={c.cancellations}
-            />
-          ))}
-          
-        </>
+        cancelData.map((c) => (
+          <RouteComponent
+            key={c.routeId}
+            date={date}
+            routeId={c.routeId}
+            totalTrips={c.totalTrips}
+            cancellations={c.cancellations}
+          />
+        ))
       }
     </div>
   );
