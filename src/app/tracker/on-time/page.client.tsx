@@ -18,6 +18,10 @@ interface Aggregate {
   onTimeTrips: number;
   canceledTrips: number;
   onTimePct: number | null;
+  avgDelayMin: number | null;
+  medianDelayMin: number | null;
+  maxDelayMin: number | null;
+  p90DelayMin: number | null;
 }
 
 interface RouteAggregate extends Aggregate {
@@ -106,6 +110,21 @@ function formatRatio(numerator: number, denominator: number): string {
   if (!denominator) return "n/a";
   return `${((numerator / denominator) * 100).toFixed(1)}%`;
 }
+
+function formatMinutes(value: number | null | undefined): string {
+  if (value === null || value === undefined || Number.isNaN(value)) return "n/a";
+  return `${value.toFixed(1)} min`;
+}
+
+const statTooltips = {
+  onTimePct: "Percent of evaluated trips within the threshold.",
+  avgDelay: "Average absolute delay for trips with a measured delay.",
+  medianDelay: "Median absolute delay for trips with a measured delay.",
+  p90Delay: "90th percentile of absolute delay.",
+  maxDelay: "Largest absolute delay observed.",
+  evaluatedPct: "Percent of scheduled trips with enough data to compute delay.",
+  canceledPct: "Percent of scheduled trips marked as canceled."
+};
 
 const timeOfDayLabels: Record<string, string> = {
   early: "Overnight (00:00–05:00)",
@@ -433,14 +452,22 @@ export default function PageClient() {
                 <table>
                   <thead>
                     <tr>
-                      <th>On-time %</th>
-                      <th>Evaluated %</th>
-                      <th>Canceled %</th>
+                      <th title={statTooltips.onTimePct}>On-time %</th>
+                      <th title={statTooltips.avgDelay}>Avg delay</th>
+                      <th title={statTooltips.medianDelay}>Median</th>
+                      <th title={statTooltips.p90Delay}>P90</th>
+                      <th title={statTooltips.maxDelay}>Max</th>
+                      <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                      <th title={statTooltips.canceledPct}>Canceled %</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>{formatPercent(data.overall.onTimePct)}</td>
+                      <td>{formatMinutes(data.overall.avgDelayMin)}</td>
+                      <td>{formatMinutes(data.overall.medianDelayMin)}</td>
+                      <td>{formatMinutes(data.overall.p90DelayMin)}</td>
+                      <td>{formatMinutes(data.overall.maxDelayMin)}</td>
                       <td>{formatRatio(data.overall.evaluatedTrips, data.overall.totalScheduled)}</td>
                       <td>{formatRatio(data.overall.canceledTrips, data.overall.totalScheduled)}</td>
                     </tr>
@@ -457,14 +484,22 @@ export default function PageClient() {
                 <table>
                   <thead>
                     <tr>
-                      <th>On-time %</th>
-                      <th>Evaluated %</th>
-                      <th>Canceled %</th>
+                      <th title={statTooltips.onTimePct}>On-time %</th>
+                      <th title={statTooltips.avgDelay}>Avg delay</th>
+                      <th title={statTooltips.medianDelay}>Median</th>
+                      <th title={statTooltips.p90Delay}>P90</th>
+                      <th title={statTooltips.maxDelay}>Max</th>
+                      <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                      <th title={statTooltips.canceledPct}>Canceled %</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>{formatPercent(data.routeSummary.onTimePct)}</td>
+                      <td>{formatMinutes(data.routeSummary.avgDelayMin)}</td>
+                      <td>{formatMinutes(data.routeSummary.medianDelayMin)}</td>
+                      <td>{formatMinutes(data.routeSummary.p90DelayMin)}</td>
+                      <td>{formatMinutes(data.routeSummary.maxDelayMin)}</td>
                       <td>{formatRatio(data.routeSummary.evaluatedTrips, data.routeSummary.totalScheduled)}</td>
                       <td>{formatRatio(data.routeSummary.canceledTrips, data.routeSummary.totalScheduled)}</td>
                     </tr>
@@ -481,9 +516,13 @@ export default function PageClient() {
                 <thead>
                   <tr>
                     <th>Hours</th>
-                    <th>On-time %</th>
-                    <th>Evaluated %</th>
-                    <th>Canceled %</th>
+                    <th title={statTooltips.onTimePct}>On-time %</th>
+                    <th title={statTooltips.avgDelay}>Avg delay</th>
+                    <th title={statTooltips.medianDelay}>Median</th>
+                    <th title={statTooltips.p90Delay}>P90</th>
+                    <th title={statTooltips.maxDelay}>Max</th>
+                    <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                    <th title={statTooltips.canceledPct}>Canceled %</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -491,6 +530,10 @@ export default function PageClient() {
                     <tr key={bucket.label}>
                       <td>{timeOfDayLabels[bucket.label] ?? bucket.label}</td>
                       <td>{formatPercent(bucket.onTimePct)}</td>
+                      <td>{formatMinutes(bucket.avgDelayMin)}</td>
+                      <td>{formatMinutes(bucket.medianDelayMin)}</td>
+                      <td>{formatMinutes(bucket.p90DelayMin)}</td>
+                      <td>{formatMinutes(bucket.maxDelayMin)}</td>
                       <td>{formatRatio(bucket.evaluatedTrips, bucket.totalScheduled)}</td>
                       <td>{formatRatio(bucket.canceledTrips, bucket.totalScheduled)}</td>
                     </tr>
@@ -509,9 +552,13 @@ export default function PageClient() {
                 <thead>
                   <tr>
                     <th>Route</th>
-                    <th>On-time %</th>
-                    <th>Evaluated %</th>
-                    <th>Canceled %</th>
+                    <th title={statTooltips.onTimePct}>On-time %</th>
+                    <th title={statTooltips.avgDelay}>Avg delay</th>
+                    <th title={statTooltips.medianDelay}>Median</th>
+                    <th title={statTooltips.p90Delay}>P90</th>
+                    <th title={statTooltips.maxDelay}>Max</th>
+                    <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                    <th title={statTooltips.canceledPct}>Canceled %</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -519,6 +566,10 @@ export default function PageClient() {
                     <tr key={route.routeId}>
                       <td>{route.routeId}</td>
                       <td>{formatPercent(route.onTimePct)}</td>
+                      <td>{formatMinutes(route.avgDelayMin)}</td>
+                      <td>{formatMinutes(route.medianDelayMin)}</td>
+                      <td>{formatMinutes(route.p90DelayMin)}</td>
+                      <td>{formatMinutes(route.maxDelayMin)}</td>
                       <td>{formatRatio(route.evaluatedTrips, route.totalScheduled)}</td>
                       <td>{formatRatio(route.canceledTrips, route.totalScheduled)}</td>
                     </tr>
