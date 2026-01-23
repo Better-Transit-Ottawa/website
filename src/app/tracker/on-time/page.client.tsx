@@ -123,7 +123,7 @@ const statTooltips = {
   onTimePct: "Percent of evaluated trips within the threshold.",
   avgDelay: "Average absolute delay for trips with a measured delay.",
   medianDelay: "Median absolute delay for trips with a measured delay.",
-  p90Delay: "90th percentile of absolute delay.",
+  p90Delay: "90% of trips have an absolute delay at or below this value.",
   maxDelay: "Largest absolute delay observed.",
   evaluatedCount: "Trips with delay data / total scheduled trips.",
   canceledPct: "Percent of scheduled trips marked as canceled."
