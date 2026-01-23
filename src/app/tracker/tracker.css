@@ -167,6 +167,14 @@ to get overridden */
     font-size: 14px;
 }
 
+.on-time-date {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    align-items: flex-start;
+}
+
 .on-time-summary {
     display: flex;
     flex-wrap: wrap;

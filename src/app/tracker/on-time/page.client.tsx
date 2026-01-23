@@ -35,6 +35,7 @@ interface TimeOfDayAggregate extends Aggregate {
 
 interface OnTimePerformanceResponse {
   date: string;
+  endDate: string;
   metric: Metric;
   thresholdMinutes: number;
   includeCanceled: boolean;
@@ -42,12 +43,14 @@ interface OnTimePerformanceResponse {
   overall: Aggregate;
   routeSummary: Aggregate | null;
   routes: RouteAggregate[];
+  routesCombined: CombinedRouteAggregate[];
   timeOfDay: TimeOfDayAggregate[];
   routeTimeOfDay: TimeOfDayAggregate[] | null;
 }
 
 interface OnTimeDataRequest {
   date: string;
+  endDate?: string;
   thresholdMinutes: number;
   includeCanceled: boolean;
   metric: Metric;
@@ -168,23 +171,6 @@ function sortRoutes(data: RouteAggregate[], sort: SortOptions): RouteAggregate[]
 
 type CombinedRouteAggregate = Aggregate & { routeId: string };
 
-function combineDirections(routes: RouteAggregate[]): CombinedRouteAggregate[] {
-  const combined: Record<string, Aggregate> = {};
-  for (const route of routes) {
-    combined[route.routeId] ??= { totalScheduled: 0, evaluatedTrips: 0, onTimeTrips: 0, canceledTrips: 0 };
-    combined[route.routeId].totalScheduled += route.totalScheduled;
-    combined[route.routeId].evaluatedTrips += route.evaluatedTrips;
-    combined[route.routeId].onTimeTrips += route.onTimeTrips;
-    combined[route.routeId].canceledTrips += route.canceledTrips;
-  }
-
-  return Object.entries(combined).map(([routeId, agg]) => ({
-    routeId,
-    ...agg,
-    onTimePct: agg.evaluatedTrips === 0 ? null : (agg.onTimeTrips / agg.evaluatedTrips) * 100
-  }));
-}
-
 function sortCombinedRoutes(data: CombinedRouteAggregate[], sort: SortOptions): CombinedRouteAggregate[] {
   const sorted = [...data];
   switch (sort) {
@@ -216,6 +202,7 @@ function sortCombinedRoutes(data: CombinedRouteAggregate[], sort: SortOptions): 
 async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerformanceResponse | null> {
   const query = new URLSearchParams({
     date: params.date,
+    ...(params.endDate ? { endDate: params.endDate } : {}),
     thresholdMinutes: String(params.thresholdMinutes),
     includeCanceled: String(params.includeCanceled),
     metric: params.metric,
@@ -244,6 +231,20 @@ export default function PageClient() {
       }
     }
   }, [searchParams, date]);
+
+  const endParam = searchParams.get("end");
+  const [endDate, setEndDate] = useState<Date | null>(endParam ? dateStringToServiceDay(endParam) : null);
+  useEffect(() => {
+    const newEnd = searchParams.get("end");
+    if (newEnd) {
+      const parsed = dateStringToServiceDay(newEnd);
+      if (!endDate || parsed.getTime() !== endDate.getTime()) {
+        setEndDate(parsed);
+      }
+    } else if (endDate) {
+      setEndDate(null);
+    }
+  }, [searchParams, endDate]);
 
   const [metric, setMetric] = useState<Metric>(parseMetric(searchParams.get("metric")));
   useEffect(() => {
@@ -292,6 +293,7 @@ export default function PageClient() {
 
     getOnTimeData({
       date: dateToDateString(date),
+      endDate: endDate ? dateToDateString(endDate) : undefined,
       thresholdMinutes: threshold,
       includeCanceled,
       metric,
@@ -312,9 +314,9 @@ export default function PageClient() {
     return () => {
       cancelled = true;
     };
-  }, [date, metric, threshold, includeCanceled, selectedRoute]);
+  }, [date, endDate, metric, threshold, includeCanceled, selectedRoute]);
 
-  const combinedRoutes = data ? combineDirections(data.routes) : null;
+  const combinedRoutes = data ? data.routesCombined : null;
   const sortedRoutes = combinedRoutes ? sortCombinedRoutes(combinedRoutes, sort) : null;
   const routeOptions: ComboboxOptions = combinedRoutes
     ? [{ value: "", label: "All routes" }, ...combinedRoutes.map((route) => ({
@@ -379,23 +381,44 @@ export default function PageClient() {
             Include canceled trips
           </label>
 
-          <DatePicker
-            date={date}
-            dateUpdated={(d) => {
-              if (d) {
-                const dateString = dateToDateString(d);
-                if (dateString !== dateToDateString(getCurrentDate())) {
+          <label className="on-time-date">
+            Start date
+            <DatePicker
+              date={date}
+              dateUpdated={(d) => {
+                if (d) {
+                  const dateString = dateToDateString(d);
+                  if (dateString !== dateToDateString(getCurrentDate())) {
+                    router.push(getPageUrl(pathname, searchParams, {
+                      date: dateToDateString(d)
+                    }));
+                  } else {
+                    router.push(getPageUrl(pathname, searchParams, {
+                      date: null
+                    }));
+                  }
+                }
+              }}
+            />
+          </label>
+
+          <label className="on-time-date">
+            End date
+            <DatePicker
+              date={endDate ?? undefined}
+              dateUpdated={(d) => {
+                if (d) {
                   router.push(getPageUrl(pathname, searchParams, {
-                    date: dateToDateString(d)
+                    end: dateToDateString(d)
                   }));
                 } else {
                   router.push(getPageUrl(pathname, searchParams, {
-                    date: null
+                    end: null
                   }));
                 }
-              }
-            }}
-          />
+              }}
+            />
+          </label>
         </div>
 
         <details className="advanced-options">
