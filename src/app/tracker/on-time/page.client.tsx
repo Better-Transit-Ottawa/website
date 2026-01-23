@@ -34,9 +34,12 @@ interface OnTimePerformanceResponse {
   metric: Metric;
   thresholdMinutes: number;
   includeCanceled: boolean;
+  routeId: string | null;
   overall: Aggregate;
+  routeSummary: Aggregate | null;
   routes: RouteAggregate[];
   timeOfDay: TimeOfDayAggregate[];
+  routeTimeOfDay: TimeOfDayAggregate[] | null;
 }
 
 interface OnTimeDataRequest {
@@ -44,6 +47,7 @@ interface OnTimeDataRequest {
   thresholdMinutes: number;
   includeCanceled: boolean;
   metric: Metric;
+  routeId?: string;
 }
 
 const DEFAULT_THRESHOLD = 5;
@@ -98,6 +102,19 @@ function formatPercent(pct: number | null): string {
   return pct === null ? "n/a" : `${pct.toFixed(1)}%`;
 }
 
+function formatRatio(numerator: number, denominator: number): string {
+  if (!denominator) return "n/a";
+  return `${((numerator / denominator) * 100).toFixed(1)}%`;
+}
+
+const timeOfDayLabels: Record<string, string> = {
+  early: "Overnight (00:00–05:00)",
+  morning: "AM peak (05:00–09:00)",
+  midday: "Midday (09:00–15:00)",
+  evening: "PM peak (15:00–19:00)",
+  late: "Evening (19:00–27:00)"
+};
+
 function sortRoutes(data: RouteAggregate[], sort: SortOptions): RouteAggregate[] {
   const sorted = [...data];
   switch (sort) {
@@ -126,12 +143,60 @@ function sortRoutes(data: RouteAggregate[], sort: SortOptions): RouteAggregate[]
   return sorted;
 }
 
+type CombinedRouteAggregate = Aggregate & { routeId: string };
+
+function combineDirections(routes: RouteAggregate[]): CombinedRouteAggregate[] {
+  const combined: Record<string, Aggregate> = {};
+  for (const route of routes) {
+    combined[route.routeId] ??= { totalScheduled: 0, evaluatedTrips: 0, onTimeTrips: 0, canceledTrips: 0 };
+    combined[route.routeId].totalScheduled += route.totalScheduled;
+    combined[route.routeId].evaluatedTrips += route.evaluatedTrips;
+    combined[route.routeId].onTimeTrips += route.onTimeTrips;
+    combined[route.routeId].canceledTrips += route.canceledTrips;
+  }
+
+  return Object.entries(combined).map(([routeId, agg]) => ({
+    routeId,
+    ...agg,
+    onTimePct: agg.evaluatedTrips === 0 ? null : (agg.onTimeTrips / agg.evaluatedTrips) * 100
+  }));
+}
+
+function sortCombinedRoutes(data: CombinedRouteAggregate[], sort: SortOptions): CombinedRouteAggregate[] {
+  const sorted = [...data];
+  switch (sort) {
+    case SortOptions.Best:
+      sorted.sort((a, b) => (b.onTimePct ?? -1) - (a.onTimePct ?? -1));
+      break;
+    case SortOptions.Worst:
+      sorted.sort((a, b) => (a.onTimePct ?? 101) - (b.onTimePct ?? 101));
+      break;
+    case SortOptions.Canceled:
+      sorted.sort((a, b) => b.canceledTrips - a.canceledTrips);
+      break;
+    case SortOptions.Route:
+    default:
+      sorted.sort((a, b) => {
+        const aNum = parseInt(a.routeId, 10);
+        const bNum = parseInt(b.routeId, 10);
+        if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
+          return aNum - bNum;
+        }
+        return a.routeId.localeCompare(b.routeId);
+      });
+      break;
+  }
+
+  return sorted;
+}
+
 async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerformanceResponse | null> {
   const query = new URLSearchParams({
     date: params.date,
     thresholdMinutes: String(params.thresholdMinutes),
     includeCanceled: String(params.includeCanceled),
-    metric: params.metric
+    metric: params.metric,
+    ...(params.routeId ? { routeId: params.routeId } : {})
   });
   const result = await fetch(`${busTrackerServerUrl}/api/on-time-performance?${query.toString()}`);
   if (!result.ok) {
@@ -191,6 +256,12 @@ export default function PageClient() {
   const [data, setData] = useState<OnTimePerformanceResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const routeParam = searchParams.get("route");
+  const [selectedRoute, setSelectedRoute] = useState<string | null>(routeParam);
+  useEffect(() => {
+    setSelectedRoute(routeParam);
+  }, [routeParam]);
+
   useEffect(() => {
     let cancelled = false;
     setData(null);
@@ -200,7 +271,8 @@ export default function PageClient() {
       date: dateToDateString(date),
       thresholdMinutes: threshold,
       includeCanceled,
-      metric
+      metric,
+      routeId: selectedRoute ?? undefined
     }).then((result) => {
       if (cancelled) return;
       if (result) {
@@ -217,9 +289,22 @@ export default function PageClient() {
     return () => {
       cancelled = true;
     };
-  }, [date, metric, threshold, includeCanceled]);
+  }, [date, metric, threshold, includeCanceled, selectedRoute]);
 
-  const sortedRoutes = data ? sortRoutes(data.routes, sort) : null;
+  const combinedRoutes = data ? combineDirections(data.routes) : null;
+  const sortedRoutes = combinedRoutes ? sortCombinedRoutes(combinedRoutes, sort) : null;
+  const routeOptions: ComboboxOptions = combinedRoutes
+    ? [{ value: "", label: "All routes" }, ...combinedRoutes.map((route) => ({
+        value: route.routeId,
+        label: `Route ${route.routeId}`
+      }))]
+    : [{ value: "", label: "All routes" }];
+
+  const selectedRouteData = combinedRoutes && selectedRoute
+    ? combinedRoutes.find((route) => route.routeId === selectedRoute)
+    : null;
+
+  const timeOfDayData = selectedRoute && data?.routeTimeOfDay ? data.routeTimeOfDay : data?.timeOfDay;
 
   return (
     <>
@@ -242,6 +327,16 @@ export default function PageClient() {
             onChange={(v) => {
               router.push(getPageUrl(pathname, searchParams, {
                 sort: v === SortOptions.Route ? null : v
+              }));
+            }}
+          />
+          <Combobox
+            options={routeOptions}
+            hintText="All routes"
+            value={selectedRoute ?? ""}
+            onChange={(v) => {
+              router.push(getPageUrl(pathname, searchParams, {
+                route: v ? v : null
               }));
             }}
           />
@@ -330,31 +425,53 @@ export default function PageClient() {
       {data && (
         <>
           <div className="on-time-summary">
-            <div className="block-node on-time-table">
-              <div className="block-node-title">
-                Overall on-time performance
+            {!selectedRoute && (
+              <div className="block-node on-time-table">
+                <div className="block-node-title">
+                  Overall on-time performance
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>On-time %</th>
+                      <th>Evaluated %</th>
+                      <th>Canceled %</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{formatPercent(data.overall.onTimePct)}</td>
+                      <td>{formatRatio(data.overall.evaluatedTrips, data.overall.totalScheduled)}</td>
+                      <td>{formatRatio(data.overall.canceledTrips, data.overall.totalScheduled)}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>On-time %</th>
-                    <th>On-time</th>
-                    <th>Evaluated</th>
-                    <th>Canceled</th>
-                    <th>Scheduled</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{formatPercent(data.overall.onTimePct)}</td>
-                    <td>{data.overall.onTimeTrips}</td>
-                    <td>{data.overall.evaluatedTrips}</td>
-                    <td>{data.overall.canceledTrips}</td>
-                    <td>{data.overall.totalScheduled}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            )}
+
+            {selectedRouteData && data.routeSummary && (
+              <div className="block-node on-time-table">
+                <div className="block-node-title">
+                  Route {selectedRouteData.routeId}
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>On-time %</th>
+                      <th>Evaluated %</th>
+                      <th>Canceled %</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{formatPercent(data.routeSummary.onTimePct)}</td>
+                      <td>{formatRatio(data.routeSummary.evaluatedTrips, data.routeSummary.totalScheduled)}</td>
+                      <td>{formatRatio(data.routeSummary.canceledTrips, data.routeSummary.totalScheduled)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
 
             <div className="block-node on-time-table">
               <div className="block-node-title">
@@ -363,21 +480,19 @@ export default function PageClient() {
               <table>
                 <thead>
                   <tr>
-                    <th>Bucket</th>
+                    <th>Hours</th>
                     <th>On-time %</th>
-                    <th>On-time</th>
-                    <th>Evaluated</th>
-                    <th>Canceled</th>
+                    <th>Evaluated %</th>
+                    <th>Canceled %</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.timeOfDay.map((bucket) => (
+                  {timeOfDayData?.map((bucket) => (
                     <tr key={bucket.label}>
-                      <td>{bucket.label}</td>
+                      <td>{timeOfDayLabels[bucket.label] ?? bucket.label}</td>
                       <td>{formatPercent(bucket.onTimePct)}</td>
-                      <td>{bucket.onTimeTrips}</td>
-                      <td>{bucket.evaluatedTrips}</td>
-                      <td>{bucket.canceledTrips}</td>
+                      <td>{formatRatio(bucket.evaluatedTrips, bucket.totalScheduled)}</td>
+                      <td>{formatRatio(bucket.canceledTrips, bucket.totalScheduled)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -385,37 +500,33 @@ export default function PageClient() {
             </div>
           </div>
 
-          <div className="block-node on-time-table">
-            <div className="block-node-title">
-              Routes
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Route</th>
-                  <th>Direction</th>
-                  <th>On-time %</th>
-                  <th>On-time</th>
-                  <th>Evaluated</th>
-                  <th>Canceled</th>
-                  <th>Scheduled</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedRoutes && sortedRoutes.map((route) => (
-                  <tr key={`${route.routeId}-${route.direction}`}>
-                    <td>{route.routeId}</td>
-                    <td>{route.direction}</td>
-                    <td>{formatPercent(route.onTimePct)}</td>
-                    <td>{route.onTimeTrips}</td>
-                    <td>{route.evaluatedTrips}</td>
-                    <td>{route.canceledTrips}</td>
-                    <td>{route.totalScheduled}</td>
+          {!selectedRoute && (
+            <div className="block-node on-time-table">
+              <div className="block-node-title">
+                Routes (percentages)
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Route</th>
+                    <th>On-time %</th>
+                    <th>Evaluated %</th>
+                    <th>Canceled %</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {sortedRoutes && sortedRoutes.map((route) => (
+                    <tr key={route.routeId}>
+                      <td>{route.routeId}</td>
+                      <td>{formatPercent(route.onTimePct)}</td>
+                      <td>{formatRatio(route.evaluatedTrips, route.totalScheduled)}</td>
+                      <td>{formatRatio(route.canceledTrips, route.totalScheduled)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </>
       )}
     </>

@@ -183,6 +183,11 @@ to get overridden */
     width: 100%;
 }
 
+.on-time-table th,
+.on-time-table td {
+    white-space: nowrap;
+}
+
 .on-time-empty {
     text-align: center;
     padding: 20px;
