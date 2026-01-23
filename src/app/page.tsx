@@ -69,6 +69,14 @@ export default function Home() {
 
                 <br/>
 
+                <Link href="/tracker/on-time">
+                  <h3 className="project-title">
+                    On-time performance tracker
+                  </h3>
+                </Link>
+
+                <br/>
+
                 <Link href="/tracker/blocks">
                   
                   <h3 className="project-title">

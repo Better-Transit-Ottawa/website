@@ -156,6 +156,38 @@ to get overridden */
     stroke-width: var(--flow-stroke-width) !important;
 }
 
+.on-time-controls .control-boxes {
+    flex-wrap: wrap;
+}
+
+.on-time-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.on-time-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+
+.on-time-table {
+    overflow-x: auto;
+}
+
+.on-time-table table {
+    width: 100%;
+}
+
+.on-time-empty {
+    text-align: center;
+    padding: 20px;
+}
+
 @media only screen and (max-width: 700px) {
     .text-block.fullsize {
         width: 100%;
