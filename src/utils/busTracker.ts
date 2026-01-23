@@ -129,3 +129,13 @@ export function dateStringToServiceDay(dateString: string): Date {
 
     return date;
 }
+
+export function getCurrentDate(): Date {
+    const date = new Date();
+
+    if (date.getHours() < 3) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    }
+
+    return date;
+}

@@ -1,5 +1,5 @@
 "use client";
-import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
+import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
 import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProvider, useEdgesState, useNodesState, ConnectionMode } from '@xyflow/react';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -390,9 +390,9 @@ export default function PageClient() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(new Date()))));
+  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(getCurrentDate()))));
   useEffect(() => {
-    const newDate = searchParams.get("date") || dateToDateString(new Date());
+    const newDate = searchParams.get("date") || dateToDateString(getCurrentDate());
     if (newDate) {
       if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
         setDate(dateStringToServiceDay(newDate));
@@ -485,7 +485,7 @@ export default function PageClient() {
           dateUpdated={(d) => {
             if (d) {
               const dateString = dateToDateString(d);
-              if (dateString !== dateToDateString(new Date())) {
+              if (dateString !== dateToDateString(getCurrentDate())) {
                 router.push(getPageUrl(pathname, searchParams, {
                   date: dateToDateString(d)
                 }));

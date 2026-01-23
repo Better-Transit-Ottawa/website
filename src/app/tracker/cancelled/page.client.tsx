@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, timeStringDiff } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, timeStringDiff } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -144,9 +144,9 @@ export default function PageClient() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(new Date()))));
+  const [date, setDate] = useState<Date>(dateStringToServiceDay((searchParams.get("date") ? searchParams.get("date")! : dateToDateString(getCurrentDate()))));
   useEffect(() => {
-    const newDate = searchParams.get("date") || dateToDateString(new Date());
+    const newDate = searchParams.get("date") || dateToDateString(getCurrentDate());
     if (newDate) {
       if (dateStringToServiceDay(newDate).getTime() !== date.getTime()) {
         setDate(dateStringToServiceDay(newDate));
@@ -180,7 +180,7 @@ export default function PageClient() {
           dateUpdated={(d) => {
             if (d) {
               const dateString = dateToDateString(d);
-              if (dateString !== dateToDateString(new Date())) {
+              if (dateString !== dateToDateString(getCurrentDate())) {
                 router.push(getPageUrl(pathname, searchParams, {
                   date: dateToDateString(d)
                 }));
