@@ -122,9 +122,13 @@ const statTooltips = {
   medianDelay: "Median absolute delay for trips with a measured delay.",
   p90Delay: "90th percentile of absolute delay.",
   maxDelay: "Largest absolute delay observed.",
-  evaluatedPct: "Percent of scheduled trips with enough data to compute delay.",
+  evaluatedCount: "Trips with delay data / total scheduled trips.",
   canceledPct: "Percent of scheduled trips marked as canceled."
 };
+
+function formatCount(numerator: number, denominator: number): string {
+  return `${numerator}/${denominator}`;
+}
 
 const timeOfDayLabels: Record<string, string> = {
   early: "Overnight (00:00–05:00)",
@@ -457,7 +461,7 @@ export default function PageClient() {
                       <th title={statTooltips.medianDelay}>Median</th>
                       <th title={statTooltips.p90Delay}>P90</th>
                       <th title={statTooltips.maxDelay}>Max</th>
-                      <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                      <th title={statTooltips.evaluatedCount}>Evaluated</th>
                       <th title={statTooltips.canceledPct}>Canceled %</th>
                     </tr>
                   </thead>
@@ -468,7 +472,7 @@ export default function PageClient() {
                       <td>{formatMinutes(data.overall.medianDelayMin)}</td>
                       <td>{formatMinutes(data.overall.p90DelayMin)}</td>
                       <td>{formatMinutes(data.overall.maxDelayMin)}</td>
-                      <td>{formatRatio(data.overall.evaluatedTrips, data.overall.totalScheduled)}</td>
+                      <td>{formatCount(data.overall.evaluatedTrips, data.overall.totalScheduled)}</td>
                       <td>{formatRatio(data.overall.canceledTrips, data.overall.totalScheduled)}</td>
                     </tr>
                   </tbody>
@@ -489,7 +493,7 @@ export default function PageClient() {
                       <th title={statTooltips.medianDelay}>Median</th>
                       <th title={statTooltips.p90Delay}>P90</th>
                       <th title={statTooltips.maxDelay}>Max</th>
-                      <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                      <th title={statTooltips.evaluatedCount}>Evaluated</th>
                       <th title={statTooltips.canceledPct}>Canceled %</th>
                     </tr>
                   </thead>
@@ -500,7 +504,7 @@ export default function PageClient() {
                       <td>{formatMinutes(data.routeSummary.medianDelayMin)}</td>
                       <td>{formatMinutes(data.routeSummary.p90DelayMin)}</td>
                       <td>{formatMinutes(data.routeSummary.maxDelayMin)}</td>
-                      <td>{formatRatio(data.routeSummary.evaluatedTrips, data.routeSummary.totalScheduled)}</td>
+                      <td>{formatCount(data.routeSummary.evaluatedTrips, data.routeSummary.totalScheduled)}</td>
                       <td>{formatRatio(data.routeSummary.canceledTrips, data.routeSummary.totalScheduled)}</td>
                     </tr>
                   </tbody>
@@ -521,7 +525,7 @@ export default function PageClient() {
                     <th title={statTooltips.medianDelay}>Median</th>
                     <th title={statTooltips.p90Delay}>P90</th>
                     <th title={statTooltips.maxDelay}>Max</th>
-                    <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                    <th title={statTooltips.evaluatedCount}>Evaluated</th>
                     <th title={statTooltips.canceledPct}>Canceled %</th>
                   </tr>
                 </thead>
@@ -534,7 +538,7 @@ export default function PageClient() {
                       <td>{formatMinutes(bucket.medianDelayMin)}</td>
                       <td>{formatMinutes(bucket.p90DelayMin)}</td>
                       <td>{formatMinutes(bucket.maxDelayMin)}</td>
-                      <td>{formatRatio(bucket.evaluatedTrips, bucket.totalScheduled)}</td>
+                      <td>{formatCount(bucket.evaluatedTrips, bucket.totalScheduled)}</td>
                       <td>{formatRatio(bucket.canceledTrips, bucket.totalScheduled)}</td>
                     </tr>
                   ))}
@@ -557,7 +561,7 @@ export default function PageClient() {
                     <th title={statTooltips.medianDelay}>Median</th>
                     <th title={statTooltips.p90Delay}>P90</th>
                     <th title={statTooltips.maxDelay}>Max</th>
-                    <th title={statTooltips.evaluatedPct}>Evaluated %</th>
+                    <th title={statTooltips.evaluatedCount}>Evaluated</th>
                     <th title={statTooltips.canceledPct}>Canceled %</th>
                   </tr>
                 </thead>
@@ -570,7 +574,7 @@ export default function PageClient() {
                       <td>{formatMinutes(route.medianDelayMin)}</td>
                       <td>{formatMinutes(route.p90DelayMin)}</td>
                       <td>{formatMinutes(route.maxDelayMin)}</td>
-                      <td>{formatRatio(route.evaluatedTrips, route.totalScheduled)}</td>
+                      <td>{formatCount(route.evaluatedTrips, route.totalScheduled)}</td>
                       <td>{formatRatio(route.canceledTrips, route.totalScheduled)}</td>
                     </tr>
                   ))}

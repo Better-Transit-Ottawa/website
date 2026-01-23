@@ -186,6 +186,7 @@ to get overridden */
 .on-time-table th,
 .on-time-table td {
     white-space: nowrap;
+    text-align: center;
 }
 
 .on-time-empty {
