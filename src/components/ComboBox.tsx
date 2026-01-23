@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useEffect, useState } from "react"
+import { createRef, useEffect, useState } from "react"
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
 export type ComboboxOptions = {
@@ -31,6 +31,7 @@ export interface ComboboxProps {
 
 export default function Combobox(props: ComboboxProps) {
   const [open, setOpen] = useState(false);
+  const commandGroup = createRef<HTMLDivElement>();
 
   // Search only works on values, so need to use label as value
   const [labelToValue, setLabelToValue] = useState<Record<string, string>>({});
@@ -64,10 +65,20 @@ export default function Combobox(props: ComboboxProps) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder={props.hintText} />
+          <CommandInput
+            placeholder={props.hintText}
+            onValueChange={() => {
+              if (commandGroup.current) {
+                commandGroup.current.scrollIntoView();
+                setTimeout(() => {
+                  commandGroup.current!.scrollIntoView();
+                }, 1);
+              }
+            }}
+          />
           <CommandList>
             <CommandEmpty>Loading</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup ref={commandGroup} >
               {props.options.map((option) => (
                 <CommandItem
                   key={option.value}
