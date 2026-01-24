@@ -19,7 +19,8 @@ import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
 export type ComboboxOptions = {
   value: string,
-  label: string
+  label: string,
+  disabled?: boolean
 }[];
 
 export interface ComboboxProps {
@@ -83,6 +84,7 @@ export default function Combobox(props: ComboboxProps) {
                 <CommandItem
                   key={option.value}
                   value={option.label}
+                  disabled={option.disabled}
                   onSelect={(currentLabel) => {
                     const propsLabel = props.value ? valueToLabel[props.value!] : props.value
                     props.onChange(currentLabel === propsLabel ? "" : labelToValue[currentLabel])
