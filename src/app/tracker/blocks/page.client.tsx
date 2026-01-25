@@ -626,19 +626,29 @@ export default function PageClient() {
 
           <ul>
             <li>
-              {`Extending: a bus completes a block then covers a trip on another. This indicates that the bus' operator completed their work for the day and called in asking for more; this is a normal part of operations.`}
+              <p>
+                {`Extending: a bus completes a block then covers a trip on another. This indicates that the bus' operator completed their work for the day and called in asking for more; this is a normal part of operations.`}
+              </p>
             </li>
             <li>
-              {`Extra/spare: a bus spends most, if not all, of the day jumping around covering only one or two trips on seemingly random blocks. Operators can be assigned this type of work; this is also a normal part of operations.`}
+              <p>
+                {`Extra/spare: a bus spends most, if not all, of the day jumping around covering only one or two trips on seemingly random blocks. Operators can be assigned this type of work; this is also a normal part of operations.`}
+              </p>
             </li>
             <li>
-              {`Adjustment: an extremely late bus has its next trip covered or cancelled then runs its next trip on time. Many things could cause a bus to be late from traffic to poor scheduling.`}
+              <p>
+                {`Adjustment: an extremely late bus has its next trip covered or cancelled then runs its next trip on time. Many things could cause a bus to be late from traffic to poor scheduling.`}
+              </p>
             </li>
             <li>
-              {`Minor breakdown: an on-time or barely late bus has its next trip covered or cancelled, and may or may not run the trip after on-time. This is, generally, anything that just requires a visit from a service truck: loose/broken mirror, burnt indicator light, low coolant, etc.`}
+              <p>
+                {`Minor breakdown: an on-time or barely late bus has its next trip covered or cancelled, and may or may not run the trip after on-time. This is, generally, anything that just requires a visit from a service truck: loose/broken mirror, burnt indicator light, low coolant, etc.`}
+              </p>
             </li>
             <li>
-              {`Major breakdown: a bus that has done most of a block suddenly completely disappears from all blocks and does not return. This is, generally, anything that causes the bus to be unable to stay on the road, and it must return to the garage for repairs: coolant leak, busted air bag (suspension), loss of power steering, etc.`}
+              <p>
+                {`Major breakdown: a bus that has done most of a block suddenly completely disappears from all blocks and does not return. This is, generally, anything that causes the bus to be unable to stay on the road, and it must return to the garage for repairs: coolant leak, busted air bag (suspension), loss of power steering, etc.`}
+              </p>
             </li>
           </ul>
         </details>
