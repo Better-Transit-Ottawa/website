@@ -501,7 +501,7 @@ export default function PageClient() {
           </div>
 
           <div>
-            Only show directly relevant buses
+            Only show directly relevant buses{" "}
             <input
               type="checkbox"
               checked={onlyShowDirectlyReleventBuses}
