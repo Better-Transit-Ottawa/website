@@ -40,7 +40,8 @@ function BlockComponent(props: BlockComponentProps) {
       <div className="block-node"
           style={{
             borderColor: props.data.border ?? undefined,
-            borderWidth: props.data.border ? "5px" : undefined
+            borderWidth: props.data.border ? "5px" : undefined,
+            borderStyle: props.data.border ?  "solid" : undefined
           }}>
         <div className="block-node-title">
           Block: <strong>{props.data.blockId}</strong>
