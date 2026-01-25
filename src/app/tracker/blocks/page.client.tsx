@@ -51,9 +51,6 @@ function BlockComponent(props: BlockComponentProps) {
           <thead>
             <tr>
               <th>
-                Trip ID
-              </th>
-              <th>
                 Route ID
               </th>
               <th>
@@ -99,9 +96,6 @@ function BlockComponent(props: BlockComponentProps) {
                         visibility: "hidden"
                       }}
                     />
-                    {b.tripId}
-                  </td>
-                  <td>
                     <Link href={"/tracker/route?" + new URLSearchParams({
                       date: dateToDateString(props.data.date),
                       route: b.routeId!
