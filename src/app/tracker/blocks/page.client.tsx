@@ -399,7 +399,7 @@ async function getVehicleOptions(date: Date): Promise<ComboboxOptions> {
   if (result.ok) {
     const data = await result.json();
     if (Array.isArray(data)) {
-      return data.map((b) => ({
+      return data.sort((a, b) => parseInt(a) - parseInt(b)).map((b) => ({
         value: b,
         label: b
       }));
