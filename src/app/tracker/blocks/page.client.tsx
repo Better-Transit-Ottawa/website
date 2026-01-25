@@ -28,6 +28,8 @@ interface NodePosition {
 }
 
 function BlockComponent(props: BlockComponentProps) {
+  const cancelInfo = props.data.block[0]?.cancelInfo;
+
   return (
     <>
       <div className="block-node"
@@ -38,6 +40,12 @@ function BlockComponent(props: BlockComponentProps) {
         <div className="block-node-title">
           Block: <strong>{props.data.blockId}</strong>
         </div>
+
+        {cancelInfo &&
+          <div className="block-node-description">
+            Cancelled for the last {cancelInfo.daysCanceled} {cancelInfo.daysCanceled === 1 ? "day" : "days"} {cancelInfo?.allDays ? " (All recorded)" : ""}
+          </div>
+        }
         
         <table>
           <thead>
@@ -153,9 +161,24 @@ type BlockDataRequest = {
 });
 
 async function getBlockData(params: BlockDataRequest): Promise<AllBlocks> {
-  const result = await fetch(`${busTrackerServerUrl}/api/blockDetails?${new URLSearchParams(params)}`, );
+  const result = await fetch(`${busTrackerServerUrl}/api/blockDetails?${new URLSearchParams(params)}`);
   if (result.ok) {
-    return await result.json();
+    const data = await result.json();
+
+    for (const blockId in data) {
+      const block = data[blockId] as BlockData[];
+
+      if (block.length && block.every((b) => b.canceled)) {
+        const cancelInfoResult = await fetch(`${busTrackerServerUrl}/api/blockCancelCount?${new URLSearchParams({
+          blockId,
+          date: params.date
+        })}`);
+
+        block[0].cancelInfo = await cancelInfoResult.json();
+      }
+    }
+
+    return data;
   }
 
   return {};

@@ -1,3 +1,8 @@
+export interface CancelInfo {
+  daysCanceled: number;
+  allDays: boolean;
+}
+
 export interface BlockData {
     tripId: string,
     routeId: string,
@@ -9,7 +14,8 @@ export interface BlockData {
     actualEndTime: string | null,
     delay: number | null;
     canceled: number | null;
-    busId: string | null
+    busId: string | null;
+    cancelInfo?: CancelInfo;
 }
 
 export interface BlockDataExtra extends BlockData {
