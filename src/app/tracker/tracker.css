@@ -62,6 +62,10 @@ to get overridden */
     cursor: initial;
 }
 
+.block-table a {
+    text-decoration: underline;
+}
+
 .cancelled {
     color: red;
 }
@@ -72,7 +76,7 @@ to get overridden */
 
 .cancelled .actual-time, .untracked .actual-time {
     font-weight: bold;
-    text-decoration: none;
+    /* text-decoration: none; */
 }
 
 .red-text {
