@@ -383,7 +383,7 @@ async function getBlockOptions(date: Date): Promise<ComboboxOptions> {
       .sort((a, b) => parseInt(a.blockId.split("-")[0]) - parseInt(b.blockId.split("-")[0]))
       .map((b) => ({
         value: b.blockId,
-        label: `${b.blockId} (${b.busCount} ${b.busCount === 1 ? "bus" : "buses"})`
+        label: `${b.blockId} (${(parseInt(b.blockId) > 10000000) ? `train` : `${b.busCount} ${b.busCount === 1 ? "bus" : "buses"}`})`
       }));
     }
   }
