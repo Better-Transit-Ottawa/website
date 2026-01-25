@@ -4,6 +4,10 @@
     border-radius: 10px;
 }
 
+.block-node a {
+    color: inherit;
+}
+
 .block-node table {
     border-collapse: collapse;
 }
