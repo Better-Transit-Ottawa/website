@@ -284,7 +284,7 @@ function generateNodes(date: Date, blocks: AllBlocks,
     const block = blocks[blockId];
 
     nodes.push({
-      id: blockId,
+      id: blockId ? blockId : block[0].tripId,
       type: "block",
       position: {
         x: positions[blockId].x * 1100,
