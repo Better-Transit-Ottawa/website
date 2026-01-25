@@ -1,5 +1,5 @@
 "use client";
-import { busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
+import { busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, isBadDataDate, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -249,6 +249,12 @@ export default function PageClient() {
             A “block” generally is the path one bus will take throughout the day. Clicking on the “Block ID” will bring you to a diagram showing you how buses on that block have been running throughout the day. This can allow you to see why a cancellation might have occurred.
           </p>
         </details>
+
+        {isBadDataDate(date) && 
+          <div>
+            Warning: Data on this day is incomplete due to service outages or another reason
+          </div>
+        }
       </div>
       <RouteTables
         route={currentRoute}
