@@ -400,8 +400,8 @@ async function getVehicleOptions(date: Date): Promise<ComboboxOptions> {
     const data = await result.json();
     if (Array.isArray(data)) {
       return data.sort((a, b) => parseInt(a) - parseInt(b)).map((b) => ({
-        value: b,
-        label: b
+        value: b.busId,
+        label: `${b.busId} (${b.blockCount} ${b.blockCount === 1 ? "block" : "blocks"})`
       }));
     }
   }
