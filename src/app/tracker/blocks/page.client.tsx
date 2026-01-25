@@ -253,8 +253,30 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
     }
 }
 
-function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
+function generateNodes(date: Date, blocks: AllBlocks,
+    onlyShowDirectlyReleventBuses: boolean,
+    edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
   const nodes: Node[] = [];
+
+  const initialBlockBuses = new Set();
+  if (blocks[defaultBlockId]) {
+    for (const item of blocks[defaultBlockId]) {
+      if (item.busId) initialBlockBuses.add(item.busId);
+    }
+  }
+  const newBlocks = {} as AllBlocks;
+  for (const blockId in blocks) {
+    const block = blocks[blockId];
+
+    if (onlyShowDirectlyReleventBuses 
+        && blockId !== defaultBlockId
+        && !block.some((b) => initialBlockBuses.has(b.busId))) {
+      continue;
+    }
+
+    newBlocks[blockId] = block;
+  }
+  blocks = newBlocks;
 
   const positions = generateNodePositions(blocks, edgeData.edges, defaultBlockId);
 
@@ -435,6 +457,7 @@ export default function PageClient() {
   }, [currentVehicle, searchParams]);
 
   const [arrowSize, setArrowSize] = useState<number>(4);
+  const [onlyShowDirectlyReleventBuses, setOnlyShowDirectlyReleventBuses] = useState(true);
 
   return (
     <ReactFlowProvider>
@@ -474,6 +497,17 @@ export default function PageClient() {
               min={1}
               step={1}
               className="slider"
+            />
+          </div>
+
+          <div>
+            Only show directly relevant buses
+            <input
+              type="checkbox"
+              checked={onlyShowDirectlyReleventBuses}
+              onChange={() => {
+                setOnlyShowDirectlyReleventBuses(!onlyShowDirectlyReleventBuses);
+              }}
             />
           </div>
 
@@ -523,6 +557,7 @@ export default function PageClient() {
         <Graph
           block={currentBlock}
           bus={currentVehicle}
+          onlyShowDirectlyReleventBuses={onlyShowDirectlyReleventBuses}
           date={date}
         />
       </div>
@@ -533,10 +568,11 @@ export default function PageClient() {
 interface GraphProps {
   block: string | null;
   bus: string | null;
+  onlyShowDirectlyReleventBuses: boolean;
   date: Date;
 }
 
-function Graph({ block, bus, date }: GraphProps) {
+function Graph({ block, bus, onlyShowDirectlyReleventBuses, date }: GraphProps) {
   const [blockData, setBlockData] = useState<AllBlocks>({});
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -562,10 +598,10 @@ function Graph({ block, bus, date }: GraphProps) {
     const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(date, blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
+      setNodes(generateNodes(date, blockData, onlyShowDirectlyReleventBuses, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
-  }, [date, blockData, block, bus, setNodes, setEdges, searchParams]);
+  }, [date, blockData, block, bus, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
 
   return (
     <ReactFlow
