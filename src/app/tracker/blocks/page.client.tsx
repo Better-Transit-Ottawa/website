@@ -12,6 +12,10 @@ import DownloadButton from "./download-button";
 import { Slider } from "@/components/ui/slider";
 import { HelpCircleIcon } from "lucide-react";
 
+interface DisplayOptions {
+  transseeLinks: boolean;
+}
+
 interface BlockComponentProps {
   data: {
     date: Date;
@@ -19,6 +23,7 @@ interface BlockComponentProps {
     block: BlockData[];
     colors: Record<string, string>;
     border: string | null;
+    options: DisplayOptions;
   }
 }
 
@@ -107,7 +112,18 @@ function BlockComponent(props: BlockComponentProps) {
                     {b.headSign}
                   </td>
                   <td>
-                    {b.scheduledStartTime}
+                    {props.data.options.transseeLinks ? (
+                      <Link href={"https://transsee.ca/tripsched?" + new URLSearchParams({
+                        a: "octranspo",
+                        t: b.tripId,
+                        date: dateToDateString(props.data.date)
+                      }).toString()}>
+                        {b.scheduledStartTime}
+                      </Link>
+                    ) : (
+                      b.scheduledStartTime
+                    )}
+                    
                   </td>
                   <td className={`${((delayStart > 15 * 60) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
                     {untracked 
@@ -271,6 +287,7 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
 }
 
 function generateNodes(date: Date, blocks: AllBlocks,
+    options: DisplayOptions,
     onlyShowDirectlyReleventBuses: boolean,
     edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
   const nodes: Node[] = [];
@@ -312,6 +329,7 @@ function generateNodes(date: Date, blocks: AllBlocks,
         blockId,
         block,
         colors: edgeData.colors,
+        options,
         border: blockId === defaultBlockId
           ? (busIdSearched ? edgeData.colors[busIdSearched] : busColors[0])
           : null
@@ -477,6 +495,13 @@ export default function PageClient() {
 
   const [arrowSize, setArrowSize] = useState<number>(4);
   const [onlyShowDirectlyReleventBuses, setOnlyShowDirectlyReleventBuses] = useState(true);
+  
+  const [showTransseeLinks, setShowTransseeLinks] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("showTransseeLinks")) {
+      setShowTransseeLinks(true);
+    }
+  }, []);
 
   return (
     <ReactFlowProvider>
@@ -529,6 +554,21 @@ export default function PageClient() {
               }}
             />
           </div>
+          <div>
+            Show transsee links{" "}
+            <input
+              type="checkbox"
+              checked={showTransseeLinks}
+              onChange={() => {
+                setShowTransseeLinks(!showTransseeLinks);
+                if (!showTransseeLinks) {
+                  localStorage.setItem("showTransseeLinks", "1");
+                } else {
+                  localStorage.removeItem("showTransseeLinks");
+                }
+              }}
+            />
+          </div>
 
           <DownloadButton name={currentBlock ? currentBlock : currentVehicle ?? ""} />
         </details>
@@ -576,6 +616,7 @@ export default function PageClient() {
         <Graph
           block={currentBlock}
           bus={currentVehicle}
+          transseeLinks={showTransseeLinks}
           onlyShowDirectlyReleventBuses={onlyShowDirectlyReleventBuses}
           date={date}
         />
@@ -589,9 +630,10 @@ interface GraphProps {
   bus: string | null;
   onlyShowDirectlyReleventBuses: boolean;
   date: Date;
+  transseeLinks: boolean;
 }
 
-function Graph({ block, bus, onlyShowDirectlyReleventBuses, date }: GraphProps) {
+function Graph({ block, bus, transseeLinks, onlyShowDirectlyReleventBuses, date }: GraphProps) {
   const [blockData, setBlockData] = useState<AllBlocks>({});
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -617,10 +659,12 @@ function Graph({ block, bus, onlyShowDirectlyReleventBuses, date }: GraphProps) 
     const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(date, blockData, onlyShowDirectlyReleventBuses, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
+      setNodes(generateNodes(date, blockData, {
+        transseeLinks
+      }, onlyShowDirectlyReleventBuses, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
-  }, [date, blockData, block, bus, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
+  }, [date, blockData, block, bus, transseeLinks, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
 
   return (
     <ReactFlow
