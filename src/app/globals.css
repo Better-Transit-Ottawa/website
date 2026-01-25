@@ -20,6 +20,9 @@ body {
   --black: #1f1a17;
   color: var(--fgcol);
 
+  /* basic styling */
+  font-family: frutiger, sans-serif;
+
   /* base body styling */
   position: relative;
   line-height: 1.5;
@@ -71,12 +74,8 @@ body {
   overflow: hidden;
 }
 
-
 /* ----- main ----- */
 .content {
-  /* basic styling */
-  font-family: frutiger, sans-serif;
-
   /* layout */
   display: flex;
   justify-items: center;
