@@ -47,9 +47,9 @@ function BlockComponent(props: BlockComponentProps) {
           Block: <strong>{props.data.blockId}</strong>
         </div>
 
-        {cancelInfo &&
+        {cancelInfo && cancelInfo.daysCanceled > 1 &&
           <div className="block-node-description">
-            Cancelled for the last {cancelInfo.daysCanceled} {cancelInfo.daysCanceled === 1 ? "day" : "days"} {cancelInfo?.allDays ? " (All recorded)" : ""}
+            Cancelled for the last ${cancelInfo.daysCanceled} days {cancelInfo?.allDays ? " (All recorded)" : ""}
           </div>
         }
         
