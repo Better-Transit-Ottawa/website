@@ -1,5 +1,5 @@
 "use client";
-import { busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, isBadDataDate, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
+import { busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -8,6 +8,7 @@ import { getPageUrl } from "@/utils/pageNavigation";
 import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
 import { HelpCircleIcon } from "lucide-react";
+import { BadDataWarning } from "@/app/components/bad-data-warning";
 
 interface RouteData {
   trip1: TripDetails[];
@@ -250,11 +251,7 @@ export default function PageClient() {
           </p>
         </details>
 
-        {isBadDataDate(date) && 
-          <div>
-            Warning: Data on this day is incomplete due to service outages or another reason
-          </div>
-        }
+        <BadDataWarning date={date}/>
       </div>
       <RouteTables
         route={currentRoute}
