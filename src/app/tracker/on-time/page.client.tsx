@@ -148,34 +148,6 @@ const timeOfDayLabels: Record<string, string> = {
   late: "Evening (19:00–27:00)"
 };
 
-function sortRoutes(data: RouteAggregate[], sort: SortOptions): RouteAggregate[] {
-  const sorted = [...data];
-  switch (sort) {
-    case SortOptions.Best:
-      sorted.sort((a, b) => (b.onTimePct ?? -1) - (a.onTimePct ?? -1));
-      break;
-    case SortOptions.Worst:
-      sorted.sort((a, b) => (a.onTimePct ?? 101) - (b.onTimePct ?? 101));
-      break;
-    case SortOptions.Canceled:
-      sorted.sort((a, b) => b.canceledTrips - a.canceledTrips);
-      break;
-    case SortOptions.Route:
-    default:
-      sorted.sort((a, b) => {
-        const aNum = parseInt(a.routeId, 10);
-        const bNum = parseInt(b.routeId, 10);
-        if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
-          return aNum - bNum || a.direction - b.direction;
-        }
-        return a.routeId.localeCompare(b.routeId) || a.direction - b.direction;
-      });
-      break;
-  }
-
-  return sorted;
-}
-
 type CombinedRouteAggregate = Aggregate & { routeId: string };
 
 function sortCombinedRoutes(data: CombinedRouteAggregate[], sort: SortOptions): CombinedRouteAggregate[] {
