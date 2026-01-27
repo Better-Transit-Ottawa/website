@@ -33,6 +33,12 @@ interface TimeOfDayAggregate extends Aggregate {
   label: string;
 }
 
+interface RouteInfo {
+  routeId: string;
+  tripCount: number;
+  frequency: "frequent" | "non-frequent";
+}
+
 interface OnTimePerformanceResponse {
   date: string;
   endDate: string;
@@ -55,6 +61,7 @@ interface OnTimeDataRequest {
   includeCanceled: boolean;
   metric: Metric;
   routeId?: string;
+  frequencyFilter?: string;
 }
 
 const DEFAULT_THRESHOLD = 5;
@@ -206,11 +213,22 @@ async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerforman
     thresholdMinutes: String(params.thresholdMinutes),
     includeCanceled: String(params.includeCanceled),
     metric: params.metric,
-    ...(params.routeId ? { routeId: params.routeId } : {})
+    ...(params.routeId ? { routeId: params.routeId } : {}),
+    ...(params.frequencyFilter ? { frequencyFilter: params.frequencyFilter } : {})
   });
   const result = await fetch(`${busTrackerServerUrl}/api/on-time-performance?${query.toString()}`);
   if (!result.ok) {
     return null;
+  }
+
+  return await result.json();
+}
+
+async function getRouteInfo(date: string): Promise<RouteInfo[]> {
+  const query = new URLSearchParams({ date });
+  const result = await fetch(`${busTrackerServerUrl}/api/routes?${query.toString()}`);
+  if (!result.ok) {
+    return [];
   }
 
   return await result.json();
@@ -279,6 +297,7 @@ export default function PageClient() {
 
   const [data, setData] = useState<OnTimePerformanceResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [routeInfo, setRouteInfo] = useState<RouteInfo[]>([]);
 
   const routeParam = searchParams.get("route");
   const [selectedRoute, setSelectedRoute] = useState<string | null>(routeParam);
@@ -288,8 +307,30 @@ export default function PageClient() {
 
   useEffect(() => {
     let cancelled = false;
+    
+    // Fetch route info
+    getRouteInfo(dateToDateString(date)).then((info) => {
+      if (!cancelled) {
+        setRouteInfo(info);
+      }
+    }).catch(() => {
+      // Silently fail for route info
+    });
+
     setData(null);
     setError(null);
+
+    // Determine if we have a frequency filter or a specific route
+    let routeId: string | undefined = undefined;
+    let apiFrequencyFilter: string | undefined = undefined;
+    
+    if (selectedRoute === "__frequent__") {
+      apiFrequencyFilter = "frequent";
+    } else if (selectedRoute === "__non-frequent__") {
+      apiFrequencyFilter = "non-frequent";
+    } else if (selectedRoute && selectedRoute !== "__all__") {
+      routeId = selectedRoute;
+    }
 
     getOnTimeData({
       date: dateToDateString(date),
@@ -297,7 +338,8 @@ export default function PageClient() {
       thresholdMinutes: threshold,
       includeCanceled,
       metric,
-      routeId: selectedRoute ?? undefined
+      routeId: routeId,
+      frequencyFilter: apiFrequencyFilter
     }).then((result) => {
       if (cancelled) return;
       if (result) {
@@ -317,13 +359,43 @@ export default function PageClient() {
   }, [date, endDate, metric, threshold, includeCanceled, selectedRoute]);
 
   const combinedRoutes = data ? data.routesCombined : null;
-  const sortedRoutes = combinedRoutes ? sortCombinedRoutes(combinedRoutes, sort) : null;
-  const routeOptions: ComboboxOptions = combinedRoutes
-    ? [{ value: "", label: "All routes" }, ...combinedRoutes.map((route) => ({
-        value: route.routeId,
-        label: `Route ${route.routeId}`
-      }))]
-    : [{ value: "", label: "All routes" }];
+  
+  // Group routes by frequency for the dropdown display
+  const frequentRoutes = combinedRoutes?.filter(r => {
+    const info = routeInfo.find(ri => ri.routeId === r.routeId);
+    return info?.frequency === "frequent";
+  }) || [];
+  
+  const nonFrequentRoutes = combinedRoutes?.filter(r => {
+    const info = routeInfo.find(ri => ri.routeId === r.routeId);
+    return info?.frequency === "non-frequent";
+  }) || [];
+
+  // Apply frequency filter only for the route list table display
+  let filteredRoutes = combinedRoutes;
+  if (selectedRoute === "__frequent__") {
+    filteredRoutes = frequentRoutes;
+  } else if (selectedRoute === "__non-frequent__") {
+    filteredRoutes = nonFrequentRoutes;
+  }
+
+  const sortedRoutes = filteredRoutes ? sortCombinedRoutes(filteredRoutes, sort) : null;
+
+  const routeOptions: ComboboxOptions = [
+    { value: "__all__", label: "All routes" },
+    { value: "__frequent__", label: "Frequent routes only" },
+    { value: "__non-frequent__", label: "Non-frequent routes only" },
+    ...(frequentRoutes.length > 0 ? [{ value: "__sep_frequent__", label: "─ Frequent Routes ─", disabled: true }] : []),
+    ...frequentRoutes.map((route) => ({
+      value: route.routeId,
+      label: `Route ${route.routeId}`
+    })),
+    ...(nonFrequentRoutes.length > 0 ? [{ value: "__sep_nonfrequent__", label: "─ Non-Frequent Routes ─", disabled: true }] : []),
+    ...nonFrequentRoutes.map((route) => ({
+      value: route.routeId,
+      label: `Route ${route.routeId}`
+    }))
+  ];
 
   const selectedRouteData = combinedRoutes && selectedRoute
     ? combinedRoutes.find((route) => route.routeId === selectedRoute)
@@ -358,10 +430,10 @@ export default function PageClient() {
           <Combobox
             options={routeOptions}
             hintText="All routes"
-            value={selectedRoute ?? ""}
+            value={selectedRoute ?? "__all__"}
             onChange={(v) => {
               router.push(getPageUrl(pathname, searchParams, {
-                route: v ? v : null
+                route: v === "__all__" ? null : v
               }));
             }}
           />
@@ -471,7 +543,7 @@ export default function PageClient() {
       {data && (
         <>
           <div className="on-time-summary">
-            {!selectedRoute && (
+            {(!selectedRoute || selectedRoute === "__all__" || selectedRoute === "__frequent__" || selectedRoute === "__non-frequent__") && (
               <div className="block-node on-time-table">
                 <div className="block-node-title">
                   Overall on-time performance
@@ -570,7 +642,7 @@ export default function PageClient() {
             </div>
           </div>
 
-          {!selectedRoute && (
+          {(!selectedRoute || selectedRoute === "__all__" || selectedRoute === "__frequent__" || selectedRoute === "__non-frequent__") && (
             <div className="block-node on-time-table">
               <div className="block-node-title">
                 Routes (percentages)
