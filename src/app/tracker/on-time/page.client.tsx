@@ -9,6 +9,7 @@ import { DatePicker } from "@/components/DatePicker";
 import Combobox, { ComboboxOptions } from "@/components/ComboBox";
 import { Slider } from "@/components/ui/slider";
 import { HelpCircleIcon } from "lucide-react";
+import { BadDataWarning } from "@/app/components/bad-data-warning";
 
 type Metric = "avgObserved" | "start";
 
@@ -503,6 +504,8 @@ export default function PageClient() {
             Trips are considered on-time if their delay is within the selected threshold in minutes. You can include canceled trips if you want to count them in the totals.
           </p>
         </details>
+
+        <BadDataWarning date={date}/>
       </div>
 
       {error && (
