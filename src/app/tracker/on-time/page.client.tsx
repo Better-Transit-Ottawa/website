@@ -188,7 +188,7 @@ async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerforman
     ...(params.routeId ? { routeId: params.routeId } : {}),
     ...(params.frequencyFilter ? { frequencyFilter: params.frequencyFilter } : {})
   });
-  const result = await fetch(`${busTrackerServerUrl}/api/on-time-performance?${query.toString()}`);
+  const result = await fetch(`${busTrackerServerUrl}/api/onTimePerformance?${query.toString()}`);
   if (!result.ok) {
     return null;
   }
