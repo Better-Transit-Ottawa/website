@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, timeStringDiff } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, isBadDataDate, timeStringDiff } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -39,6 +39,12 @@ enum SortOptions {
   CancelPercentage = "cancelPercentage"
 }
 
+enum TimePeriod {
+  AllDay = "allday",
+  MorningPeak = "morning",
+  AfternoonPeak = "afternoon"
+}
+
 const sortOptions = [{
   value: SortOptions.Route,
   label: "Sort by route"
@@ -48,6 +54,17 @@ const sortOptions = [{
 }, {
   value: SortOptions.CancelPercentage,
   label: "Sort by cancellation percentage"
+}];
+
+const timePeriodOptions = [{
+  value: TimePeriod.AllDay,
+  label: "All day"
+}, {
+  value: TimePeriod.MorningPeak,
+  label: "Morning peak"
+}, {
+  value: TimePeriod.AfternoonPeak,
+  label: "Afternoon peak"
 }];
 
 function RouteComponent(props: RouteComponentProps) {
@@ -127,6 +144,7 @@ function RouteComponent(props: RouteComponentProps) {
 
 interface CancellationDataRequest {
   date: string;
+  timePeriod: TimePeriod;
 };
 
 async function getCancellationData(params: CancellationDataRequest): Promise<CancellationData[] | null> {
@@ -162,6 +180,14 @@ export default function PageClient() {
     }
   }, [searchParams, sort]);
 
+  const [timePeriod, setTimePeriod] = useState(searchParams.get("timePeriod") as TimePeriod ?? TimePeriod.AllDay);
+  useEffect(() => {
+    const newTimePeriod = searchParams.get("timePeriod") || TimePeriod.AllDay;
+    if (newTimePeriod !== timePeriod) {
+      setTimePeriod(newTimePeriod as TimePeriod);
+    }
+  }, [searchParams, timePeriod]);
+
   return (
     <>
       <div className="controls with-padding">
@@ -172,6 +198,15 @@ export default function PageClient() {
             onChange={(v) => {
               router.push(getPageUrl(pathname, searchParams, {
                 sort: v === SortOptions.Route ? null : v
+              }));
+            }}/>
+
+          <Combobox options={timePeriodOptions} 
+            hintText="Select time period..."
+            value={timePeriod}
+            onChange={(v) => {
+              router.push(getPageUrl(pathname, searchParams, {
+                timePeriod: v === TimePeriod.AllDay ? null : v
               }));
             }}/>
         </div>
@@ -210,10 +245,17 @@ export default function PageClient() {
             A “block” generally is the path one bus will take throughout the day. Clicking the “Block ID” will bring you to the block explorer where you can see what caused the cancellation to occur. Cancellations generally occur when there was never a bus planned to be available for the block, a priority trip on another block needs a bus to cover it, or if the previous trip went so late that the next trip on the block must be cancelled.
           </p>
         </details>
+
+        {isBadDataDate(date, true) && 
+          <div>
+            Warning: Data on this day is incomplete due to service outages or another reason
+          </div>
+        }
       </div>
       <CancelTables
         date={date}
         sort={sort}
+        timePeriod={timePeriod}
       />
     </>
   );
@@ -222,6 +264,7 @@ export default function PageClient() {
 interface GraphProps {
   date: Date;
   sort: SortOptions;
+  timePeriod: TimePeriod;
 }
 
 function sortData(data: CancellationData[], sort: SortOptions) {
@@ -240,16 +283,17 @@ function sortData(data: CancellationData[], sort: SortOptions) {
   return data;
 }
 
-function CancelTables({ date, sort }: GraphProps) {
+function CancelTables({ date, sort, timePeriod }: GraphProps) {
   const [cancelDataUnSorted, setCancelDataUnSorted] = useState<CancellationData[] | null>(null);
   const [cancelData, setCancelData] = useState<CancellationData[] | null>(null);
   useEffect(() => {
     setCancelDataUnSorted(null);
 
     getCancellationData({
-      date: date.toISOString()
+      date: date.toISOString(),
+      timePeriod: timePeriod
     }).then(setCancelDataUnSorted);
-  }, [date]);
+  }, [date, timePeriod]);
   useEffect(() => {
     if (cancelDataUnSorted) {
       setCancelData(sortData([...cancelDataUnSorted], sort));

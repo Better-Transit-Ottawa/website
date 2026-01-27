@@ -1,5 +1,5 @@
 "use client";
-import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
+import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, getNextTrip, isBadDataDate, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
 import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProvider, useEdgesState, useNodesState, ConnectionMode } from '@xyflow/react';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,6 +12,10 @@ import DownloadButton from "./download-button";
 import { Slider } from "@/components/ui/slider";
 import { HelpCircleIcon } from "lucide-react";
 
+interface DisplayOptions {
+  transseeLinks: boolean;
+}
+
 interface BlockComponentProps {
   data: {
     date: Date;
@@ -19,6 +23,7 @@ interface BlockComponentProps {
     block: BlockData[];
     colors: Record<string, string>;
     border: string | null;
+    options: DisplayOptions;
   }
 }
 
@@ -28,23 +33,29 @@ interface NodePosition {
 }
 
 function BlockComponent(props: BlockComponentProps) {
+  const cancelInfo = props.data.block[0]?.cancelInfo;
+
   return (
     <>
       <div className="block-node"
           style={{
             borderColor: props.data.border ?? undefined,
-            borderWidth: props.data.border ? "5px" : undefined
+            borderWidth: props.data.border ? "5px" : undefined,
+            borderStyle: props.data.border ?  "solid" : undefined
           }}>
         <div className="block-node-title">
           Block: <strong>{props.data.blockId}</strong>
         </div>
+
+        {cancelInfo && cancelInfo.daysCanceled > 1 &&
+          <div className="block-node-description">
+            Cancelled for the last ${cancelInfo.daysCanceled} days {cancelInfo?.allDays ? " (All recorded)" : ""}
+          </div>
+        }
         
         <table>
           <thead>
             <tr>
-              <th>
-                Trip ID
-              </th>
               <th>
                 Route ID
               </th>
@@ -91,9 +102,6 @@ function BlockComponent(props: BlockComponentProps) {
                         visibility: "hidden"
                       }}
                     />
-                    {b.tripId}
-                  </td>
-                  <td>
                     <Link href={"/tracker/route?" + new URLSearchParams({
                       date: dateToDateString(props.data.date),
                       route: b.routeId!
@@ -105,7 +113,18 @@ function BlockComponent(props: BlockComponentProps) {
                     {b.headSign}
                   </td>
                   <td>
-                    {b.scheduledStartTime}
+                    {props.data.options.transseeLinks ? (
+                      <Link href={"https://transsee.ca/tripsched?" + new URLSearchParams({
+                        a: "octranspo",
+                        t: b.tripId,
+                        date: dateToDateString(props.data.date)
+                      }).toString()}>
+                        {b.scheduledStartTime}
+                      </Link>
+                    ) : (
+                      b.scheduledStartTime
+                    )}
+                    
                   </td>
                   <td className={`${((delayStart > 15 * 60) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
                     {untracked 
@@ -153,9 +172,24 @@ type BlockDataRequest = {
 });
 
 async function getBlockData(params: BlockDataRequest): Promise<AllBlocks> {
-  const result = await fetch(`${busTrackerServerUrl}/api/blockDetails?${new URLSearchParams(params)}`, );
+  const result = await fetch(`${busTrackerServerUrl}/api/blockDetails?${new URLSearchParams(params)}`);
   if (result.ok) {
-    return await result.json();
+    const data = await result.json();
+
+    for (const blockId in data) {
+      const block = data[blockId] as BlockData[];
+
+      if (block.length && block.every((b) => b.canceled)) {
+        const cancelInfoResult = await fetch(`${busTrackerServerUrl}/api/blockCancelCount?${new URLSearchParams({
+          blockId,
+          date: params.date
+        })}`);
+
+        block[0].cancelInfo = await cancelInfoResult.json();
+      }
+    }
+
+    return data;
   }
 
   return {};
@@ -253,8 +287,31 @@ function generateNextNodePositionsInternal(blockOrder: Record<string, NodePositi
     }
 }
 
-function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
+function generateNodes(date: Date, blocks: AllBlocks,
+    options: DisplayOptions,
+    onlyShowDirectlyReleventBuses: boolean,
+    edgeData: EdgeData, defaultBlockId: string, busIdSearched: string | null): Node[] {
   const nodes: Node[] = [];
+
+  const initialBlockBuses = new Set();
+  if (blocks[defaultBlockId]) {
+    for (const item of blocks[defaultBlockId]) {
+      if (item.busId) initialBlockBuses.add(item.busId);
+    }
+  }
+  const newBlocks = {} as AllBlocks;
+  for (const blockId in blocks) {
+    const block = blocks[blockId];
+
+    if (onlyShowDirectlyReleventBuses 
+        && blockId !== defaultBlockId
+        && !block.some((b) => initialBlockBuses.has(b.busId))) {
+      continue;
+    }
+
+    newBlocks[blockId] = block;
+  }
+  blocks = newBlocks;
 
   const positions = generateNodePositions(blocks, edgeData.edges, defaultBlockId);
 
@@ -273,6 +330,7 @@ function generateNodes(date: Date, blocks: AllBlocks, edgeData: EdgeData, defaul
         blockId,
         block,
         colors: edgeData.colors,
+        options,
         border: blockId === defaultBlockId
           ? (busIdSearched ? edgeData.colors[busIdSearched] : busColors[0])
           : null
@@ -357,9 +415,11 @@ async function getBlockOptions(date: Date): Promise<ComboboxOptions> {
     const data = await result.json();
     if (Array.isArray(data)) {
       return data.filter((a) => !!a.blockId).sort(((a, b) => parseInt(a.blockId.split("-")[0]) - parseInt(b.blockId.split("-")[0])))
+      .sort((a, b) => parseInt(a.blockId.split("-")[1]) - parseInt(b.blockId.split("-")[1]))
+      .sort((a, b) => parseInt(a.blockId.split("-")[0]) - parseInt(b.blockId.split("-")[0]))
       .map((b) => ({
         value: b.blockId,
-        label: `${b.blockId} (${b.busCount} ${b.busCount === 1 ? "bus" : "buses"})`
+        label: `${b.blockId} (${(parseInt(b.blockId) > 10000000) ? `train` : `${b.busCount} ${b.busCount === 1 ? "bus" : "buses"}`})`
       }));
     }
   }
@@ -375,9 +435,9 @@ async function getVehicleOptions(date: Date): Promise<ComboboxOptions> {
   if (result.ok) {
     const data = await result.json();
     if (Array.isArray(data)) {
-      return data.map((b) => ({
-        value: b,
-        label: b
+      return data.sort((a, b) => parseInt(a) - parseInt(b)).map((b) => ({
+        value: b.busId,
+        label: `${b.busId} (${b.blockCount} ${b.blockCount === 1 ? "block" : "blocks"})`
       }));
     }
   }
@@ -435,6 +495,14 @@ export default function PageClient() {
   }, [currentVehicle, searchParams]);
 
   const [arrowSize, setArrowSize] = useState<number>(4);
+  const [onlyShowDirectlyReleventBuses, setOnlyShowDirectlyReleventBuses] = useState(true);
+  
+  const [showTransseeLinks, setShowTransseeLinks] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("showTransseeLinks")) {
+      setShowTransseeLinks(true);
+    }
+  }, []);
 
   return (
     <ReactFlowProvider>
@@ -477,6 +545,32 @@ export default function PageClient() {
             />
           </div>
 
+          <div>
+            Only show directly relevant buses{" "}
+            <input
+              type="checkbox"
+              checked={onlyShowDirectlyReleventBuses}
+              onChange={() => {
+                setOnlyShowDirectlyReleventBuses(!onlyShowDirectlyReleventBuses);
+              }}
+            />
+          </div>
+          <div>
+            Show transsee links{" "}
+            <input
+              type="checkbox"
+              checked={showTransseeLinks}
+              onChange={() => {
+                setShowTransseeLinks(!showTransseeLinks);
+                if (!showTransseeLinks) {
+                  localStorage.setItem("showTransseeLinks", "1");
+                } else {
+                  localStorage.removeItem("showTransseeLinks");
+                }
+              }}
+            />
+          </div>
+
           <DownloadButton name={currentBlock ? currentBlock : currentVehicle ?? ""} />
         </details>
 
@@ -504,18 +598,67 @@ export default function PageClient() {
           </summary>
 
           <p>
-            OC Transpo is facing a significant bus shortage. Because of this, many trips never get a bus assigned, and buses have to be re-assigned throughout the day. This tracks the path of a bus in a map format.
+            Welcome to the BTO Block Explorer!
           </p>
 
           <p>
-            A “block” generally is the path one bus will take throughout the day. When a bus switches a block, the diagram will show an arrow from one trip to the bus’s next trip.
-            Buses generally switch blocks when a priority trip on another block needs a bus to cover, or if the previous trip went so late that the next trip on the block must be cancelled.
+            OC Transpo is facing a significant bus and mechanic shortage. Because of this, many trips never get a bus assigned, and buses have to be re-assigned throughout the day.
           </p>
 
           <p>
-            The table shows the “scheduled start” and “actual start” of routes to show the delay of buses. In brackets in the “actual start” and “actual end” column, it shows the delay in minutes.
+            {`A "block" is a set of trips assigned to a bus in a given day. For example, a block may consist of an 87 Baseline, 116 Greenboro, 197 Uplands/Greenboro, 111 Billings Bridge, 111 Baseline, then an 85 Lees. Each trip has a scheduled start and end time.`}
           </p>
+
+          <p>
+            {`The way we identify blocks is with two numbers: the "primary" route (usually matches the most common route in the block, but not always), and the order in which it leaves the garage. The example block listed earlier is a part of 85-04: its "primary" route is the 85, and it is the fourth 85 block to leave the garage.`}
+          </p>
+
+          <p>
+            {`Due to the bus and mechanic shortage, instead of one bus doing one block with buses on standby at the garage to cover trips, as is intended, OC Transpo is forced to shuffle buses around to cover priority trips (most notably: school routes, ie. all routes in the 600's). A trip could require covering due to anything from the assigned bus breaking down to the assigned bus being too late to run the trip. The most common victim of bus pillages are Frequent (blue) routes such as the 6, 7, 12, and 88.`}
+          </p>
+
+          <p>
+            {`Using real-time tracking (GTFS-RT) data supplied by OC Transpo, we have built a tool to follow how buses move between blocks throughout a given day.`}
+          </p>
+
+          <p>
+            Some common patterns you may spot include (note: these are just the most likely explanations, they are <i>not</i> guarenteed to be the case):
+          </p>
+
+          <ul>
+            <li>
+              <p>
+                {`Extending: a bus completes a block then covers a trip on another. This indicates that the bus' operator completed their work for the day and called in asking for more; this is a normal part of operations.`}
+              </p>
+            </li>
+            <li>
+              <p>
+                {`Extra/spare: a bus spends most, if not all, of the day jumping around covering only one or two trips on seemingly random blocks. Operators can be assigned this type of work; this is also a normal part of operations.`}
+              </p>
+            </li>
+            <li>
+              <p>
+                {`Adjustment: an extremely late bus has its next trip covered or cancelled then runs its next trip on time. Many things could cause a bus to be late from traffic to poor scheduling.`}
+              </p>
+            </li>
+            <li>
+              <p>
+                {`Minor breakdown: an on-time or barely late bus has its next trip covered or cancelled, and may or may not run the trip after on-time. This is, generally, anything that just requires a visit from a service truck: loose/broken mirror, burnt indicator light, low coolant, etc.`}
+              </p>
+            </li>
+            <li>
+              <p>
+                {`Major breakdown: a bus that has done most of a block suddenly completely disappears from all blocks and does not return. This is, generally, anything that causes the bus to be unable to stay on the road, and it must return to the garage for repairs: coolant leak, busted air bag (suspension), loss of power steering, etc.`}
+              </p>
+            </li>
+          </ul>
         </details>
+
+        {isBadDataDate(date) && 
+          <div>
+            Warning: Data on this day is incomplete due to service outages or another reason
+          </div>
+        }
       </div>
       <div className="flow-graph-container" style={{
         "--flow-stroke-width": arrowSize
@@ -523,6 +666,8 @@ export default function PageClient() {
         <Graph
           block={currentBlock}
           bus={currentVehicle}
+          transseeLinks={showTransseeLinks}
+          onlyShowDirectlyReleventBuses={onlyShowDirectlyReleventBuses}
           date={date}
         />
       </div>
@@ -533,10 +678,12 @@ export default function PageClient() {
 interface GraphProps {
   block: string | null;
   bus: string | null;
+  onlyShowDirectlyReleventBuses: boolean;
   date: Date;
+  transseeLinks: boolean;
 }
 
-function Graph({ block, bus, date }: GraphProps) {
+function Graph({ block, bus, transseeLinks, onlyShowDirectlyReleventBuses, date }: GraphProps) {
   const [blockData, setBlockData] = useState<AllBlocks>({});
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -562,10 +709,12 @@ function Graph({ block, bus, date }: GraphProps) {
     const edgeData = generateEdges(blockData);
 
     if (block || bus) {
-      setNodes(generateNodes(date, blockData, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
+      setNodes(generateNodes(date, blockData, {
+        transseeLinks
+      }, onlyShowDirectlyReleventBuses, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
-  }, [date, blockData, block, bus, setNodes, setEdges, searchParams]);
+  }, [date, blockData, block, bus, transseeLinks, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
 
   return (
     <ReactFlow
