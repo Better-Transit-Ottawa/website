@@ -28,6 +28,7 @@ export interface ComboboxProps {
   hintText: string
   value: string | null;
   onChange: (value: string | null) => void;
+  className?: string;
 }
 
 export default function Combobox(props: ComboboxProps) {
@@ -56,7 +57,7 @@ export default function Combobox(props: ComboboxProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={"w-[200px] justify-between " + (props.className ?? "")}
         >
           {props.value
             ? props.options.find((option) => option.value === props.value)?.label

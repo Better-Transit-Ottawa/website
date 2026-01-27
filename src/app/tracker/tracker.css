@@ -173,6 +173,11 @@ to get overridden */
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    margin-top: 27px !important;
+}
+
+.combobox-no-width {
+    width: unset !important;
 }
 
 .on-time-date {

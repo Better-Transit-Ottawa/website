@@ -388,6 +388,7 @@ export default function PageClient() {
                 metric: v === "avgObserved" ? null : v
               }));
             }}
+            className="combobox-no-width"
           />
           <Combobox
             options={sortOptions}
