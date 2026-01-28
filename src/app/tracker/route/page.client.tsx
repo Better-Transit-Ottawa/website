@@ -154,7 +154,7 @@ async function getRouteOptions(date: Date): Promise<ComboboxOptions> {
   if (result.ok) {
     const data = await result.json();
     if (Array.isArray(data)) {
-      return data.sort(((a, b) => parseInt(a.routeId) - parseInt(b.routeId)))
+      return data.sort(((a, b) => (parseInt(a.routeId) || Number.MAX_VALUE) - (parseInt(b.routeId) || Number.MAX_VALUE)))
       .map((b) => ({
         value: b.routeId,
         label: b.routeId

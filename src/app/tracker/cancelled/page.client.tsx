@@ -270,7 +270,7 @@ interface GraphProps {
 function sortData(data: CancellationData[], sort: SortOptions) {
   switch (sort) {
     case SortOptions.Route:
-      data.sort((a, b) => parseInt(a.routeId) - parseInt(b.routeId));
+      data.sort((a, b) => (parseInt(a.routeId) || Number.MAX_VALUE) - (parseInt(b.routeId) || Number.MAX_VALUE));
       break;
     case SortOptions.CancelNum:
       data.sort((a, b) => b.cancellations.length - a.cancellations.length);
