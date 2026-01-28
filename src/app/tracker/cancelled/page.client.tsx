@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, isBadDataDate, timeStringDiff } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, timeStringDiff } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -8,6 +8,7 @@ import { DatePicker } from "@/components/DatePicker";
 import Link from "next/link";
 import { HelpCircleIcon } from "lucide-react";
 import Combobox from "@/components/ComboBox";
+import { BadDataWarning } from "@/app/components/bad-data-warning";
 
 interface CancellationData {
   routeId: string;
@@ -246,11 +247,7 @@ export default function PageClient() {
           </p>
         </details>
 
-        {isBadDataDate(date, true) && 
-          <div>
-            Warning: Data on this day is incomplete due to service outages or another reason
-          </div>
-        }
+        <BadDataWarning date={date} cancellations={true}/>
       </div>
       <CancelTables
         date={date}

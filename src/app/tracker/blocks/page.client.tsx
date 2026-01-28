@@ -1,5 +1,5 @@
 "use client";
-import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, getNextTrip, isBadDataDate, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
+import { AllBlocks, BlockData, busColors, busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, getNextTrip, secondsToMinuteAndSeconds, timeStringDiff, timeStringToSeconds } from "@/utils/busTracker";
 import { ReactFlow, Handle, Position, type Node, Edge, MarkerType, ReactFlowProvider, useEdgesState, useNodesState, ConnectionMode } from '@xyflow/react';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import DownloadButton from "./download-button";
 import { Slider } from "@/components/ui/slider";
 import { HelpCircleIcon } from "lucide-react";
+import { BadDataWarning } from "@/app/components/bad-data-warning";
 
 interface DisplayOptions {
   transseeLinks: boolean;
@@ -654,11 +655,7 @@ export default function PageClient() {
           </ul>
         </details>
 
-        {isBadDataDate(date) && 
-          <div>
-            Warning: Data on this day is incomplete due to service outages or another reason
-          </div>
-        }
+        <BadDataWarning date={date}/>
       </div>
       <div className="flow-graph-container" style={{
         "--flow-stroke-width": arrowSize
