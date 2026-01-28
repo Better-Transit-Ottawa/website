@@ -50,7 +50,7 @@ function BlockComponent(props: BlockComponentProps) {
 
         {cancelInfo && cancelInfo.daysCanceled > 1 &&
           <div className="block-node-description">
-            Cancelled for the last ${cancelInfo.daysCanceled} days {cancelInfo?.allDays ? " (All recorded)" : ""}
+            Cancelled for the last {cancelInfo.daysCanceled} days {cancelInfo?.allDays ? " (All recorded)" : ""}
           </div>
         }
         
