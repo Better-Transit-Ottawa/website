@@ -53,6 +53,14 @@ export default function Home() {
                   {`Work in progress tools to monitor OC Transpo's reliability`}
                 </p>
 
+                <Link href="/tracker/bus-count">
+                  <h3 className="project-title">
+                    Bus availablity graph
+                  </h3>
+                </Link>
+
+                <br/>
+
                 <Link href="/tracker/cancelled">
                   <h3 className="project-title">
                     Cancellation tracker
@@ -63,7 +71,7 @@ export default function Home() {
 
                 <Link href="/tracker/route">
                   <h3 className="project-title">
-                    Route delay and cancellation tracker
+                    Route status page
                   </h3>
                 </Link>
 
@@ -71,7 +79,7 @@ export default function Home() {
 
                 <Link href="/tracker/on-time">
                   <h3 className="project-title">
-                    On-time performance tracker
+                    On-time performance calculator
                   </h3>
                 </Link>
 
@@ -80,7 +88,7 @@ export default function Home() {
                 <Link href="/tracker/blocks">
                   
                   <h3 className="project-title">
-                    Block and bus-movement tracker
+                    Block explorer
                   </h3>
 
                   <img
