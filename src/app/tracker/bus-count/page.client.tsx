@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -257,4 +257,15 @@ function CurrentDay({ date }: CurrentDayProps) {
       </div>
     </div>
   );
+}
+
+function getCurrentDate(): Date {
+    const date = new Date();
+
+    // Special one here because otherwise it would be blank at 3 AM
+    if (date.getHours() < 4) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    }
+
+    return date;
 }
