@@ -236,7 +236,8 @@ function CurrentDay({ date }: CurrentDayProps) {
       },
     });
 
-    if (date.getTime() - new Date().getTime() < 0) {
+    if (date.getTime() - new Date().getTime() < 0
+        && date.getTime() - new Date(2026, 0, 5).getTime() >= 0) {
       getBusCountGraph({
         date: date.toISOString(),
       }).then(setBusCountGraphData);
