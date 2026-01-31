@@ -189,6 +189,7 @@ function CurrentDay({ date }: CurrentDayProps) {
     setBusCountGraphData(null);
     setBusCountGraphOptions({
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
         yAxis: {
           ticks: {
@@ -246,9 +247,14 @@ function CurrentDay({ date }: CurrentDayProps) {
 
   return (
     <div className="route-tables">
-      {busCountGraphData && busCountGraphOptions && 
-        <Line className="chart" options={busCountGraphOptions} data={busCountGraphData} plugins={[verticalHoverLine(1)]} />
-      }
+      <div className="chart">
+        {busCountGraphData && busCountGraphOptions &&
+          <Line
+            options={busCountGraphOptions}
+            data={busCountGraphData}
+            plugins={[verticalHoverLine(1)]} />
+        }
+      </div>
     </div>
   );
 }

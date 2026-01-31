@@ -217,6 +217,8 @@ to get overridden */
 
 .chart {
     padding: 20px;
+    width: 100%;
+    aspect-ratio: 2;
 }
 
 @media only screen and (max-width: 700px) {
@@ -227,5 +229,9 @@ to get overridden */
     .route-tables:not(.cancel-tables) {
         font-size: 8px;
         gap: 20px;
+    }
+
+    .chart {
+        height: 800px !important;
     }
 }
