@@ -252,7 +252,7 @@ function CurrentDay({ date }: CurrentDayProps) {
           <Line
             options={busCountGraphOptions}
             data={busCountGraphData}
-            plugins={[verticalHoverLine(1)]} />
+            plugins={[verticalHoverLine]} />
         }
       </div>
     </div>
