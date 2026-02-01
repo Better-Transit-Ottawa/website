@@ -72,7 +72,8 @@ enum SortOptions {
   Route = "route",
   Best = "best",
   Worst = "worst",
-  Canceled = "canceled"
+  CanceledNum = "canceled",
+  CanceledPercent = "canceledPercent"
 }
 
 const metricOptions: ComboboxOptions = [
@@ -84,7 +85,8 @@ const sortOptions: ComboboxOptions = [
   { value: SortOptions.Route, label: "Sort by route" },
   { value: SortOptions.Best, label: "Best on-time %" },
   { value: SortOptions.Worst, label: "Worst on-time %" },
-  { value: SortOptions.Canceled, label: "Most canceled" }
+  { value: SortOptions.CanceledNum, label: "Sorty by cancellations" },
+  { value: SortOptions.CanceledPercent, label: "Sort by cancellation percentage" }
 ];
 
 function parseMetric(value: string | null): Metric {
@@ -95,7 +97,8 @@ function parseSort(value: string | null): SortOptions {
   switch (value) {
     case SortOptions.Best:
     case SortOptions.Worst:
-    case SortOptions.Canceled:
+    case SortOptions.CanceledNum:
+    case SortOptions.CanceledPercent:
       return value;
     default:
       return SortOptions.Route;
@@ -160,8 +163,11 @@ function sortCombinedRoutes(data: CombinedRouteAggregate[], sort: SortOptions): 
     case SortOptions.Worst:
       sorted.sort((a, b) => (a.onTimePct ?? 101) - (b.onTimePct ?? 101));
       break;
-    case SortOptions.Canceled:
+    case SortOptions.CanceledNum:
       sorted.sort((a, b) => b.canceledTrips - a.canceledTrips);
+      break;
+    case SortOptions.CanceledPercent:
+      sorted.sort((a, b) => b.canceledTrips / b.totalScheduled - a.canceledTrips / a.totalScheduled);
       break;
     case SortOptions.Route:
     default:
@@ -379,7 +385,7 @@ export default function PageClient() {
   return (
     <>
       <div className="controls with-padding on-time-controls">
-        <div className="control-boxes">
+        <div className="control-boxes control-box-no-width">
           <Combobox
             options={metricOptions}
             hintText="Select metric..."
@@ -424,7 +430,7 @@ export default function PageClient() {
                 }));
               }}
             />
-            Include canceled trips
+            Include cancelled trips
           </label>
 
           <label className="on-time-date">
@@ -533,7 +539,7 @@ export default function PageClient() {
                       <th title={statTooltips.p90Delay}>P90</th>
                       <th title={statTooltips.maxDelay}>Max</th>
                       <th title={statTooltips.evaluatedCount}>Evaluated</th>
-                      <th title={statTooltips.canceledPct}>Canceled %</th>
+                      <th title={statTooltips.canceledPct}>Cancelled %</th>
                     </tr>
                   </thead>
                   <tbody>
