@@ -21,6 +21,7 @@ interface RouteComponentProps {
   routeId: string;
   trips: TripDetails[];
   colors: Record<string, string>;
+  showTransseeLinks: boolean;
 }
 
 function RouteComponent(props: RouteComponentProps) {
@@ -30,9 +31,6 @@ function RouteComponent(props: RouteComponentProps) {
         <table>
           <thead>
             <tr>
-              <th>
-                Trip ID
-              </th>
               <th>
                 Block ID
               </th>
@@ -70,9 +68,6 @@ function RouteComponent(props: RouteComponentProps) {
               return (
                 <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""} ${untracked ? "untracked" : ""}`}>
                   <td>
-                    {b.tripId}
-                  </td>
-                  <td>
                     <Link href={"/tracker/blocks?" + new URLSearchParams({
                       date: dateToDateString(props.date),
                       block: b.blockId!
@@ -84,7 +79,17 @@ function RouteComponent(props: RouteComponentProps) {
                     {b.headSign}
                   </td>
                   <td>
-                    {b.scheduledStartTime}
+                    {props.showTransseeLinks ? (
+                      <Link href={"https://transsee.ca/tripsched?" + new URLSearchParams({
+                        a: "octranspo",
+                        t: b.tripId,
+                        date: dateToDateString(props.date)
+                      }).toString()}>
+                        {b.scheduledStartTime}
+                      </Link>
+                    ) : (
+                      b.scheduledStartTime
+                    )}
                   </td>
                   <td className={`actual-time ${((delayStart > 15 * 60) ? "red-text " : "")}${((delayStart > 5 * 60) ? "yellow-text" : "")}`}>
                     {untracked 
@@ -197,6 +202,13 @@ export default function PageClient() {
     }
   }, [currentRoute, searchParams]);
 
+  const [showTransseeLinks, setShowTransseeLinks] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("showTransseeLinks")) {
+      setShowTransseeLinks(true);
+    }
+  }, []);
+
   return (
     <>
       <div className="controls with-padding">
@@ -210,6 +222,26 @@ export default function PageClient() {
               }));
             }}/>
         </div>
+
+        <details className="advanced-options">
+          <summary>Advanced</summary>
+
+          <div>
+            Show transsee links{" "}
+            <input
+              type="checkbox"
+              checked={showTransseeLinks}
+              onChange={() => {
+                setShowTransseeLinks(!showTransseeLinks);
+                if (!showTransseeLinks) {
+                  localStorage.setItem("showTransseeLinks", "1");
+                } else {
+                  localStorage.removeItem("showTransseeLinks");
+                }
+              }}
+            />
+          </div>
+        </details>
 
         <DatePicker
           date={date}
@@ -256,6 +288,7 @@ export default function PageClient() {
       <RouteTables
         route={currentRoute}
         date={date}
+        showTransseeLinks={showTransseeLinks}
       />
     </>
   );
@@ -264,9 +297,10 @@ export default function PageClient() {
 interface GraphProps {
   route: string | null;
   date: Date;
+  showTransseeLinks: boolean;
 }
 
-function RouteTables({ route, date }: GraphProps) {
+function RouteTables({ route, date, showTransseeLinks }: GraphProps) {
   const [routeData, setRouteData] = useState<RouteData | null>(null);
   useEffect(() => {
     setRouteData(null);
@@ -288,12 +322,14 @@ function RouteTables({ route, date }: GraphProps) {
             routeId={route!}
             trips={routeData.trip1}
             colors={routeData.colorPerBus}
+            showTransseeLinks={showTransseeLinks}
           />
           <RouteComponent
             date={date}
             routeId={route!}
             trips={routeData.trip2}
             colors={routeData.colorPerBus}
+            showTransseeLinks={showTransseeLinks}
           />
         </>
       }
