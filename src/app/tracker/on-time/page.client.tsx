@@ -571,7 +571,7 @@ export default function PageClient() {
                       <th title={statTooltips.p90Delay}>P90</th>
                       <th title={statTooltips.maxDelay}>Max</th>
                       <th title={statTooltips.evaluatedCount}>Evaluated</th>
-                      <th title={statTooltips.canceledPct}>Canceled %</th>
+                      <th title={statTooltips.canceledPct}>Cancelled %</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -603,7 +603,7 @@ export default function PageClient() {
                     <th title={statTooltips.p90Delay}>P90</th>
                     <th title={statTooltips.maxDelay}>Max</th>
                     <th title={statTooltips.evaluatedCount}>Evaluated</th>
-                    <th title={statTooltips.canceledPct}>Canceled %</th>
+                    <th title={statTooltips.canceledPct}>Cancelled %</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -639,7 +639,7 @@ export default function PageClient() {
                     <th title={statTooltips.p90Delay}>P90</th>
                     <th title={statTooltips.maxDelay}>Max</th>
                     <th title={statTooltips.evaluatedCount}>Evaluated</th>
-                    <th title={statTooltips.canceledPct}>Canceled %</th>
+                    <th title={statTooltips.canceledPct}>Cancelled %</th>
                   </tr>
                 </thead>
                 <tbody>
