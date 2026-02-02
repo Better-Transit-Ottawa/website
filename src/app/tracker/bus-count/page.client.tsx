@@ -190,6 +190,7 @@ function CurrentDay({ date }: CurrentDayProps) {
     setBusCountGraphOptions({
       responsive: true,
       maintainAspectRatio: false,
+      devicePixelRatio: 1,
       scales: {
         yAxis: {
           ticks: {
