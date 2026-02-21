@@ -152,10 +152,10 @@ async function getRouteData(params: BlockDataRequest): Promise<RouteData | null>
   return null;
 }
 
-async function getRouteOptions(date: Date): Promise<ComboboxOptions> {
-  const result = await fetch(`${busTrackerServerUrl}/api/routes?${new URLSearchParams({
-    date: date.toISOString()
-  })}`, );
+async function getRouteOptions(date: Date, excludeSchoolRoutes = false): Promise<ComboboxOptions> {
+  const params: Record<string, string> = { date: date.toISOString() };
+  if (excludeSchoolRoutes) params.excludeSchoolRoutes = "1";
+  const result = await fetch(`${busTrackerServerUrl}/api/routes?${new URLSearchParams(params)}`, );
 
   if (result.ok) {
     const data = await result.json();
@@ -191,8 +191,8 @@ export default function PageClient() {
     label: searchParams.get("route")!
   }] : []);
   useEffect(() => {
-    getRouteOptions(date).then(setRoutes);
-  }, [date]);
+    getRouteOptions(date, excludeSchoolRoutes).then(setRoutes);
+  }, [date, excludeSchoolRoutes]);
 
   const [currentRoute, setCurrentRoute] = useState<string | null>(searchParams.get("route"));
   useEffect(() => {
@@ -208,6 +208,18 @@ export default function PageClient() {
       setShowTransseeLinks(true);
     }
   }, []);
+
+  const [excludeSchoolRoutes, setExcludeSchoolRoutes] = useState<boolean>(
+    searchParams.get("excludeSchoolRoutes") === "1" || searchParams.get("excludeSchoolRoutes") === "true"
+  );
+
+  useEffect(() => {
+    const val = searchParams.get("excludeSchoolRoutes");
+    const flag = val === "1" || val === "true";
+    if (flag !== excludeSchoolRoutes) {
+      setExcludeSchoolRoutes(flag);
+    }
+  }, [searchParams]);
 
   return (
     <>
@@ -238,6 +250,20 @@ export default function PageClient() {
                 } else {
                   localStorage.removeItem("showTransseeLinks");
                 }
+              }}
+            />
+          </div>
+          <div>
+            Exclude school routes (600s){" "}
+            <input
+              type="checkbox"
+              checked={excludeSchoolRoutes}
+              onChange={() => {
+                const next = !excludeSchoolRoutes;
+                setExcludeSchoolRoutes(next);
+                router.push(getPageUrl(pathname, searchParams, {
+                  excludeSchoolRoutes: next ? "1" : null
+                }));
               }}
             />
           </div>
