@@ -63,6 +63,7 @@ interface OnTimeDataRequest {
   metric: Metric;
   routeId?: string;
   frequencyFilter?: string;
+  excludeSchoolRoutes?: boolean;
 }
 
 const DEFAULT_THRESHOLD = 5;
@@ -194,6 +195,7 @@ async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerforman
     metric: params.metric,
     ...(params.routeId ? { routeId: params.routeId } : {}),
     ...(params.frequencyFilter ? { frequencyFilter: params.frequencyFilter } : {})
+    , ...(params.excludeSchoolRoutes ? { excludeSchoolRoutes: "1" } : {})
   });
   const result = await fetch(`${busTrackerServerUrl}/api/onTimePerformance?${query.toString()}`);
   if (!result.ok) {
@@ -203,8 +205,11 @@ async function getOnTimeData(params: OnTimeDataRequest): Promise<OnTimePerforman
   return await result.json();
 }
 
-async function getRouteInfo(date: string): Promise<RouteInfo[]> {
+async function getRouteInfo(date: string, excludeSchoolRoutes = false): Promise<RouteInfo[]> {
   const query = new URLSearchParams({ date });
+  if (excludeSchoolRoutes) {
+    query.set("excludeSchoolRoutes", "1");
+  }
   const result = await fetch(`${busTrackerServerUrl}/api/routes?${query.toString()}`);
   if (!result.ok) {
     return [];
@@ -284,11 +289,21 @@ export default function PageClient() {
     setSelectedRoute(routeParam);
   }, [routeParam]);
 
+  const [excludeSchoolRoutes, setExcludeSchoolRoutes] = useState<boolean>(
+    searchParams.get("excludeSchoolRoutes") === "1" || searchParams.get("excludeSchoolRoutes") === "true"
+  );
+  useEffect(() => {
+    const val = searchParams.get("excludeSchoolRoutes");
+    const flag = val === "1" || val === "true";
+    if (flag !== excludeSchoolRoutes) {
+      setExcludeSchoolRoutes(flag);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     let cancelled = false;
     
-    // Fetch route info
-    getRouteInfo(dateToDateString(date)).then((info) => {
+    getRouteInfo(dateToDateString(date), excludeSchoolRoutes).then((info) => {
       if (!cancelled) {
         setRouteInfo(info);
       }
@@ -318,7 +333,8 @@ export default function PageClient() {
       includeCanceled,
       metric,
       routeId: routeId,
-      frequencyFilter: apiFrequencyFilter
+      frequencyFilter: apiFrequencyFilter,
+      excludeSchoolRoutes
     }).then((result) => {
       if (cancelled) return;
       if (result) {
@@ -335,7 +351,7 @@ export default function PageClient() {
     return () => {
       cancelled = true;
     };
-  }, [date, endDate, metric, threshold, includeCanceled, selectedRoute]);
+  }, [date, endDate, metric, threshold, includeCanceled, selectedRoute, excludeSchoolRoutes]);
 
   const combinedRoutes = data ? data.routesCombined : null;
   
@@ -420,19 +436,6 @@ export default function PageClient() {
         </div>
 
         <div className="control-boxes">
-          <label className="on-time-toggle">
-            <input
-              type="checkbox"
-              checked={includeCanceled}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                router.push(getPageUrl(pathname, searchParams, {
-                  includeCanceled: e.target.checked ? "true" : null
-                }));
-              }}
-            />
-            Include cancelled trips
-          </label>
-
           <label className="on-time-date">
             Start date
             <DatePicker
@@ -495,6 +498,33 @@ export default function PageClient() {
               className="slider"
             />
           </div>
+            <div>
+              Exclude school routes (600s){" "}
+              <input
+                type="checkbox"
+                checked={excludeSchoolRoutes}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const next = e.target.checked;
+                  setExcludeSchoolRoutes(next);
+                  router.push(getPageUrl(pathname, searchParams, {
+                    excludeSchoolRoutes: next ? "1" : null
+                  }));
+                }}
+              />
+            </div>
+            <div>
+              Include cancelled trips{" "}
+              <input
+                type="checkbox"
+                checked={includeCanceled}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const next = e.target.checked;
+                  router.push(getPageUrl(pathname, searchParams, {
+                    includeCanceled: next ? "true" : null
+                  }));
+                }}
+              />
+            </div>
         </details>
 
         <details className="what-is-this">
