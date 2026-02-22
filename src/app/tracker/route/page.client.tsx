@@ -190,9 +190,14 @@ export default function PageClient() {
     value: searchParams.get("route")!,
     label: searchParams.get("route")!
   }] : []);
+
+  const [excludeSchool, setExcludeSchool] = useState<boolean>(
+    searchParams.get("excludeSchoolRoutes") === "1" || searchParams.get("excludeSchoolRoutes") === "true"
+  );
+
   useEffect(() => {
-    getRouteOptions(date, excludeSchoolRoutes).then(setRoutes);
-  }, [date, excludeSchoolRoutes]);
+    getRouteOptions(date, excludeSchool).then(setRoutes);
+  }, [date, excludeSchool]);
 
   const [currentRoute, setCurrentRoute] = useState<string | null>(searchParams.get("route"));
   useEffect(() => {
@@ -209,15 +214,11 @@ export default function PageClient() {
     }
   }, []);
 
-  const [excludeSchoolRoutes, setExcludeSchoolRoutes] = useState<boolean>(
-    searchParams.get("excludeSchoolRoutes") === "1" || searchParams.get("excludeSchoolRoutes") === "true"
-  );
-
   useEffect(() => {
     const val = searchParams.get("excludeSchoolRoutes");
     const flag = val === "1" || val === "true";
-    if (flag !== excludeSchoolRoutes) {
-      setExcludeSchoolRoutes(flag);
+    if (flag !== excludeSchool) {
+      setExcludeSchool(flag);
     }
   }, [searchParams]);
 
@@ -257,10 +258,10 @@ export default function PageClient() {
             Exclude school routes (600s){" "}
             <input
               type="checkbox"
-              checked={excludeSchoolRoutes}
+              checked={excludeSchool}
               onChange={() => {
-                const next = !excludeSchoolRoutes;
-                setExcludeSchoolRoutes(next);
+                const next = !excludeSchool;
+                setExcludeSchool(next);
                 router.push(getPageUrl(pathname, searchParams, {
                   excludeSchoolRoutes: next ? "1" : null
                 }));
