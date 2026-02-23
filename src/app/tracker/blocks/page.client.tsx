@@ -35,10 +35,11 @@ interface NodePosition {
 
 function BlockComponent(props: BlockComponentProps) {
   const cancelInfo = props.data.block[0]?.cancelInfo;
+  const prideTheme = props.data.block.some((b) => b.busId === "2126");
 
   return (
     <>
-      <div className="block-node"
+      <div className={"block-node " + (prideTheme ? "pride" : "")}
           style={{
             borderColor: props.data.border ?? undefined,
             borderWidth: props.data.border ? "5px" : undefined,
@@ -507,7 +508,7 @@ export default function PageClient() {
 
   return (
     <ReactFlowProvider>
-      <div className="controls">
+      <div className={"controls " + (currentVehicle === "2126" ? "pride" : "")}>
         <div className="control-boxes">
           <Combobox options={blocks} 
             hintText="Select block..."
