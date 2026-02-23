@@ -230,7 +230,7 @@ to get overridden */
     -moz-text-fill-color: transparent;
 }
 
-.pride tr:nth-child(even), .block-node thead tr {
+.pride tr:nth-child(even), .pride .block-node thead tr {
     background-image: linear-gradient(90deg, #fb0, #00b380, #147aa9, #675997, #d04935, #e46511);
 }
 
