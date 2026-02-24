@@ -15,6 +15,7 @@ import { BadDataWarning } from "@/app/components/bad-data-warning";
 
 interface DisplayOptions {
   transseeLinks: boolean;
+  isSafari: boolean;
 }
 
 interface BlockComponentProps {
@@ -39,7 +40,7 @@ function BlockComponent(props: BlockComponentProps) {
 
   return (
     <>
-      <div className={"block-node " + (prideTheme ? "pride" : "")}
+      <div className={"block-node " + (prideTheme ? "pride " : "") + (props.data.options.isSafari ? "safari" : "")}
           style={{
             borderColor: props.data.border ?? undefined,
             borderWidth: props.data.border ? "5px" : undefined,
@@ -506,9 +507,14 @@ export default function PageClient() {
     }
   }, []);
 
+  const [isSafari, setSafari] = useState(false);
+  useEffect(() => {
+    setSafari(navigator.vendor === "Apple Computer, Inc.");
+  }, []);
+
   return (
     <ReactFlowProvider>
-      <div className={"controls " + (currentVehicle === "2126" ? "pride" : "")}>
+      <div className={"controls " + (currentVehicle === "2126" ? "pride " : "") + (isSafari ? "safari " : "")}>
         <div className="control-boxes">
           <Combobox options={blocks} 
             hintText="Select block..."
@@ -665,6 +671,7 @@ export default function PageClient() {
           block={currentBlock}
           bus={currentVehicle}
           transseeLinks={showTransseeLinks}
+          isSafari={isSafari}
           onlyShowDirectlyReleventBuses={onlyShowDirectlyReleventBuses}
           date={date}
         />
@@ -679,9 +686,10 @@ interface GraphProps {
   onlyShowDirectlyReleventBuses: boolean;
   date: Date;
   transseeLinks: boolean;
+  isSafari: boolean;
 }
 
-function Graph({ block, bus, transseeLinks, onlyShowDirectlyReleventBuses, date }: GraphProps) {
+function Graph({ block, bus, transseeLinks, isSafari, onlyShowDirectlyReleventBuses, date }: GraphProps) {
   const [blockData, setBlockData] = useState<AllBlocks>({});
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -708,11 +716,12 @@ function Graph({ block, bus, transseeLinks, onlyShowDirectlyReleventBuses, date 
 
     if (block || bus) {
       setNodes(generateNodes(date, blockData, {
-        transseeLinks
+        transseeLinks,
+        isSafari
       }, onlyShowDirectlyReleventBuses, edgeData, block ? block : getNextTrip(blockData, bus!, null)?.blockId ?? "", bus));
       setEdges(edgeData.edges);
     }
-  }, [date, blockData, block, bus, transseeLinks, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
+  }, [date, blockData, block, bus, transseeLinks, isSafari, onlyShowDirectlyReleventBuses, setNodes, setEdges, searchParams]);
 
   return (
     <ReactFlow
