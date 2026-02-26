@@ -149,6 +149,7 @@ export function getCurrentDate(): Date {
 export function isBadDataDate(date: Date, cancellations = false): boolean {
     return [
         "2026-01-25",
-        "2026-02-03"
+        "2026-02-03",
+        "2026-02-26"
     ].includes(dateToDateString(date)) || date.getTime() < new Date(2026, 0, cancellations ? 8 : 5).getTime();
 }

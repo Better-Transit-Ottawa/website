@@ -9,7 +9,7 @@ export function BadDataWarning(props: BadDataWarningProps) {
     return <>
         {isBadDataDate(props.date, props.cancellations) && 
             <div>
-                Warning: Data on this day is incomplete due to service outages or another reason
+                Warning: Data on this day is incomplete due to missing data (OC Transpo issues or issues on our end)
             </div>
         }
     </>
