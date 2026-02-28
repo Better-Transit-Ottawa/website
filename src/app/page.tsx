@@ -118,13 +118,15 @@ export default function Home() {
 
         <ul className="project-list">
           <li>
-            <h3 className="project-title">Bus lanes on Bank Street</h3>
+            <div className="project-container">
+              <h3 className="project-title">Bus lanes on Bank Street</h3>
 
-            <img
-              className="project-image"
-              src={basePath + "/images/bank.jpg"}
-              alt="An OC Transpo bus on Bank street"
-            />
+              <img
+                className="project-image"
+                src={basePath + "/images/bank.jpg"}
+                alt="An OC Transpo bus on Bank street"
+              />
+            </div>
 
             <p>
               The city is currently studying replacing parking with dedicated

@@ -165,14 +165,14 @@ article {
 }
 
 .info-bar-title {
-  font-size: 28px;
+  font-size: clamp(1.5rem, 7vw, 2rem);
   display: inline-block;
   vertical-align: 7px;
   flex-grow: 1;
 
   /* put it to the right like o-train line 2 */
   text-align: right;
-  padding-right: 1em;
+  padding-right: var(--section-alignment-padding);
 
   /* give some space */
   padding-top: .5em;
@@ -219,8 +219,6 @@ footer div {
 }
 
 .project-title {
-  font-weight: bold;
-  font-size: 23px;
   margin-bottom: 1rem;
 }
 
@@ -244,17 +242,28 @@ footer div {
     position: relative;
     z-index: 5;
   }
+  .project-image {
+    transition: .3s ease transform;
+    border-radius: 5px;
+    --corner-cut: 40px;
+    clip-path: polygon(var(--corner-cut) 0%, 100% 0%, 100% calc(100% - var(--corner-cut)), calc( 100% - var(--corner-cut)) 100%, 0% 100%, 0% var(--corner-cut));
+  }
 
 }
-
+.project-list>li>a {
+  /* only scale up if its a link */
+  &:hover .project-image {
+      transform: scale(1.05)
+    }
+}
 .project-title {
   /* position */
   grid-row: two;
   text-align: centre;
-  translate: 1.9em 0px;
   justify-self: end;
   align-self: center;
   position: absolute;
+  bottom: -2rem;
 
 
   /* logo button */
@@ -265,14 +274,16 @@ footer div {
 
 
   /* sizing */
-  padding: 1.1em;
+  padding: 9% 15% 0% 10%;
   /* sizing based off of measuerments of the background */
-  aspect-ratio: 3.36;
+  aspect-ratio: 7600 / 1435;
   width: 100%;
+  box-sizing: border-box;
+  
 
   /* font-style */
   font-weight: 600;
-  font-size: 1.7em;
+  font-size: clamp(1rem, 5vw, 1.75rem);
   text-decoration: none;
 
   /* keep the text from overflowing */
@@ -560,11 +571,16 @@ header {
   .project-container {
     /* stop button from overflowign */
     overflow-x: clip;
+    
   }
+}
 
-  .project-title {
-    /* keep in sensible location and scale tezt */
-
-    font-size: 1.2em;
+@media (prefers-color-scheme: light ) {
+  .info-bar-title {
+    /* compromise to have only show in light theme */
+    background: white;
+    color: var(--black);
+    border:none;
   }
+  
 }
