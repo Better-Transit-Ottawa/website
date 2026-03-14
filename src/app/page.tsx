@@ -69,6 +69,14 @@ export default function Home() {
 
                 <br/>
 
+                <Link href="/tracker/historical-graph">
+                  <h3 className="project-title">
+                    Are things getting better?
+                  </h3>
+                </Link>
+
+                <br/>
+
                 <Link href="/tracker/route">
                   <h3 className="project-title">
                     Route status page
