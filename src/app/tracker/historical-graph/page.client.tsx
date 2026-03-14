@@ -154,6 +154,17 @@ export default function PageClient() {
             <HelpCircleIcon/>What is this?
           </summary>
 
+          <p>
+            The first graph shows the cancellations and trips missing per day, excluding weekends.
+            Cancellations are trips reported as cancelled by OC Transpo.
+            Trips removed are the number of trips that have been removed from the schedule since the schedule published on January 6th 2026.
+          </p>
+
+          <p>
+            The second graph shows the number of buses of each bus type active per day.
+            In this graph, you can see when buses may have been pulled due to repair, breakdowns or lack of available chargers.
+          </p>
+
         </details>
       </div>
 
