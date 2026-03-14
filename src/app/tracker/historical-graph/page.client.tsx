@@ -166,7 +166,7 @@ export default function PageClient() {
           </p>
 
           <p>
-            School routes (600-series), and event routes (500-series) are excluded from the cancellation and removed trip numbers.
+            School routes (600-series), and event routes (400-series) are excluded from the cancellation and removed trip numbers.
           </p>
 
         </details>
