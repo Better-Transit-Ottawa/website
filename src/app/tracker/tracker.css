@@ -221,15 +221,18 @@ to get overridden */
     aspect-ratio: 2;
 }
 
-.pride:not(.safari) tr, .pride .block-node-title, .pride .block-node-description, .pride button, .pride *:not(.what-is-this) summary {
+.notSafari tr.pride, .prideTotal .block-node-title, .prideTotal .block-node-description, .pride button, .pride *:not(.what-is-this) summary {
     background-image: linear-gradient(90deg, #fe492e, #ff7112, #fb0, #00b380, #1fb1f5, #a08be5);
     background-clip: text;
     -webkit-text-fill-color: transparent; 
     -moz-text-fill-color: transparent;
 }
 
-.pride:not(.safari) tr:nth-child(even), .pride:not(.safari) .block-node thead tr {
+.notSafari tr.pride:nth-child(even), .prideTotal.notSafari.block-node thead tr {
     background-image: linear-gradient(90deg, #fb0, #00b380, #1fb1f5, #a08be5, #fe492e, #ff7112);
+    background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
 }
 
 .pride td:has(a) {

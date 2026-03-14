@@ -34,13 +34,15 @@ interface NodePosition {
   y: number
 }
 
+const prideBuses = ["2101", "2126"];
+
 function BlockComponent(props: BlockComponentProps) {
   const cancelInfo = props.data.block[0]?.cancelInfo;
-  const prideTheme = props.data.block.some((b) => b.busId === "2126");
+  const prideTheme = props.data.block.some((b) => prideBuses.includes(b.busId!));
 
   return (
     <>
-      <div className={"block-node " + (prideTheme ? "pride " : "") + (props.data.options.isSafari ? "safari" : "")}
+      <div className={"block-node " + (prideTheme ? "prideTotal " : "") + (props.data.options.isSafari ? "safari" : "notSafari")}
           style={{
             borderColor: props.data.border ?? undefined,
             borderWidth: props.data.border ? "5px" : undefined,
@@ -57,7 +59,7 @@ function BlockComponent(props: BlockComponentProps) {
         }
         
         <table>
-          <thead>
+          <thead className={(prideTheme ? "pride " : "") + (props.data.options.isSafari ? "safari" : "notSafari")}>
             <tr>
               <th>
                 Route ID
@@ -92,9 +94,10 @@ function BlockComponent(props: BlockComponentProps) {
                 && ((props.data.block.some((b, i) => i > index && b.actualStartTime)) 
                   || props.data.date.toLocaleDateString() != new Date().toLocaleDateString()
                   || timeStringDiff(new Date().toLocaleTimeString(), b.scheduledEndTime) > 60 * 60);
+              const isPrideBus = prideBuses.includes(b.busId!);
 
               return (
-                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""} ${untracked ? "untracked" : ""}`}>
+                <tr key={b.tripId} className={`block-table nodrag nopan ${canceled ? "cancelled" : ""} ${untracked ? "untracked" : ""} ${isPrideBus ? "pride" : ""}`}>
                   <td className="handle-container">
                     <Handle
                       type="target"
@@ -514,7 +517,7 @@ export default function PageClient() {
 
   return (
     <ReactFlowProvider>
-      <div className={"controls " + (currentVehicle === "2126" ? "pride " : "") + (isSafari ? "safari " : "")}>
+      <div className={"controls " + (prideBuses.includes(currentVehicle!) ? "pride " : "") + (isSafari ? "safari " : "")}>
         <div className="control-boxes">
           <Combobox options={blocks} 
             hintText="Select block..."
