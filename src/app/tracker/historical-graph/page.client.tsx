@@ -165,6 +165,10 @@ export default function PageClient() {
             In this graph, you can see when buses may have been pulled due to repair, breakdowns or lack of available chargers.
           </p>
 
+          <p>
+            School routes (600-series), and event routes (500-series) are excluded from the cancellation and removed trip numbers.
+          </p>
+
         </details>
       </div>
 
