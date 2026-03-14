@@ -37,20 +37,22 @@ body {
      to aid in readability */
   --icon-width: 35px;
   --info-padding: 20px;
-  --section-alignment-padding: calc( var(--icon-width) + var(--info-padding) );
+  --section-alignment-padding: calc(var(--icon-width) + (var(--info-padding) * 2));
 }
+
 .background-container {
   /* layout */
   position: absolute;
   width: 100%;
   height: 100%;
   top: -57px;
-  
+
   /* make it work as backgtround ( maybe make it unselectable? might 
      redo this later if i keep the bg - elysia ) */
   z-index: -1000;
   overflow: hidden;
 }
+
 .background {
   /* bg sizing */
   width: 150%;
@@ -89,22 +91,36 @@ body {
 
   /* should set up default link styling cus everything is all 
   over the place rn */
-  
+
 }
+
 section {
   /* gives each first child a black background and border to avoid 
        over declaring on each*/
-    background-color: var(--mainbgcol);
-    border: 2px solid var(--fgcol);
-    h2 {
-      /* make the outside padding consistent */
-      margin-top: 0px;
-    }
+  background-color: var(--mainbgcol);
+  border: 2px solid var(--fgcol);
+
+  h2 {
+    /* make the outside padding consistent */
+    margin-top: 0px;
+  }
 }
+
 .text-block {
   font-size: 1.2em;
-  padding: 30px;
   width: 100%;
+  padding: 0px 0px 30px;
+}
+
+/* avoid styling tracker */
+.text-block:is(:not(.fullsize)) {
+  display: grid;
+  grid-template-columns: .1fr 1fr;
+
+  &>*:not(.info-icon, .info-bar-title) {
+    /* keep the text out of the grid */
+    grid-column: span 2;
+  }
 }
 
 .text-block-indented {
@@ -113,17 +129,22 @@ section {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  
+
   /* alignment */
   padding: 0px var(--section-alignment-padding);
+
   li {
-    margin-left: 2em;
+    margin-left: 4em;
   }
 }
-.text-block p:not(.info-bar, .project-list p, .blog *), article {
+
+.text-block p:not(.info-bar, .project-list p, .blog *),
+article {
   /* alignment */
+  margin-bottom: 0;
   padding: 0px var(--section-alignment-padding);
 }
+
 .text-block :first-child {
   margin-top: 0;
 }
@@ -134,8 +155,8 @@ section {
 
 .info-icon {
   width: var(--icon-width);
-
-  padding-right: var(--info-padding);
+  margin: 0em var(--info-padding);
+  place-self: center;
 }
 
 .info-bar {
@@ -144,9 +165,30 @@ section {
 }
 
 .info-bar-title {
-  font-size: 28px;
+  font-size: clamp(1.5rem, 7vw, 2rem);
   display: inline-block;
   vertical-align: 7px;
+  flex-grow: 1;
+
+  /* put it to the right like o-train line 2 */
+  text-align: right;
+  padding-right: var(--section-alignment-padding);
+
+  /* give some space */
+  padding-top: .5em;
+  padding-bottom: .5em;
+
+
+  background: var(--black);
+  border: 2px solid var(--fgcol);
+  border-top: none;
+  border-right: none;
+  color: white;
+  margin: 0;
+
+  &+* {
+    margin-top: 1rem !important;
+  }
 }
 
 footer {
@@ -163,13 +205,12 @@ footer div {
 
 .project-list {
   padding: 0px;
-  
+
   /* blog isnt in a project list, so need to set up another thing for that */
   margin: 0px var(--section-alignment-padding);
   list-style-type: none;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -178,14 +219,85 @@ footer div {
 }
 
 .project-title {
-  font-weight: bold;
-  font-size: 23px;
-
-  
+  margin-bottom: 1rem;
 }
 
 .project-list a {
   color: white;
+}
+
+.project-list>li>a,
+.project-container {
+  /* how to display the contents of the post */
+  position: relative;
+  display: grid;
+
+  /* padding for description so it doesnt overflow onto arrow */
+  margin-bottom: 1.8em;
+
+  &~p {
+    padding-right: 20%;
+
+    /* get it above the arrow */
+    position: relative;
+    z-index: 5;
+  }
+  .project-image {
+    transition: .3s ease transform;
+    border-radius: 5px;
+    --corner-cut: 40px;
+    clip-path: polygon(var(--corner-cut) 0%, 100% 0%, 100% calc(100% - var(--corner-cut)), calc( 100% - var(--corner-cut)) 100%, 0% 100%, 0% var(--corner-cut));
+  }
+
+}
+.project-list>li>a {
+  /* only scale up if its a link */
+  &:hover .project-image {
+      transform: scale(1.05)
+    }
+}
+.project-title {
+  /* position */
+  grid-row: two;
+  text-align: centre;
+  justify-self: end;
+  align-self: center;
+  position: absolute;
+  bottom: -2rem;
+
+
+  /* logo button */
+  background: url(../../public/images/button-inverted.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+
+  /* sizing */
+  padding: 9% 15% 0% 10%;
+  /* sizing based off of measuerments of the background */
+  aspect-ratio: 7600 / 1435;
+  width: 100%;
+  box-sizing: border-box;
+  
+
+  /* font-style */
+  font-weight: 600;
+  font-size: clamp(1rem, 5vw, 1.75rem);
+  text-decoration: none;
+
+  /* keep the text from overflowing */
+  align-items: center;
+
+  line-height: 1;
+
+  /* text centre */
+  display: flex;
+  justify-content: center;
+
+
+  /* stop from z-figfhtiung with image */
+  z-index: 2;
 }
 
 .project-actions-title {
@@ -205,6 +317,7 @@ header {
   aspect-ratio: 6;
   max-height: var(--logo-size);
 }
+
 .title {
   /* colourr */
   background-color: black;
@@ -213,24 +326,27 @@ header {
   /* font */
   text-decoration: none;
   font-family: frutigerBold, sans-serif;
-  
+
   /* layout */
   display: grid;
   grid-template-columns: .2fr .8fr;
   max-height: var(--logo-size);
   text-align: center;
 }
+
 .title-text {
   /* literally just tailwind style reset override. we should probably 
      move away from tailwind, because layering lots of bespoke 
      styles onto each other is bound to cause a lot of confusing issues */
   margin: auto;
-  font-size: 2em!important;
+  font-size: 2em !important;
 }
+
 .logo img {
   height: var(--logo-size);
   display: block;
 }
+
 .description {
   /* text align not strictly necessary unless wrapping */
   text-align: center;
@@ -243,7 +359,7 @@ header {
   font-size: 1.3em;
   color: var(--fgcol);
   text-decoration: none;
-  
+
   /* button */
   --join-btn-colour: #06005d;
   padding: 15px 25px;
@@ -253,16 +369,19 @@ header {
   /* anim */
   transition: background-color .3s ease, box-shadow .3s ease;
 }
+
 .join:hover {
   /* using colour mix to keep only one button colour variable */
   background-color: color-mix(in oklab, var(--join-btn-colour) 100%, cyan 30%);
   box-shadow: var(--glow-shadow);
 }
+
 .socials img {
   height: 30px;
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .socials {
   display: inherit;
 }
@@ -273,6 +392,7 @@ header {
      unfixed would take some work -- elysia */
   width: 400px;
 }
+
 .webring-title {
   /* defaults */
   margin: 0;
@@ -281,7 +401,7 @@ header {
   /* font */
   font-weight: 600;
   font-size: 1.7em;
-  
+
   /* centres title */
   display: flex;
   justify-content: center;
@@ -309,18 +429,22 @@ header {
   vertical-align: middle;
   width: 10px;
 }
+
 .station-logo {
   vertical-align: middle;
   width: 16px;
 }
+
 .linkmap-top {
   margin-bottom: 50px;
   z-index: 1;
   position: relative;
 }
+
 .line-outer {
   position: relative;
 }
+
 .line {
   --line-width: 6px;
   position: absolute;
@@ -377,7 +501,7 @@ header {
   height: 0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  
+
   border-right: 6px solid white;
 
   left: 13.4px;
@@ -400,7 +524,8 @@ header {
   color: var(--fgcol);
 }
 
-.blog-thumbnail, .blog img {
+.blog-thumbnail,
+.blog img {
   width: 100%;
   margin-top: 10px;
   margin-bottom: 0px;
@@ -410,9 +535,10 @@ header {
 
 @media only screen and (max-width: 700px) {
   body {
-      --logo-size: 60px;
-      --section-alignment-padding:0px;
+    --logo-size: 60px;
+    --section-alignment-padding: var(--info-padding);
   }
+
   .title {
     font-size: .7em;
   }
@@ -440,4 +566,21 @@ header {
   .project-list div {
     flex: 100%;
   }
+
+  .project-list>li>a,
+  .project-container {
+    /* stop button from overflowign */
+    overflow-x: clip;
+    
+  }
+}
+
+@media (prefers-color-scheme: light ) {
+  .info-bar-title {
+    /* compromise to have only show in light theme */
+    background: white;
+    color: var(--black);
+    border:none;
+  }
+  
 }
