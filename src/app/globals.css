@@ -177,6 +177,7 @@ article {
   /* give some space */
   padding-top: .5em;
   padding-bottom: .5em;
+  padding-left: .5em;
 
 
   background: var(--black);
@@ -245,10 +246,12 @@ footer div {
   .project-image {
     transition: .3s ease transform;
     border-radius: 5px;
-    --corner-cut: 40px;
-    clip-path: polygon(var(--corner-cut) 0%, 100% 0%, 100% calc(100% - var(--corner-cut)), calc( 100% - var(--corner-cut)) 100%, 0% 100%, 0% var(--corner-cut));
   }
-
+  .project-image:not([src="/images/graph-5-03.png"]) {
+  /* dont cut off corners of block viewer  */
+  --corner-cut: 40px;
+  clip-path: polygon(var(--corner-cut) 0%, 100% 0%, 100% calc(100% - var(--corner-cut)), calc( 100% - var(--corner-cut)) 100%, 0% 100%, 0% var(--corner-cut));
+  }
 }
 .project-list>li>a {
   /* only scale up if its a link */
