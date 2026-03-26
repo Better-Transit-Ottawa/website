@@ -297,6 +297,9 @@ function getChartOptions(name: string): ChartOptions<"line"> {
         },
         callbacks: {
           footer: tooltipFooter
+        },
+        itemSort: (a, b) => {
+          return b.datasetIndex - a.datasetIndex;
         }
       }
     },
