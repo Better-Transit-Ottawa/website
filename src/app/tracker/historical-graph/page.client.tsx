@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay } from "@/utils/busTracker";
 import { useEffect, useState } from "react";
 
 import { HelpCircleIcon } from "lucide-react";
@@ -125,11 +125,13 @@ export default function PageClient() {
   }, []);
 
   const [excludeWeekends, setExcludeWeekends] = useState(true);
+  const [excludeHolidays, setExcludeHolidays] = useState(true);
   useEffect(() => {
     if (busCountData) {
-      setBusCountDataFiltered(busCountData.filter((v) => !excludeWeekends || !isWeekend(v.date) || isHoliday(v.date)))
+      setBusCountDataFiltered(busCountData.filter((v) => (!excludeWeekends || !isWeekend(v.date)) 
+        && (!excludeHolidays || isHoliday(v.date))))
     }
-  }, [excludeWeekends, busCountData])
+  }, [excludeHolidays, excludeWeekends, busCountData]);
 
   return (
     <>
@@ -138,12 +140,22 @@ export default function PageClient() {
           <summary>Advanced</summary>
 
           <div>
-            Exclude weekends and holidays{" "}
+            Exclude weekends{" "}
             <input
               type="checkbox"
               checked={excludeWeekends}
               onChange={() => {
                 setExcludeWeekends(!excludeWeekends);
+              }}
+            />
+          </div>
+          <div>
+            Exclude holidays{" "}
+            <input
+              type="checkbox"
+              checked={excludeHolidays}
+              onChange={() => {
+                setExcludeHolidays(!excludeHolidays);
               }}
             />
           </div>
