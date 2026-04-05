@@ -129,7 +129,7 @@ export default function PageClient() {
   useEffect(() => {
     if (busCountData) {
       setBusCountDataFiltered(busCountData.filter((v) => (!excludeWeekends || !isWeekend(v.date)) 
-        && (!excludeHolidays || isHoliday(v.date))))
+        && (!excludeHolidays || !isHoliday(v.date))))
     }
   }, [excludeHolidays, excludeWeekends, busCountData]);
 
