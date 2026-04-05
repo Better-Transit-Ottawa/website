@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString } from "@/utils/busTracker";
 import { useEffect, useState } from "react";
 
 import { HelpCircleIcon } from "lucide-react";
@@ -127,7 +127,7 @@ export default function PageClient() {
   const [excludeWeekends, setExcludeWeekends] = useState(true);
   useEffect(() => {
     if (busCountData) {
-      setBusCountDataFiltered(busCountData.filter((v) => !excludeWeekends || !isWeekend(v.date)))
+      setBusCountDataFiltered(busCountData.filter((v) => !excludeWeekends || !isWeekend(v.date) || isHoliday(v.date)))
     }
   }, [excludeWeekends, busCountData])
 
@@ -138,7 +138,7 @@ export default function PageClient() {
           <summary>Advanced</summary>
 
           <div>
-            Exclude weekends{" "}
+            Exclude weekends and holidays{" "}
             <input
               type="checkbox"
               checked={excludeWeekends}
@@ -246,6 +246,12 @@ function BusCount({ data }: GraphProps) {
 function isWeekend(date: string): boolean {
   const dateObj = dateStringToServiceDay(date);
   return [0, 6].includes(dateObj.getDay());
+}
+
+function isHoliday(date: string): boolean {
+  return [
+    "2026-04-05",
+  ].includes(date)
 }
 
 function getChartOptions(name: string): ChartOptions<"line"> {
