@@ -202,8 +202,8 @@ export default function Home() {
             logo: "/images/logo.svg",
           },
           {
-            name: "Transit Ottawa Blog",
-            url: "https://otransitottawa.blogspot.com/",
+            name: "About the team",
+            url: "team",
           },
           {
             name: "alex-is.online",
