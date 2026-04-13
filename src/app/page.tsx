@@ -192,6 +192,14 @@ export default function Home() {
             <b>Solidarity</b>: Giving power back to front-line transit workers
           </li>
         </ol>
+
+        <ul className="project-list who-we-are-about-button">
+          <li>
+            <Link href="team">
+              <h3 className="project-title">About the team</h3>
+            </Link>
+          </li>
+        </ul>
       </section>
 
       <LinkMap
