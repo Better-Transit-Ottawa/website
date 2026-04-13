@@ -152,6 +152,17 @@ export function isBadDataDate(date: Date, cancellations = false): boolean {
         "2026-02-03",
         "2026-02-21",
         "2026-02-26",
-        "2026-04-04"
+        "2026-04-04",
+        "2026-04-10",
+        "2026-04-11",
+        "2026-04-12",
     ].includes(dateToDateString(date)) || date.getTime() < new Date(2026, 0, cancellations ? 8 : 5).getTime();
+}
+
+export function isReallyBadDataDate(date: Date): boolean {
+    return [
+        "2026-04-10",
+        "2026-04-11",
+        "2026-04-12",
+    ].includes(dateToDateString(date));
 }

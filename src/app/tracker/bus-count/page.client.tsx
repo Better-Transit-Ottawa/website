@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, isReallyBadDataDate } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -99,6 +99,11 @@ export default function PageClient() {
     }
   }, [searchParams, date]);
 
+  const [hideGraph, setHideGraph] = useState(false);
+  useEffect(() => {
+    setHideGraph(isReallyBadDataDate(date));
+  }, [date]);
+
   return (
     <>
       <div className="controls with-padding">
@@ -162,11 +167,20 @@ export default function PageClient() {
           </p>
         </details>
 
-        <BadDataWarning date={date} cancellations={true}/>
+        {!hideGraph && 
+          <BadDataWarning date={date} cancellations={true}/>
+        }
       </div>
-      <CurrentDay
-        date={date}
-      />
+
+      {!hideGraph ?
+        <CurrentDay
+          date={date}
+        />
+        :
+          <div style={{textAlign: "center"}}>
+            Data not available today due to a server outage
+          </div>
+      }
     </>
   );
 }
