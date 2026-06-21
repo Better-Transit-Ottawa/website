@@ -19,7 +19,7 @@ export default function Home() {
         {`Let's make public transit in Ottawa better`}
       </div>
 
-      <a className="join" href="https://discord.gg/T7HzadcpSX">
+      <a className="join" href="https://discord.gg/w5VSTVZmEP">
         Join us on Discord
       </a>
 
@@ -206,7 +206,7 @@ export default function Home() {
         links={[
           {
             name: "Better Transit Ottawa",
-            url: "https://discord.gg/9gQzNpp3QT",
+            url: "https://discord.gg/w5VSTVZmEP",
             logo: "/images/logo.svg",
           },
           {
