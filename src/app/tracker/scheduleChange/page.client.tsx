@@ -33,7 +33,7 @@ const serviceChanges = {
   },
   [ServiceChange.SummerSaturday]: {
     before: "2026-06-20",
-    after: "2026-06-27",
+    after: "2026-07-04",
   },
   [ServiceChange.SummerSunday]: {
     before: "2026-06-21",
