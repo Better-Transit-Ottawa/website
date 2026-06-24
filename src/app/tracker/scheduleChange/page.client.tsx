@@ -1,5 +1,5 @@
 "use client";
-import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, secondsToMinuteAndSeconds, timeStringDiff, TripDetails } from "@/utils/busTracker";
+import { busTrackerServerUrl, dateStringToServiceDay, dateToDateString, getCurrentDate, secondsToMinuteAndSeconds, timeStringDiff, timeStringWithinRange, TripDetails } from "@/utils/busTracker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -47,16 +47,16 @@ const serviceChanges = {
 
 const serviceChangeOptions = [{
   value: ServiceChange.SummerMonday,
-  label: "Summer monday"
+  label: "Summer Monday"
 }, {
   value: ServiceChange.SummerFriday,
-  label: "Summer friday"
+  label: "Summer Friday"
 }, {
   value: ServiceChange.SummerSaturday,
-  label: "Summer saturday"
+  label: "Summer Saturday"
 }, {
   value: ServiceChange.SummerSunday,
-  label: "Summer sunday"
+  label: "Summer Sunday"
 }];
 
 const directionOptions = [{
@@ -151,6 +151,76 @@ function getTripTableData(changeData: ChangeData): TripTableData[] {
   }
 
   return result;
+}
+
+interface RouteChangeSummary {
+  name: string;
+  before: number;
+  after: number;
+  change: number;
+  display: (v: number) => string;
+}
+
+function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
+  const result: RouteChangeSummary[] = [];
+
+  result.push({
+    name: "Total trips",
+    before: tripTable.reduce((acc, t) => {
+        if (t.oldBlockId) acc++;
+        return acc;
+      }, 0),
+    after: tripTable.reduce((acc, t) => {
+        if (t.newBlockId) acc++;
+        return acc;
+      }, 0),
+    change: 0,
+    display: (v) => String(v)
+  });
+
+  result.push({
+    name: "Average gap",
+    before: findAverage(tripTable.filter((t) => t.oldGap).map((t) => t.oldGap!)),
+    after: findAverage(tripTable.filter((t) => t.newGap).map((t) => t.newGap!)),
+    change: 0,
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+  });
+
+  const morning: RouteChangeSummary = {
+    name: "Average morning gap",
+    before: findAverage(tripTable.filter((t) => t.oldGap && timeStringWithinRange(t.oldStart!, "05:00:00", "09:00:00"))
+      .map((t) => t.oldGap!)),
+    after: findAverage(tripTable.filter((t) => t.newGap && timeStringWithinRange(t.newStart!, "05:00:00", "09:00:00"))
+      .map((t) => t.newGap!)),
+    change: 0,
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+  };
+  if (!isNaN(morning.before) && !isNaN(morning.after)) {
+    result.push(morning);
+  }
+
+  const afternoon: RouteChangeSummary = {
+    name: "Average afternoon gap",
+    before: findAverage(tripTable.filter((t) => t.oldGap && timeStringWithinRange(t.oldStart!, "15:00:00", "19:00:00"))
+      .map((t) => t.oldGap!)),
+    after: findAverage(tripTable.filter((t) => t.newGap && timeStringWithinRange(t.newStart!, "15:00:00", "19:00:00"))
+      .map((t) => t.newGap!)),
+    change: 0,
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+  };
+  if (!isNaN(afternoon.before) && !isNaN(afternoon.after)) {
+    result.push(afternoon);
+  }
+
+  for (const data of result) {
+    data.change = data.after - data.before;
+  }
+
+  return result;
+}
+
+function findAverage(array: number[]): number {
+  return array.reduce((acc, v) => acc + v, 0) / array.length;
 }
 
 interface BlockDataRequest {
@@ -372,6 +442,7 @@ interface GraphProps {
 
 function RouteTables({ route, direction, serviceChange, showTransseeLinks }: GraphProps) {
   const [tripTableData, setTripTableData] = useState<TripTableData[] | null>(null);
+  const [changeSummary, setChangeSummary] = useState<RouteChangeSummary[] | null>(null);
   useEffect(() => {
     setTripTableData(null);
 
@@ -382,14 +453,59 @@ function RouteTables({ route, direction, serviceChange, showTransseeLinks }: Gra
         serviceChange
       }).then((data) => {
         if (data) {
-          setTripTableData(getTripTableData(data));
+          const tripTableData = getTripTableData(data);
+          setTripTableData(tripTableData);
+
+          setChangeSummary(getChangeSummary(tripTableData));
         }
       });
     }
   }, [route, serviceChange, direction]);
 
   return (
-    <div className="route-tables">
+    <div className="schedule-tables">
+      {changeSummary &&
+        <div className="block-node">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  
+                </th>
+                <th>
+                  Before
+                </th>
+                <th>
+                  After
+                </th>
+                <th>
+                  Change
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {changeSummary.map((b, i) => {
+                return (
+                  <tr key={i} className={`block-table nodrag nopan`}>
+                    <td>
+                      {b.name}
+                    </td>
+                    <td>
+                      {b.display(b.before)}
+                    </td>
+                    <td>
+                      {b.display(b.after)}
+                    </td>
+                    <td>
+                      {b.display(b.change)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      }
       {tripTableData &&
         <div className="block-node">
           <table>

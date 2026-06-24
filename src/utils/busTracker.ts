@@ -100,6 +100,10 @@ export function timeStringDiff(timeString1: string, timeString2: string): number
     return (hourPart1 - hourPart2) * 60 * 60 + (minutePart1 - minutePart2) * 60 + (secondPart1 - secondPart2);
 }
 
+export function timeStringWithinRange(timeString: string, startString: string, endString: string): boolean {
+    return timeStringDiff(timeString, startString) > 0 && timeStringDiff(timeString, endString) < 0;
+}
+
 export function timeStringToSeconds(timeString: string): number {
     const hourPart = parseInt(timeString.substring(0, 2));
     const minutePart = parseInt(timeString.substring(3, 5));
