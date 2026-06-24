@@ -29,6 +29,7 @@ export interface TripDetails {
     tripId: string;
     headSign: string;
     routeDirection: number;
+    shapeId: string;
     scheduledStartTime: string;
     scheduledEndTime: string;
     actualStartTime: string | null;
