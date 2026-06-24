@@ -75,8 +75,10 @@ interface TripTableData {
   newTripId: string | null;
   headSign: string;
   oldStart: string | null;
+  oldRuntime: number | null;
   oldGap?: number | null;
   newStart: string| null;
+  newRuntime: number | null;
   newGap?: number | null;
 }
 
@@ -97,10 +99,12 @@ function getTripTableData(changeData: ChangeData): TripTableData[] {
         oldBlockId: leftTrip.blockId,
         oldTripId: leftTrip.tripId,
         oldStart: leftTrip.scheduledStartTime,
+        oldRuntime: timeStringDiff(leftTrip.scheduledEndTime, leftTrip.scheduledStartTime),
         headSign: leftTrip.headSign === rightTrip.headSign ? leftTrip.headSign : `${leftTrip.headSign} / ${rightTrip.headSign}`,
         newBlockId: rightTrip.blockId,
         newTripId: rightTrip.tripId,
-        newStart: rightTrip.scheduledStartTime
+        newStart: rightTrip.scheduledStartTime,
+        newRuntime: timeStringDiff(rightTrip.scheduledEndTime, rightTrip.scheduledStartTime)
       });
 
       beforeIndex++;
@@ -110,10 +114,12 @@ function getTripTableData(changeData: ChangeData): TripTableData[] {
         oldBlockId: null,
         oldTripId: null,
         oldStart: null,
+        oldRuntime: null,
         headSign: rightTrip.headSign,
         newBlockId: rightTrip.blockId,
         newTripId: rightTrip.tripId,
-        newStart: rightTrip.scheduledStartTime
+        newStart: rightTrip.scheduledStartTime,
+        newRuntime: timeStringDiff(rightTrip.scheduledEndTime, rightTrip.scheduledStartTime)
       });
 
       afterIndex++;
@@ -122,10 +128,12 @@ function getTripTableData(changeData: ChangeData): TripTableData[] {
         oldBlockId: leftTrip.blockId,
         oldTripId: leftTrip.tripId,
         oldStart: leftTrip.scheduledStartTime,
+        oldRuntime: timeStringDiff(leftTrip.scheduledEndTime, leftTrip.scheduledStartTime),
         headSign: leftTrip.headSign,
         newBlockId: null,
         newTripId: null,
-        newStart: null
+        newStart: null,
+        newRuntime: null
       });
 
       beforeIndex++;
@@ -344,6 +352,13 @@ export default function PageClient() {
     }
   }, []);
 
+  const [showRuntime, setShowRuntime] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("showRuntime")) {
+      setShowRuntime(true);
+    }
+  }, []);
+
   useEffect(() => {
     const val = searchParams.get("excludeSchoolRoutes");
     const flag = val === "1" || val === "true";
@@ -402,6 +417,21 @@ export default function PageClient() {
               }}
             />
           </div>
+          <div>
+            Show runtime{" "}
+            <input
+              type="checkbox"
+              checked={showRuntime}
+              onChange={() => {
+                setShowRuntime(!showRuntime);
+                if (!showRuntime) {
+                  localStorage.setItem("showRuntime", "1");
+                } else {
+                  localStorage.removeItem("showRuntime");
+                }
+              }}
+            />
+          </div>
           {/* <div>
             Exclude school trips{" "}
             <input
@@ -443,6 +473,7 @@ export default function PageClient() {
         direction={Number(direction)}
         serviceChange={serviceChange}
         showTransseeLinks={showTransseeLinks}
+        showRuntime={showRuntime}
       />
     </>
   );
@@ -453,9 +484,10 @@ interface GraphProps {
   direction: number;
   serviceChange: ServiceChange | null;
   showTransseeLinks: boolean;
+  showRuntime: boolean;
 }
 
-function RouteTables({ route, direction, serviceChange, showTransseeLinks }: GraphProps) {
+function RouteTables({ route, direction, serviceChange, showTransseeLinks, showRuntime }: GraphProps) {
   const [tripTableData, setTripTableData] = useState<TripTableData[] | null>(null);
   const [changeSummary, setChangeSummary] = useState<RouteChangeSummary[] | null>(null);
   useEffect(() => {
@@ -544,6 +576,16 @@ function RouteTables({ route, direction, serviceChange, showTransseeLinks }: Gra
                 <th>
                   New gap
                 </th>
+                {showRuntime &&
+                  <>
+                    <th>
+                      Old runtime
+                    </th>
+                    <th>
+                      New runtime
+                    </th>
+                  </>
+                }
               </tr>
             </thead>
             <tbody>
@@ -598,6 +640,22 @@ function RouteTables({ route, direction, serviceChange, showTransseeLinks }: Gra
                       }}>
                       {b.newGap ? secondsToMinuteAndSeconds(b.newGap) : ""}
                     </td>
+                    {showRuntime &&
+                      <>
+                        <td>
+                          {b.oldRuntime ? secondsToMinuteAndSeconds(b.oldRuntime) : ""}
+                        </td>
+                        <td style={{
+                            color: (b.oldRuntime && b.newRuntime && b.oldRuntime < b.newRuntime)
+                              ? "orange"
+                              : ((b.oldRuntime && b.newRuntime && b.oldRuntime > b.newRuntime)
+                                  ? "#a3f6a3"
+                                : undefined)
+                          }}>
+                          {b.newRuntime ? secondsToMinuteAndSeconds(b.newRuntime) : ""}
+                        </td>
+                      </>
+                    }
                   </tr>
                 );
               })}
