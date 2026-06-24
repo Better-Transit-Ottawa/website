@@ -47,9 +47,12 @@ export default function Home() {
           Bus Reliability
         </h2>
 
-        <p>{`Work in progress tools to monitor OC Transpo's reliability`}</p>
+        <p>{`Tools to monitor OC Transpo's reliability`}</p>
 
         <ul className="project-list">
+          <li>
+            <Link href="/tracker/scheduleChange">Service cut tracker</Link>
+          </li>
           <li>
             <Link href="/tracker/bus-count">Bus availablity graph</Link>
           </li>
