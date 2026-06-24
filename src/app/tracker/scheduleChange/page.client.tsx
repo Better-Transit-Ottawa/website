@@ -159,6 +159,7 @@ interface RouteChangeSummary {
   after: number;
   change: number;
   display: (v: number) => string;
+  colorPercent: (v: number) => number;
 }
 
 function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
@@ -175,7 +176,8 @@ function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
         return acc;
       }, 0),
     change: 0,
-    display: (v) => String(v)
+    display: (v) => String(v),
+    colorPercent: (v) => - (v / 10)
   });
 
   result.push({
@@ -183,7 +185,8 @@ function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
     before: findAverage(tripTable.filter((t) => t.oldGap).map((t) => t.oldGap!)),
     after: findAverage(tripTable.filter((t) => t.newGap).map((t) => t.newGap!)),
     change: 0,
-    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v)),
+    colorPercent: (v) => v / (10 * 60)
   });
 
   const morning: RouteChangeSummary = {
@@ -193,7 +196,8 @@ function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
     after: findAverage(tripTable.filter((t) => t.newGap && timeStringWithinRange(t.newStart!, "05:00:00", "09:00:00"))
       .map((t) => t.newGap!)),
     change: 0,
-    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v)),
+    colorPercent: (v) => v / (10 * 60)
   };
   if (!isNaN(morning.before) && !isNaN(morning.after)) {
     result.push(morning);
@@ -206,7 +210,8 @@ function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
     after: findAverage(tripTable.filter((t) => t.newGap && timeStringWithinRange(t.newStart!, "15:00:00", "19:00:00"))
       .map((t) => t.newGap!)),
     change: 0,
-    display: (v) => secondsToMinuteAndSeconds(Math.floor(v))
+    display: (v) => secondsToMinuteAndSeconds(Math.floor(v)),
+    colorPercent: (v) => v / (10 * 60)
   };
   if (!isNaN(afternoon.before) && !isNaN(afternoon.after)) {
     result.push(afternoon);
@@ -221,6 +226,16 @@ function getChangeSummary(tripTable: TripTableData[]): RouteChangeSummary[] {
 
 function findAverage(array: number[]): number {
   return array.reduce((acc, v) => acc + v, 0) / array.length;
+}
+
+function getChangeColor(percentage: number) {
+  if (percentage > 0) {
+    return `color-mix(in hsl, red ${Math.min(100, percentage * 100)}%, #ffafaf)`;
+  } else if (percentage === 0) {
+    return `white`
+  } else {
+    return `color-mix(in hsl, #00ff00 ${Math.min(100, -percentage * 100)}%, #a4ffa4)`
+  }
 }
 
 interface BlockDataRequest {
@@ -496,7 +511,9 @@ function RouteTables({ route, direction, serviceChange, showTransseeLinks }: Gra
                     <td>
                       {b.display(b.after)}
                     </td>
-                    <td>
+                    <td style={{
+                      color: b.colorPercent ? getChangeColor(b.colorPercent(b.change)) : undefined
+                    }}>
                       {b.display(b.change)}
                     </td>
                   </tr>
