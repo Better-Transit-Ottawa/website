@@ -37,7 +37,7 @@ const serviceChanges = {
   },
   [ServiceChange.SummerSunday]: {
     before: "2026-06-21",
-    after: "2026-06-28",
+    after: "2026-07-05",
   },
   [ServiceChange.CanadaDay]: {
     before: "2026-06-22",
