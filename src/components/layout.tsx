@@ -45,7 +45,7 @@ export default function Layout({ children, footer, dontLink, className }: Layout
                         Contact: contact[at]bettertransitottawa.ca
                     </div>
                     <div>
-                        <Link href="team">About the team</Link>
+                        <Link href="/team">About the team</Link>
                     </div>
                     <div>
                         <a href="https://github.com/Better-Transit-Ottawa/website">Website source code</a>
