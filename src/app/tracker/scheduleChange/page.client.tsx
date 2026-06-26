@@ -257,13 +257,25 @@ async function getChangeData(params: BlockDataRequest): Promise<ChangeData | nul
     routeId: params.routeId,
     date: dateStringToServiceDay(serviceChanges[params.serviceChange].before).toISOString()
   })}`), fetch(`${busTrackerServerUrl}/api/routeDetails?${new URLSearchParams({
-    routeId: params.routeId + "-1", //todo: also handle when it loses the -
+    routeId: params.routeId + "-1",
     date: dateStringToServiceDay(serviceChanges[params.serviceChange].after).toISOString()
   })}`)]);
 
   if (result[0].ok && result[1].ok) {
     const data = await result[0].json();
-    const data2 = await result[1].json();
+    let data2 = await result[1].json();
+
+    if (data2.length === 0) {
+      // Try without -1
+      const try2 = await fetch(`${busTrackerServerUrl}/api/routeDetails?${new URLSearchParams({
+        routeId: params.routeId,
+        date: dateStringToServiceDay(serviceChanges[params.serviceChange].after).toISOString()
+      })}`);
+
+      if (try2.ok) {
+        data2 = await try2.json();
+      }
+    }
 
     return {
       before: data.filter((a: TripDetails) => a.routeDirection === params.direction),
