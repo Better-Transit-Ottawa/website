@@ -34,7 +34,7 @@ interface NodePosition {
   y: number
 }
 
-const prideBuses = ["2101", "2126"];
+const prideBuses = ["2126", "2152"];
 
 function BlockComponent(props: BlockComponentProps) {
   const cancelInfo = props.data.block[0]?.cancelInfo;
