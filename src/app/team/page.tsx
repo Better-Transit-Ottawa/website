@@ -98,7 +98,7 @@ const names: AboutMe[] = shuffle([{
     }],
     neighbourhood: "The Glebe",
     favouriteVehicle: "Bombardier MR-73",
-    description: "Oshawa refugee and transit enthusiast. He has just finished his undergrad at Carleton in Public Affairs and Policy Management (BPAPM). Stephon assists BTO with policy related matters. He spends his free time walking around and photographing buses. Don’t ask him about the Oshawa gondola project."
+    description: "Transit enthusiast from Oshawa. He is pursuing his undergrad at Carleton in Public Affairs and Policy Management (BPAPM). Stephon assists BTO with policy related matters. He spends his free time walking around and photographing buses. Don’t ask him about the Oshawa gondola project."
 }]);
 
 
