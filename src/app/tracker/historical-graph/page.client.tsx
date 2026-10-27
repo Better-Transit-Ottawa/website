@@ -266,7 +266,8 @@ function isHoliday(date: string): boolean {
     "2026-05-18",
     "2026-07-01",
     "2026-08-03",
-    "2026-09-07"
+    "2026-09-07",
+    "2026-10-12"
   ].includes(date)
 }
 
