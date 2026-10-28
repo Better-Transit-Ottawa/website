@@ -373,10 +373,36 @@ header {
   transition: background-color .3s ease, box-shadow .3s ease;
 }
 
-.join:hover {
+.volunteer {
+  /* font */
+  font-size: 1.1em;
+  color: var(--fgcol);
+  text-decoration: none;
+
+  /* button */
+  --join-btn-colour: #490469;
+  padding: 10px 20px;
+  background-color: var(--join-btn-colour);
+  border-radius: 15px;
+
+  /* anim */
+  transition: background-color .3s ease, box-shadow .3s ease;
+}
+
+.join:hover, .volunteer:hover {
   /* using colour mix to keep only one button colour variable */
   background-color: color-mix(in oklab, var(--join-btn-colour) 100%, cyan 30%);
   box-shadow: var(--glow-shadow);
+}
+
+.join-buttons {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  flex-direction: column;
+
+  /* sizing */
+  gap: 10px;
 }
 
 .socials img {

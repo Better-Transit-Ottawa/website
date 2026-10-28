@@ -19,9 +19,15 @@ export default function Home() {
         {`Let's make public transit in Ottawa better`}
       </div>
 
-      <a className="join" href="https://discord.gg/w5VSTVZmEP">
-        Join us on Discord
-      </a>
+      <div className="join-buttons">
+        <a className="join" href="https://discord.gg/w5VSTVZmEP">
+          Join us on Discord
+        </a>
+
+        <a className="volunteer" href="https://forms.gle/66yqrdaARih1wdE99">
+          Sign up to volunteer
+        </a>
+      </div>
 
       <div className="socials">
         <a href="https://bsky.app/profile/bettertransitottawa.ca">
