@@ -96,13 +96,13 @@ export default function Home() {
 
         <ul className="project-list">
           <li>
-            <Link href="/blog/budget-2026">
-              <h3 className="project-title">2026 Budget: Our Response</h3>
+            <Link href="/blog/election-2026">
+              <h3 className="project-title">What’s next after the election</h3>
 
               <img
                 className="project-image"
-                src={basePath + "/images/blog/budget-2026/bus.jpg"}
-                alt="OC Transpo bus 4451, our new used bus, next to an STO bus"
+                src={basePath + "/images/blog/election-2026/bus.webp"}
+                alt="OC Transpo bus 6713, one of the new articulated buses"
               />
             </Link>
           </li>
